@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <nl.joery.library.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:abb_animationType="fade"
+        app:abb_selectedTabType="text"
+        app:abb_tabColor="@color/colorPrimary" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/deselect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deselect" />
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,3 @@
+include ':Library'
+include ':app'
+rootProject.name = "AnimatedBottomBar"
