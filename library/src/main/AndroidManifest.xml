@@ -1,5 +1,3 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nl.joery.library.animatedbottombar">
-
-    /
+<manifest package="nl.joery.animatedbottombar">
+    />
 </manifest>
