@@ -109,6 +109,10 @@ class AnimatedBottomBar @JvmOverloads constructor(
                     indicatorStyle.indicatorLocation.id
                 )
             ) ?: indicatorStyle.indicatorLocation
+            indicatorAnimation = attr.getBoolean(
+                R.styleable.AnimatedBottomBar_abb_indicatorAnimation,
+                indicatorStyle.indicatorAnimation
+            )
 
             // Initials tabs
             val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1);
@@ -336,6 +340,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
         get() = indicatorStyle.indicatorLocation
         set(value) {
             indicatorStyle.indicatorLocation = value
+            applyIndicatorStyle()
+        }
+
+    var indicatorAnimation
+        get() = indicatorStyle.indicatorAnimation
+        set(value) {
+            indicatorStyle.indicatorAnimation = value
             applyIndicatorStyle()
         }
 

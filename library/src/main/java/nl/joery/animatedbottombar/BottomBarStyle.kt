@@ -27,12 +27,12 @@ internal object BottomBarStyle {
     )
 
     data class Indicator(
-        var animateIndicator: Boolean = true,
         @Dimension var indicatorHeight: Int = 3.px,
         @Dimension var indicatorMargin: Int = 0,
         @ColorInt var indicatorColor: Int = Color.BLACK,
         var indicatorAppearance: AnimatedBottomBar.IndicatorAppearance = AnimatedBottomBar.IndicatorAppearance.SQUARE,
-        var indicatorLocation: AnimatedBottomBar.IndicatorLocation = AnimatedBottomBar.IndicatorLocation.TOP
+        var indicatorLocation: AnimatedBottomBar.IndicatorLocation = AnimatedBottomBar.IndicatorLocation.TOP,
+        var indicatorAnimation: Boolean = true
     )
 
     enum class StyleUpdateType {

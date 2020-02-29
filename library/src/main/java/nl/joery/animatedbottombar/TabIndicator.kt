@@ -115,7 +115,7 @@ internal class TabIndicator(
             return
         }
 
-        if(!animate || lastIndex == -1) {
+        if (!animate || lastIndex == -1 || !bottomBar.indicatorStyle.indicatorAnimation) {
             parent.postInvalidate()
             return
         }
