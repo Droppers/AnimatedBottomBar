@@ -10,7 +10,8 @@ internal class TabAdapter(
     private val bottomBar: AnimatedBottomBar
 ) :
     RecyclerView.Adapter<TabAdapter.TabHolder>() {
-    var onTabSelected: ((lastIndex: Int, newIndex: Int, tab: AnimatedBottomBar.Tab) -> Unit)? = null
+    var onTabSelected: ((lastIndex: Int, newIndex: Int, animated: Boolean, tab: AnimatedBottomBar.Tab) -> Unit)? =
+        null
 
     val tabs = ArrayList<AnimatedBottomBar.Tab>()
     var selectedTab: AnimatedBottomBar.Tab? = null
@@ -56,9 +57,9 @@ internal class TabAdapter(
     }
 
     fun addTab(tab: AnimatedBottomBar.Tab, tabIndex: Int = -1) {
-        if (tabs.size == 0) {
-            selectedTab = tab
-        }
+//        if (tabs.size == 0) {
+//            selectedTab = tab
+//        }
 
         val addedIndex: Int?
         if (tabIndex == -1) {
@@ -85,16 +86,16 @@ internal class TabAdapter(
             // TODO: Should I even select a tab, is this expected behavior of a tab control?
             // TODO: Maybe add an option 'autoSelectTabs'?
             // Assign a new selected tab after it has been removed
-            val newTabIndex = Math.max(0, index - 1)
-            selectedTab = tabs[newTabIndex]
-            notifyItemChanged(
-                newTabIndex,
-                Payload(PayloadType.SelectTab, false)
-            )
+//            val newTabIndex = Math.max(0, index - 1)
+//            selectedTab = tabs[newTabIndex]
+//            notifyItemChanged(
+//                newTabIndex,
+//                Payload(PayloadType.SelectTab, false)
+//            )
         }
     }
 
-    fun selectTab(tab: AnimatedBottomBar.Tab) {
+    fun selectTab(tab: AnimatedBottomBar.Tab, animate: Boolean) {
         if (tab == selectedTab) {
             return
         }
@@ -105,14 +106,14 @@ internal class TabAdapter(
 
         notifyItemChanged(
             lastIndex,
-            Payload(PayloadType.DeselectTab, true)
+            Payload(PayloadType.DeselectTab, animate)
         )
         notifyItemChanged(
             newIndex,
-            Payload(PayloadType.SelectTab, true)
+            Payload(PayloadType.SelectTab, animate)
         )
 
-        onTabSelected?.invoke(lastIndex, newIndex, tab)
+        onTabSelected?.invoke(lastIndex, newIndex, animate, tab)
     }
 
     fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {
@@ -128,7 +129,7 @@ internal class TabAdapter(
 
         init {
             view.setOnClickListener {
-                selectTab(tabs[adapterPosition])
+                selectTab(tabs[adapterPosition], true)
             }
         }
 
@@ -152,7 +153,7 @@ internal class TabAdapter(
             }
 
             view.setIcon(tab.icon)
-            view.setText(tab.name)
+            view.setText(tab.title)
         }
     }
 

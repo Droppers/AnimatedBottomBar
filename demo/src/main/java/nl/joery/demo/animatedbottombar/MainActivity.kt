@@ -12,17 +12,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        for (i in 1..4) {
-            bottomBar.addTab(
-                AnimatedBottomBar.Tab(
-                    ContextCompat.getDrawable(
-                        applicationContext,
-                        nl.joery.animatedbottombar.R.drawable.alarm
-                    ), "Tab $i"
-                )
-            )
-        }
+//        for (i in 1..4) {
+//            bottomBar.addTab(
+//                AnimatedBottomBar.Tab(
+//                    ContextCompat.getDrawable(
+//                        applicationContext,
+//                        nl.joery.animatedbottombar.R.drawable.alarm
+//                    ), "Tab $i"
+//                )
+//            )
+//        }
 
         select.setOnClickListener {
             bottomBar.addTabAt(

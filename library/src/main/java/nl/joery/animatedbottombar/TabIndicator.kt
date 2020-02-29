@@ -106,12 +106,17 @@ internal class TabIndicator(
         }
     }
 
-    fun setSelectedIndex(lastIndex: Int, newIndex: Int) {
+    fun setSelectedIndex(lastIndex: Int, newIndex: Int, animate: Boolean) {
         if (animator?.isRunning == true) {
             animator!!.cancel()
         }
 
         if (!shouldRender) {
+            return
+        }
+
+        if(!animate || lastIndex == -1) {
+            parent.postInvalidate()
             return
         }
 

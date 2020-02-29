@@ -109,6 +109,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
                     indicatorStyle.indicatorLocation.id
                 )
             ) ?: indicatorStyle.indicatorLocation
+
+            // Initials tabs
+            val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1);
+            val initialIndex = attr.getInt(R.styleable.AnimatedBottomBar_abb_selectedIndex, -1);
+            initInitialTabs(tabsResId, initialIndex)
         } finally {
             attr.recycle()
         }
@@ -126,8 +131,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     private fun initAdapter() {
         adapter = TabAdapter(this)
-        adapter.onTabSelected = { lastIndex: Int, newIndex: Int, _: Tab ->
-            tabIndicator.setSelectedIndex(lastIndex, newIndex)
+        adapter.onTabSelected = { lastIndex: Int, newIndex: Int, animated: Boolean, _: Tab ->
+            tabIndicator.setSelectedIndex(lastIndex, newIndex, animated)
         }
         recycler.adapter = adapter
     }
@@ -135,6 +140,25 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private fun initTabIndicator() {
         tabIndicator = TabIndicator(this, recycler, adapter)
         recycler.addItemDecoration(tabIndicator)
+    }
+
+    private fun initInitialTabs(tabsResId: Int, initialIndex: Int) {
+        if (tabsResId == -1) {
+            return
+        }
+
+        val tabs = MenuParser.parse(context, tabsResId, !isInEditMode)
+        for (tab in tabs) {
+            addTab(tab)
+        }
+
+        if (initialIndex != -1 && !isInEditMode) {
+            if (initialIndex < 0 || initialIndex > adapter.tabs.size - 1) {
+                throw IndexOutOfBoundsException("attribute 'selectedIndex' is out of bounds.")
+            } else {
+                setSelectedIndex(initialIndex, false)
+            }
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -165,17 +189,17 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.removeTab(tab)
     }
 
-    fun setSelectedIndex(tabIndex: Int) {
+    fun setSelectedIndex(tabIndex: Int, animate: Boolean = true) {
         if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
             throw IndexOutOfBoundsException("Tab index is out of bounds.")
         }
 
         val tab = adapter.tabs[tabIndex]
-        adapter.selectTab(tab)
+        setSelectedTab(tab, animate)
     }
 
-    fun setSelectedTab(tab: Tab) {
-        adapter.selectTab(tab)
+    fun setSelectedTab(tab: Tab, animate: Boolean = true) {
+        adapter.selectTab(tab, animate)
     }
 
     private fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {
@@ -315,7 +339,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyIndicatorStyle()
         }
 
-    data class Tab(val icon: Drawable?, val name: String, val tag: Any? = null)
+    data class Tab(val icon: Drawable?, val title: String, val id: Int = -1)
 
     enum class TabType(val id: Int) {
         TEXT(0),

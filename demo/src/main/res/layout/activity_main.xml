@@ -13,7 +13,8 @@
         android:layout_height="80dp"
         app:abb_animationType="fade"
         app:abb_selectedTabType="text"
-        app:abb_tabColor="@color/colorPrimary" />
+        app:abb_tabs="@menu/test_tabs"
+        app:abb_selectedIndex="3"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/select"

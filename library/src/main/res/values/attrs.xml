@@ -35,10 +35,14 @@
             <enum name="bottom" value="1" />
             <enum name="invisible" value="2" />
         </attr>
+        <attr name="abb_indicatorAnimation" format="boolean" />
+
+        <attr name="abb_tabs" format="reference" />
+        <attr name="abb_selectedIndex" format="integer" />
+        <attr name="abb_autoSelectTabs" format="boolean" />
 
         <!-- Todo: add these :) -->
         <attr name="abb_textSize" format="integer" />
         <attr name="abb_rippleColor" format="color" />
-        <attr name="abb_selectedIndex" format="integer" />
     </declare-styleable>
 </resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/test"
+        android:icon="@drawable/alarm"
+        android:title="Test 1" />
+    <item
+        android:id="@+id/test2"
+        android:icon="@drawable/alarm"
+        android:title="Test 2" />
+    <item
+        android:id="@+id/test3"
+        android:icon="@drawable/alarm"
+        android:title="Test 3" />
+    <item
+        android:id="@+id/test4"
+        android:icon="@drawable/alarm"
+        android:title="Test 4" />
+</menu>
