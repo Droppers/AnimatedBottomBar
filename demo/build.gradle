@@ -6,7 +6,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "nl.joery.animatedbottombar"
+        applicationId "nl.joery.demo.animatedbottombar"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

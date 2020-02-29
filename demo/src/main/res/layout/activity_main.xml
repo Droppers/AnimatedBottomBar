@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".demo.MainActivity">
+    tools:context=".MainActivity">
 
-    <nl.joery.library.animatedbottombar.AnimatedBottomBar
+    <nl.joery.animatedbottombar.AnimatedBottomBar
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="80dp"

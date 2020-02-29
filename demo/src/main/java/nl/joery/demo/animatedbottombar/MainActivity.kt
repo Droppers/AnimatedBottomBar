@@ -1,13 +1,10 @@
-package nl.joery.animatedbottombar.demo
+package nl.joery.demo.animatedbottombar
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-
 import kotlinx.android.synthetic.main.activity_main.*
-import nl.joery.animatedbottombar.R
-import nl.joery.library.animatedbottombar.AnimatedBottomBar
-import nl.joery.library.animatedbottombar.BottomBarStyle
+import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity() {
 

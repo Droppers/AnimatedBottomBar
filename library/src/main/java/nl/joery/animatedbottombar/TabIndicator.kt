@@ -1,4 +1,4 @@
-package nl.joery.library.animatedbottombar
+package nl.joery.animatedbottombar
 
 import android.animation.ValueAnimator
 import android.graphics.Canvas

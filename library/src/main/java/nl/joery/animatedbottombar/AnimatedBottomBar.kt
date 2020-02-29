@@ -1,4 +1,4 @@
-package nl.joery.library.animatedbottombar
+package nl.joery.animatedbottombar
 
 import android.content.Context
 import android.content.res.TypedArray

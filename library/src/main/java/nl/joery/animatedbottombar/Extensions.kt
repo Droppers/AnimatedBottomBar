@@ -1,4 +1,4 @@
-package nl.joery.library.animatedbottombar
+package nl.joery.animatedbottombar
 
 import android.annotation.SuppressLint
 import android.content.Context
