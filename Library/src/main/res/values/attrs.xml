@@ -21,18 +21,24 @@
         <attr name="abb_tabColorSelected" format="color" />
         <attr name="abb_tabColor" format="color" />
 
-<!-- Todo: add these :) -->
+        <!-- Indicator -->
+        <attr name="abb_indicatorColor" format="color" />
+        <attr name="abb_indicatorHeight" format="dimension" />
+        <attr name="abb_indicatorMargin" format="dimension" />
+        <attr name="abb_indicatorAppearance" format="enum">
+            <enum name="square" value="0" />
+            <enum name="rounded" value="1" />
+            <enum name="none" value="2" />
+        </attr>
+        <attr name="abb_indicatorLocation" format="enum">
+            <enum name="top" value="0" />
+            <enum name="bottom" value="1" />
+            <enum name="invisible" value="2" />
+        </attr>
+
+        <!-- Todo: add these :) -->
         <attr name="abb_textSize" format="integer" />
         <attr name="abb_rippleColor" format="color" />
         <attr name="abb_selectedIndex" format="integer" />
-
-<!--        <attr name="indicatorColor" format="color" />-->
-<!--        <attr name="indicatorRadius" format="dimension" />-->
-<!--        <attr name="indicatorHeight" format="dimension" />-->
-<!--        <attr name="indicatorMargin" format="dimension" />-->
-<!--        <attr name="indicatorPosition" format="enum">-->
-<!--            <enum name="top" value="0" />-->
-<!--            <enum name="bottom" value="1" />-->
-<!--        </attr>-->
     </declare-styleable>
 </resources>

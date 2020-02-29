@@ -10,7 +10,7 @@ class TabAdapter(
     private val bottomBar: AnimatedBottomBar
 ) :
     RecyclerView.Adapter<TabAdapter.TabHolder>() {
-    var onTabClick: ((index: Int, tab: AnimatedBottomBar.Tab) -> Unit)? = null
+    var onTabSelected: ((lastIndex: Int, newIndex: Int, tab: AnimatedBottomBar.Tab) -> Unit)? = null
 
     val tabs = ArrayList<AnimatedBottomBar.Tab>()
     var selectedTab: AnimatedBottomBar.Tab? = null
@@ -76,6 +76,8 @@ class TabAdapter(
         if (tabs.size == 0) {
             selectedTab = null
         } else if (selectedTab == tab) {
+            // TODO: Should I even select a tab, is this expected behavior of a tab control?
+            // TODO: Maybe add an option 'autoSelectTabs'?
             // Assign a new selected tab after it has been removed
             val newTabIndex = Math.max(0, index - 1)
             selectedTab = tabs.get(newTabIndex)
@@ -83,8 +85,6 @@ class TabAdapter(
                 newTabIndex,
                 Payload(PayloadType.SelectTab, false)
             )
-
-            // TODO: Emit event notifying that selected tab has changed
         }
     }
 
@@ -105,6 +105,17 @@ class TabAdapter(
             newIndex,
             Payload(PayloadType.SelectTab, true)
         )
+
+        onTabSelected?.invoke(lastIndex, newIndex, tab)
+    }
+
+    fun getSelectedIndex(): Int {
+        val tabIndex = tabs.indexOf(selectedTab)
+        if (tabIndex >= 0) {
+            return tabIndex
+        }
+
+        return RecyclerView.NO_POSITION
     }
 
     fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {

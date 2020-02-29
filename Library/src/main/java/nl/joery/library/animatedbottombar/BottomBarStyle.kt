@@ -26,13 +26,13 @@ object BottomBarStyle {
         //@ColorInt var rippleColor: Int = Color.BLACK
     )
 
-    // TODO: Implement indicator
     data class Indicator(
         var animateIndicator: Boolean = true,
-        @Dimension var indicatorMargin: Int = 12,
-        @Dimension var indicatorHeight: Int = 4,
-        @Dimension var indicatorRadius: Int = 4,
-        @ColorInt var indicatorColor: Int? = null
+        @Dimension var indicatorHeight: Int = 3.px,
+        @Dimension var indicatorMargin: Int = 0,
+        @ColorInt var indicatorColor: Int = Color.BLACK,
+        var indicatorAppearance: AnimatedBottomBar.IndicatorAppearance = AnimatedBottomBar.IndicatorAppearance.SQUARE,
+        var indicatorLocation: AnimatedBottomBar.IndicatorLocation = AnimatedBottomBar.IndicatorLocation.TOP
     )
 
     enum class StyleUpdateType {

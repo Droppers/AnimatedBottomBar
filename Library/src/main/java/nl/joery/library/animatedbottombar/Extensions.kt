@@ -2,6 +2,7 @@ package nl.joery.library.animatedbottombar
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
@@ -15,3 +16,6 @@ fun Context.getColorResCompat(@AttrRes id: Int): Int {
     val colorRes = resolvedAttr.run { if (resourceId != 0) resourceId else data }
     return ContextCompat.getColor(this, colorRes)
 }
+
+val Int.px: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()

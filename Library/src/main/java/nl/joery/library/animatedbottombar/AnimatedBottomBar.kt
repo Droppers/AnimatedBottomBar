@@ -2,7 +2,6 @@ package nl.joery.library.animatedbottombar
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.Dimension
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
@@ -24,14 +24,16 @@ class AnimatedBottomBar @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     internal val tabStyle: BottomBarStyle.Tab by lazy { BottomBarStyle.Tab() }
-    private val indicatorStyle: BottomBarStyle.Indicator by lazy { BottomBarStyle.Indicator() }
+    internal val indicatorStyle: BottomBarStyle.Indicator by lazy { BottomBarStyle.Indicator() }
 
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: TabAdapter
+    private lateinit var tabIndicator: TabIndicator
 
     init {
         initRecyclerView()
         initAdapter()
+        initTabIndicator()
         initAttributes(attrs)
     }
 
@@ -40,6 +42,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     ) {
         tabColorSelected = context.getColorResCompat(android.R.attr.colorPrimary)
         tabColor = context.getColorResCompat(android.R.attr.textColorPrimary)
+        indicatorColor = context.getColorResCompat(android.R.attr.colorPrimary)
 
         val attr: TypedArray =
             context.obtainStyledAttributes(attributeSet, R.styleable.AnimatedBottomBar, 0, 0)
@@ -69,7 +72,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 R.styleable.AnimatedBottomBar_abb_animationDuration,
                 tabStyle.animationDuration.toInt()
             ).toLong()
-            // TODO: animationInterpolator = (is this possible with xml?)
 
             // Colors
             tabColorSelected = attr.getColor(
@@ -78,6 +80,35 @@ class AnimatedBottomBar @JvmOverloads constructor(
             )
             tabColor =
                 attr.getColor(R.styleable.AnimatedBottomBar_abb_tabColor, tabStyle.tabColor)
+
+            // Indicator
+            indicatorHeight =
+                attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_indicatorHeight,
+                    indicatorStyle.indicatorHeight
+                )
+            indicatorMargin =
+                attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_indicatorMargin,
+                    indicatorStyle.indicatorMargin
+                )
+            indicatorColor =
+                attr.getColor(
+                    R.styleable.AnimatedBottomBar_abb_indicatorColor,
+                    indicatorStyle.indicatorColor
+                )
+            indicatorAppearance = IndicatorAppearance.fromId(
+                attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_indicatorAppearance,
+                    indicatorStyle.indicatorAppearance.id
+                )
+            ) ?: indicatorStyle.indicatorAppearance
+            indicatorLocation = IndicatorLocation.fromId(
+                attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_indicatorLocation,
+                    indicatorStyle.indicatorLocation.id
+                )
+            ) ?: indicatorStyle.indicatorLocation
         } finally {
             attr.recycle()
         }
@@ -94,11 +125,27 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     private fun initAdapter() {
         adapter = TabAdapter(this)
+        adapter.onTabSelected = { lastIndex: Int, newIndex: Int, tab: Tab ->
+            tabIndicator.setSelectedIndex(lastIndex, newIndex)
+        }
+
         adapter.addTab(Tab(ContextCompat.getDrawable(context, R.drawable.alarm), "hello"))
         adapter.addTab(Tab(ContextCompat.getDrawable(context, R.drawable.alarm), "two"))
         adapter.addTab(Tab(ContextCompat.getDrawable(context, R.drawable.alarm), "three"))
         adapter.addTab(Tab(ContextCompat.getDrawable(context, R.drawable.alarm), "last one"))
         recycler.adapter = adapter
+    }
+
+    private fun initTabIndicator() {
+        tabIndicator = TabIndicator(this, recycler, adapter)
+        recycler.addItemDecoration(tabIndicator)
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+        // Draws the tab indicator again
+        recycler.postInvalidate()
     }
 
     fun addTab(tab: Tab) {
@@ -124,6 +171,10 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     private fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {
         adapter.applyTabStyle(type)
+    }
+
+    private fun applyIndicatorStyle() {
+        tabIndicator.applyStyle()
     }
 
     val tabs
@@ -186,7 +237,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
     var tabColor
         @ColorInt
         get() = tabStyle.tabColor
-            ?: Color.BLACK // Todo: Return actual default value (android.R.color.textColorPrimary)
         set(@ColorInt value) {
             tabStyle.tabColor = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.COLORS)
@@ -200,6 +250,52 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyTabStyle(BottomBarStyle.StyleUpdateType.COLORS)
         }
 
+    // Indicator
+    var indicatorHeight
+        @Dimension
+        get() = indicatorStyle.indicatorHeight
+        set(@Dimension value) {
+            indicatorStyle.indicatorHeight = value
+            applyIndicatorStyle()
+        }
+
+    var indicatorMargin
+        @Dimension
+        get() = indicatorStyle.indicatorMargin
+        set(@Dimension value) {
+            indicatorStyle.indicatorMargin = value
+            applyIndicatorStyle()
+        }
+
+    var indicatorColor
+        @ColorInt
+        get() = indicatorStyle.indicatorColor
+        set(@ColorInt value) {
+            indicatorStyle.indicatorColor = value
+            applyIndicatorStyle()
+        }
+
+    var indicatorColorRes
+        @Deprecated("", level = DeprecationLevel.HIDDEN)
+        get() = Int.MIN_VALUE
+        set(@ColorRes value) {
+            indicatorStyle.indicatorColor = ContextCompat.getColor(context, value)
+            applyIndicatorStyle()
+        }
+
+    var indicatorAppearance
+        get() = indicatorStyle.indicatorAppearance
+        set(value) {
+            indicatorStyle.indicatorAppearance = value
+            applyIndicatorStyle()
+        }
+
+    var indicatorLocation
+        get() = indicatorStyle.indicatorLocation
+        set(value) {
+            indicatorStyle.indicatorLocation = value
+            applyIndicatorStyle()
+        }
 
     data class Tab(val icon: Drawable?, val name: String, val tag: Any? = null)
 
@@ -224,6 +320,35 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
         companion object {
             fun fromId(id: Int): TabAnimationType? {
+                for (f in values()) {
+                    if (f.id == id) return f
+                }
+                throw IllegalArgumentException()
+            }
+        }
+    }
+
+    enum class IndicatorLocation(val id: Int) {
+        TOP(0),
+        BOTTOM(1);
+
+        companion object {
+            fun fromId(id: Int): IndicatorLocation? {
+                for (f in values()) {
+                    if (f.id == id) return f
+                }
+                throw IllegalArgumentException()
+            }
+        }
+    }
+
+    enum class IndicatorAppearance(val id: Int) {
+        SQUARE(0),
+        ROUNDED(1),
+        NONE(2);
+
+        companion object {
+            fun fromId(id: Int): IndicatorAppearance? {
                 for (f in values()) {
                     if (f.id == id) return f
                 }

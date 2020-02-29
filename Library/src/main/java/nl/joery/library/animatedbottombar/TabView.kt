@@ -42,7 +42,7 @@ class TabView @JvmOverloads constructor(
     fun applyStyle(type: BottomBarStyle.StyleUpdateType, style: BottomBarStyle.Tab) {
         this.style = style
 
-        when(type) {
+        when (type) {
             BottomBarStyle.StyleUpdateType.TAB_TYPE ->
                 updateTabType()
             BottomBarStyle.StyleUpdateType.ANIMATIONS ->
@@ -71,7 +71,10 @@ class TabView @JvmOverloads constructor(
 
     private fun updateActiveColors() {
         if (style.selectedTabType == AnimatedBottomBar.TabType.ICON) {
-            ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(style.tabColorSelected));
+            ImageViewCompat.setImageTintList(
+                imageView,
+                ColorStateList.valueOf(style.tabColorSelected)
+            );
         }
 
         if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
