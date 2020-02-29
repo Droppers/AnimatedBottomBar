@@ -7,7 +7,7 @@ import android.graphics.Path
 import androidx.recyclerview.widget.RecyclerView
 
 
-class TabIndicator(
+internal class TabIndicator(
     val bottomBar: AnimatedBottomBar,
     val parent: RecyclerView,
     val adapter: TabAdapter
@@ -30,10 +30,14 @@ class TabIndicator(
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
 
+        if (adapter.selectedIndex == RecyclerView.NO_POSITION) {
+            return
+        }
+
         if (animator?.isRunning == true) {
             currentLeft = animator!!.animatedValue as Float
         } else {
-            val view = parent.getChildAt(adapter.getSelectedIndex())
+            val view = parent.getChildAt(adapter.selectedIndex)
             currentLeft = view.left.toFloat()
             currentWidth = view.width.toFloat()
         }
@@ -70,8 +74,6 @@ class TabIndicator(
                 0f
             AnimatedBottomBar.IndicatorLocation.BOTTOM ->
                 parent.height - bottomBar.indicatorStyle.indicatorHeight.toFloat()
-            else ->
-                0f
         }
     }
 
@@ -92,8 +94,6 @@ class TabIndicator(
                     0f, 0f,
                     0f, 0f
                 )
-            else ->
-                null
         }
     }
 
@@ -103,8 +103,6 @@ class TabIndicator(
                 bottomBar.indicatorStyle.indicatorHeight.toFloat()
             AnimatedBottomBar.IndicatorLocation.BOTTOM ->
                 parent.height.toFloat()
-            else ->
-                0f
         }
     }
 

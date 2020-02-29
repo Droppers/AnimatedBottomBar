@@ -26,4 +26,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Deselect" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/select_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select first" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/select_last"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select last" />
 </androidx.appcompat.widget.LinearLayoutCompat>

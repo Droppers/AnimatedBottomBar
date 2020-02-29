@@ -12,20 +12,43 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        select.setOnClickListener {
+
+        for (i in 1..4) {
             bottomBar.addTab(
                 AnimatedBottomBar.Tab(
-                    ContextCompat.getDrawable(applicationContext,
-                        R.drawable.alarm
-                    ),
-                    "Added Tab"
+                    ContextCompat.getDrawable(
+                        applicationContext,
+                        nl.joery.animatedbottombar.R.drawable.alarm
+                    ), "Tab $i"
+                )
+            )
+        }
+
+        select.setOnClickListener {
+            bottomBar.addTabAt(
+                0,
+                AnimatedBottomBar.Tab(
+                    ContextCompat.getDrawable(
+                        applicationContext,
+                        nl.joery.animatedbottombar.R.drawable.alarm
+                    ), "Added tab"
                 )
             )
         }
 
         deselect.setOnClickListener {
-            val tab = bottomBar.tabs.last()
-            bottomBar.removeTab(tab)
+            if (bottomBar.tabCount > 0) {
+                val tab = bottomBar.tabs.last()
+                bottomBar.removeTab(tab)
+            }
+        }
+
+        select_first.setOnClickListener {
+            bottomBar.setSelectedIndex(0)
+        }
+
+        select_last.setOnClickListener {
+            bottomBar.setSelectedIndex(bottomBar.tabCount - 1)
         }
     }
 }

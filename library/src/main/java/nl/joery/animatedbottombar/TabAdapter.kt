@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-class TabAdapter(
+internal class TabAdapter(
     private val bottomBar: AnimatedBottomBar
 ) :
     RecyclerView.Adapter<TabAdapter.TabHolder>() {
@@ -14,6 +14,12 @@ class TabAdapter(
 
     val tabs = ArrayList<AnimatedBottomBar.Tab>()
     var selectedTab: AnimatedBottomBar.Tab? = null
+        private set
+    val selectedIndex: Int
+        get() {
+            val tabIndex = tabs.indexOf(selectedTab)
+            return if (tabIndex >= 0) tabIndex else RecyclerView.NO_POSITION
+        }
 
     override fun getItemCount(): Int {
         return tabs.size
@@ -80,7 +86,7 @@ class TabAdapter(
             // TODO: Maybe add an option 'autoSelectTabs'?
             // Assign a new selected tab after it has been removed
             val newTabIndex = Math.max(0, index - 1)
-            selectedTab = tabs.get(newTabIndex)
+            selectedTab = tabs[newTabIndex]
             notifyItemChanged(
                 newTabIndex,
                 Payload(PayloadType.SelectTab, false)
@@ -107,15 +113,6 @@ class TabAdapter(
         )
 
         onTabSelected?.invoke(lastIndex, newIndex, tab)
-    }
-
-    fun getSelectedIndex(): Int {
-        val tabIndex = tabs.indexOf(selectedTab)
-        if (tabIndex >= 0) {
-            return tabIndex
-        }
-
-        return RecyclerView.NO_POSITION
     }
 
     fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {

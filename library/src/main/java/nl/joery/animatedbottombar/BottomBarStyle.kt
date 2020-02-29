@@ -6,7 +6,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
-object BottomBarStyle {
+internal object BottomBarStyle {
     data class Tab(
         // Type
         var selectedTabType: AnimatedBottomBar.TabType = AnimatedBottomBar.TabType.TEXT,

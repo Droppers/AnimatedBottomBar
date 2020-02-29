@@ -13,7 +13,7 @@ import androidx.core.widget.ImageViewCompat
 import kotlinx.android.synthetic.main.view_tab.view.*
 
 
-class TabView @JvmOverloads constructor(
+internal class TabView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

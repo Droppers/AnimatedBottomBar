@@ -116,6 +116,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     private fun initRecyclerView() {
         recycler = RecyclerView(context)
+        recycler.itemAnimator = null
         recycler.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
 
         val flexLayoutManager = FlexboxLayoutManager(context, FlexDirection.ROW, FlexWrap.NOWRAP)
@@ -125,14 +126,9 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     private fun initAdapter() {
         adapter = TabAdapter(this)
-        adapter.onTabSelected = { lastIndex: Int, newIndex: Int, tab: Tab ->
+        adapter.onTabSelected = { lastIndex: Int, newIndex: Int, _: Tab ->
             tabIndicator.setSelectedIndex(lastIndex, newIndex)
         }
-
-        adapter.addTab(Tab(ContextCompat.getDrawable(context, R.drawable.alarm), "hello"))
-        adapter.addTab(Tab(ContextCompat.getDrawable(context, R.drawable.alarm), "two"))
-        adapter.addTab(Tab(ContextCompat.getDrawable(context, R.drawable.alarm), "three"))
-        adapter.addTab(Tab(ContextCompat.getDrawable(context, R.drawable.alarm), "last one"))
         recycler.adapter = adapter
     }
 
@@ -161,12 +157,25 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     fun removeTabAt(tabIndex: Int) {
-        if (tabIndex <= 0 || tabIndex >= adapter.tabs.size) {
-            throw IllegalArgumentException("Tab index is out of bounds.")
+        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+            throw IndexOutOfBoundsException("Tab index is out of bounds.")
         }
 
-        val tab = adapter.tabs.get(tabIndex)
+        val tab = adapter.tabs[tabIndex]
         adapter.removeTab(tab)
+    }
+
+    fun setSelectedIndex(tabIndex: Int) {
+        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+            throw IndexOutOfBoundsException("Tab index is out of bounds.")
+        }
+
+        val tab = adapter.tabs[tabIndex]
+        adapter.selectTab(tab)
+    }
+
+    fun setSelectedTab(tab: Tab) {
+        adapter.selectTab(tab)
     }
 
     private fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {
@@ -179,6 +188,15 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     val tabs
         get() = ArrayList(adapter.tabs)
+
+    val tabCount
+        get() = adapter.tabs.size
+
+    val selectedTab
+        get() = adapter.selectedTab
+
+    val selectedIndex
+        get() = adapter.selectedIndex
 
     // Item type
     var selectedTabType
