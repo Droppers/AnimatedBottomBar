@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AnimatedBottomBar">
+        <attr name="abb_autoSelectTabs" format="boolean" />
+
         <attr name="abb_selectedTabType" format="enum">
             <enum name="text" value="0" />
             <enum name="icon" value="1" />
@@ -39,7 +41,6 @@
 
         <attr name="abb_tabs" format="reference" />
         <attr name="abb_selectedIndex" format="integer" />
-        <attr name="abb_autoSelectTabs" format="boolean" />
 
         <!-- Todo: add these :) -->
         <attr name="abb_textSize" format="integer" />

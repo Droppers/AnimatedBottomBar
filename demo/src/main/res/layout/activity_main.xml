@@ -15,6 +15,7 @@
         app:abb_selectedTabType="text"
         app:abb_tabs="@menu/test_tabs"
         app:abb_indicatorAnimation="false"
+        app:abb_autoSelectTabs="true"
         app:abb_selectedIndex="3"/>
 
     <androidx.appcompat.widget.AppCompatButton

@@ -57,9 +57,10 @@ internal class TabAdapter(
     }
 
     fun addTab(tab: AnimatedBottomBar.Tab, tabIndex: Int = -1) {
-//        if (tabs.size == 0) {
-//            selectedTab = tab
-//        }
+        // Automatically select a tab when none selected
+        if (bottomBar.autoSelectTabs && tabs.size == 0) {
+            selectedTab = tab
+        }
 
         val addedIndex: Int?
         if (tabIndex == -1) {
@@ -82,16 +83,14 @@ internal class TabAdapter(
 
         if (tabs.size == 0) {
             selectedTab = null
-        } else if (selectedTab == tab) {
-            // TODO: Should I even select a tab, is this expected behavior of a tab control?
-            // TODO: Maybe add an option 'autoSelectTabs'?
-            // Assign a new selected tab after it has been removed
-//            val newTabIndex = Math.max(0, index - 1)
-//            selectedTab = tabs[newTabIndex]
-//            notifyItemChanged(
-//                newTabIndex,
-//                Payload(PayloadType.SelectTab, false)
-//            )
+        } else if (bottomBar.autoSelectTabs && selectedTab == tab) {
+            // Automatically select a tab when none selected
+            val newTabIndex = Math.max(0, index - 1)
+            selectedTab = tabs[newTabIndex]
+            notifyItemChanged(
+                newTabIndex,
+                Payload(PayloadType.SelectTab, false)
+            )
         }
     }
 

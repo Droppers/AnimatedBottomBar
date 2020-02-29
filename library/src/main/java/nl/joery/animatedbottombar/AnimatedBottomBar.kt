@@ -47,6 +47,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
         val attr: TypedArray =
             context.obtainStyledAttributes(attributeSet, R.styleable.AnimatedBottomBar, 0, 0)
         try {
+            autoSelectTabs = attr.getBoolean(
+                R.styleable.AnimatedBottomBar_abb_autoSelectTabs,
+                autoSelectTabs
+            )
+
             // Type
             selectedTabType = TabType.fromId(
                 attr.getInt(
@@ -225,6 +230,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     val selectedIndex
         get() = adapter.selectedIndex
+
+    var autoSelectTabs: Boolean = false
 
     // Item type
     var selectedTabType
