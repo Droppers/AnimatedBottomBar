@@ -12,6 +12,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        bottomBar.setOnTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
+            override fun onTabSelected(
+                lastIndex: Int,
+                lastTab: AnimatedBottomBar.Tab?,
+                newIndex: Int,
+                newTab: AnimatedBottomBar.Tab
+            ) {
+                logs.append("New index: $newIndex, name: ${newTab.title}\n")
+            }
+        })
+
 //        for (i in 1..4) {
 //            bottomBar.addTab(
 //                AnimatedBottomBar.Tab(

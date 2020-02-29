@@ -10,7 +10,7 @@ internal class TabAdapter(
     private val bottomBar: AnimatedBottomBar
 ) :
     RecyclerView.Adapter<TabAdapter.TabHolder>() {
-    var onTabSelected: ((lastIndex: Int, newIndex: Int, animated: Boolean, tab: AnimatedBottomBar.Tab) -> Unit)? =
+    var onTabSelected: ((lastIndex: Int, lastTab: AnimatedBottomBar.Tab?, newIndex: Int, newTab: AnimatedBottomBar.Tab, animated: Boolean) -> Unit)? =
         null
 
     val tabs = ArrayList<AnimatedBottomBar.Tab>()
@@ -60,11 +60,12 @@ internal class TabAdapter(
         // Automatically select a tab when none selected
         if (bottomBar.autoSelectTabs && tabs.size == 0) {
             selectedTab = tab
+            onTabSelected?.invoke(RecyclerView.NO_POSITION, null, 0, tab, false)
         }
 
         val addedIndex: Int?
         if (tabIndex == -1) {
-            addedIndex = tabs.size;
+            addedIndex = tabs.size
             tabs.add(tab)
         } else {
             addedIndex = tabIndex
@@ -85,12 +86,14 @@ internal class TabAdapter(
             selectedTab = null
         } else if (bottomBar.autoSelectTabs && selectedTab == tab) {
             // Automatically select a tab when none selected
-            val newTabIndex = Math.max(0, index - 1)
+            val newTabIndex = 0.coerceAtLeast(index - 1)
             selectedTab = tabs[newTabIndex]
             notifyItemChanged(
                 newTabIndex,
                 Payload(PayloadType.SelectTab, false)
             )
+
+            onTabSelected?.invoke(RecyclerView.NO_POSITION, null, newTabIndex, selectedTab!!, false)
         }
     }
 
@@ -112,7 +115,7 @@ internal class TabAdapter(
             Payload(PayloadType.SelectTab, animate)
         )
 
-        onTabSelected?.invoke(lastIndex, newIndex, animate, tab)
+        onTabSelected?.invoke(lastIndex, tabs[lastIndex], newIndex, tab, animate)
     }
 
     fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {

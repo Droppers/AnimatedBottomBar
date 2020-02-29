@@ -22,6 +22,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
+    private var tabSelectListener: TabSelectListener? = null
 
     internal val tabStyle: BottomBarStyle.Tab by lazy { BottomBarStyle.Tab() }
     internal val indicatorStyle: BottomBarStyle.Indicator by lazy { BottomBarStyle.Indicator() }
@@ -120,8 +121,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
             )
 
             // Initials tabs
-            val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1);
-            val initialIndex = attr.getInt(R.styleable.AnimatedBottomBar_abb_selectedIndex, -1);
+            val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1)
+            val initialIndex = attr.getInt(R.styleable.AnimatedBottomBar_abb_selectedIndex, -1)
             initInitialTabs(tabsResId, initialIndex)
         } finally {
             attr.recycle()
@@ -140,9 +141,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     private fun initAdapter() {
         adapter = TabAdapter(this)
-        adapter.onTabSelected = { lastIndex: Int, newIndex: Int, animated: Boolean, _: Tab ->
-            tabIndicator.setSelectedIndex(lastIndex, newIndex, animated)
-        }
+        adapter.onTabSelected =
+            { lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab, animated: Boolean ->
+                tabIndicator.setSelectedIndex(lastIndex, newIndex, animated)
+                tabSelectListener?.onTabSelected(lastIndex, lastTab, newIndex, newTab)
+            }
         recycler.adapter = adapter
     }
 
@@ -175,6 +178,10 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
         // Draws the tab indicator again
         recycler.postInvalidate()
+    }
+
+    fun setOnTabSelectListener(itemSelectListener: TabSelectListener) {
+        this.tabSelectListener = itemSelectListener
     }
 
     fun addTab(tab: Tab) {
@@ -365,7 +372,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
         companion object {
             fun fromId(id: Int): TabType? {
-                for (f in TabType.values()) {
+                for (f in values()) {
                     if (f.id == id) return f
                 }
                 throw IllegalArgumentException()
@@ -415,5 +422,9 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 throw IllegalArgumentException()
             }
         }
+    }
+
+    interface TabSelectListener {
+        fun onTabSelected(lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab)
     }
 }
