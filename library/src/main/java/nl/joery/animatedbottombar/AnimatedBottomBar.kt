@@ -3,6 +3,7 @@ package nl.joery.animatedbottombar
 import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -42,10 +43,16 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private fun initAttributes(
         attributeSet: AttributeSet?
     ) {
-        rippleColor = android.R.attr.selectableItemBackgroundBorderless
-        tabColorSelected = context.getColorResCompat(android.R.attr.colorPrimary)
         tabColor = context.getColorResCompat(android.R.attr.textColorPrimary)
-        indicatorColor = context.getColorResCompat(android.R.attr.colorPrimary)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            rippleColor = android.R.attr.selectableItemBackgroundBorderless
+            tabColorSelected = context.getColorResCompat(android.R.attr.colorPrimary)
+            indicatorColor = context.getColorResCompat(android.R.attr.colorPrimary)
+        } else {
+            tabColorSelected = context.getColorResCompat(android.R.attr.textColorPrimary)
+            indicatorColor = context.getColorResCompat(android.R.attr.textColorPrimary)
+        }
 
         val attr: TypedArray =
             context.obtainStyledAttributes(attributeSet, R.styleable.AnimatedBottomBar, 0, 0)
@@ -180,7 +187,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             if (initialIndex < 0 || initialIndex > adapter.tabs.size - 1) {
                 throw IndexOutOfBoundsException("Attribute 'selectedIndex' is out of bounds.")
             } else {
-                selectTab(initialIndex, false)
+                selectTabAt(initialIndex, false)
             }
         }
     }
@@ -239,7 +246,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.removeTab(tab)
     }
 
-    fun selectTab(tabIndex: Int, animate: Boolean = true) {
+    fun selectTabAt(tabIndex: Int, animate: Boolean = true) {
         if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
             throw IndexOutOfBoundsException("Tab index is out of bounds.")
         }
@@ -313,15 +320,19 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     // Ripple
     var rippleEnabled
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         get() = tabStyle.rippleEnabled
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         set(value) {
             tabStyle.rippleEnabled = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.RIPPLE)
         }
 
     var rippleColor
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         @ColorInt
         get() = tabStyle.rippleColor
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         set(@ColorInt value) {
             tabStyle.rippleColor = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.RIPPLE)
@@ -330,6 +341,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     var rippleColorRes
         @Deprecated("", level = DeprecationLevel.HIDDEN)
         get() = Int.MIN_VALUE
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         set(@ColorRes value) {
             tabStyle.rippleColor = ContextCompat.getColor(context, value)
             applyTabStyle(BottomBarStyle.StyleUpdateType.RIPPLE)

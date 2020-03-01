@@ -49,11 +49,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         select_first.setOnClickListener {
-            bottom_bar.selectTab(0)
+            bottom_bar.selectTabAt(0)
         }
 
         select_last.setOnClickListener {
-            bottom_bar.selectTab(bottom_bar.tabCount - 1)
+            bottom_bar.selectTabAt(bottom_bar.tabCount - 1)
         }
     }
 }

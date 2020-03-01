@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.os.Build
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -49,21 +50,27 @@ internal class TabIndicator(
                 currentLeft + currentWidth - bottomBar.indicatorStyle.indicatorMargin
             val bottom = getBottom()
 
-            when (bottomBar.indicatorStyle.indicatorAppearance) {
-                AnimatedBottomBar.IndicatorAppearance.SQUARE ->
-                    c.drawRect(
-                        left,
-                        top,
-                        right,
-                        bottom, paint
-                    )
-                AnimatedBottomBar.IndicatorAppearance.ROUNDED -> {
-                    val path = Path()
-                    path.addRoundRect(left, top, right, bottom, getCorners()!!, Path.Direction.CW)
-                    c.drawPath(path, paint)
-                }
-                else -> {
-                }
+            if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.SQUARE ||
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+            ) {
+                c.drawRect(
+                    left,
+                    top,
+                    right,
+                    bottom, paint
+                )
+
+            } else if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.ROUNDED) {
+                val path = Path()
+                path.addRoundRect(
+                    left,
+                    top,
+                    right,
+                    bottom,
+                    getCorners()!!,
+                    Path.Direction.CW
+                )
+                c.drawPath(path, paint)
             }
         }
     }

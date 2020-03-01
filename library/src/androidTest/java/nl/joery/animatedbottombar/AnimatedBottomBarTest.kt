@@ -85,9 +85,9 @@ class AnimatedBottomBarTest {
     @Test
     fun selectTabByIndex() {
         val bottomBar = setupBottomBar()
-        bottomBar.selectTab(1, false)
+        bottomBar.selectTabAt(1, false)
         assertEquals(1, bottomBar.selectedIndex)
-        bottomBar.selectTab(3, false)
+        bottomBar.selectTabAt(3, false)
         assertEquals(4, bottomBar.selectedTab?.id)
     }
 
@@ -95,7 +95,7 @@ class AnimatedBottomBarTest {
     fun selectTabByIndexOutOfBounds() {
         try {
             val bottomBar = setupBottomBar()
-            bottomBar.selectTab(100)
+            bottomBar.selectTabAt(100)
         } catch (e: Exception) {
             assertEquals("Tab index is out of bounds.", e.message)
         }

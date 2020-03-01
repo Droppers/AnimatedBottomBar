@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AlphaAnimation
@@ -98,6 +99,10 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun updateRipple() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            return
+        }
+
         if (style.rippleEnabled) {
             // Fix for not being able to retrieve color from 'selectableItemBackgroundBorderless'
             if (style.rippleColor > 0) {
