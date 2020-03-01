@@ -1,6 +1,7 @@
 package nl.joery.demo.animatedbottombar
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
@@ -12,14 +13,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bottomBar.setOnTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
+        bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
             override fun onTabSelected(
                 lastIndex: Int,
                 lastTab: AnimatedBottomBar.Tab?,
                 newIndex: Int,
                 newTab: AnimatedBottomBar.Tab
             ) {
-                logs.append("New index: $newIndex, name: ${newTab.title}\n")
+                Log.d("TAB_SELECTED", "Selected index: $newIndex, title: ${newTab.title}")
             }
         })
 
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 //        }
 
         select.setOnClickListener {
-            bottomBar.addTabAt(
+            bottom_bar.addTabAt(
                 0,
                 AnimatedBottomBar.Tab(
                     ContextCompat.getDrawable(
@@ -47,18 +48,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         deselect.setOnClickListener {
-            if (bottomBar.tabCount > 0) {
-                val tab = bottomBar.tabs.last()
-                bottomBar.removeTab(tab)
+            if (bottom_bar.tabCount > 0) {
+                val tab = bottom_bar.tabs.last()
+                bottom_bar.removeTab(tab)
             }
         }
 
         select_first.setOnClickListener {
-            bottomBar.setSelectedIndex(0)
+            bottom_bar.setSelectedIndex(0)
         }
 
         select_last.setOnClickListener {
-            bottomBar.setSelectedIndex(bottomBar.tabCount - 1)
+            bottom_bar.setSelectedIndex(bottom_bar.tabCount - 1)
         }
     }
 }

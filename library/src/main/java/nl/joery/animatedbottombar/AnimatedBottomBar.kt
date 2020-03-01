@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
+import kotlin.math.max
 
 
 class AnimatedBottomBar @JvmOverloads constructor(
@@ -32,6 +33,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private lateinit var tabIndicator: TabIndicator
 
     init {
+        minimumHeight = 64.px
+
         initRecyclerView()
         initAdapter()
         initTabIndicator()
@@ -41,6 +44,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private fun initAttributes(
         attributeSet: AttributeSet?
     ) {
+        rippleColor = android.R.attr.selectableItemBackgroundBorderless
         tabColorSelected = context.getColorResCompat(android.R.attr.colorPrimary)
         tabColor = context.getColorResCompat(android.R.attr.textColorPrimary)
         indicatorColor = context.getColorResCompat(android.R.attr.colorPrimary)
@@ -79,6 +83,16 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 tabStyle.animationDuration.toInt()
             ).toLong()
 
+            // Ripple
+            rippleEnabled = attr.getBoolean(
+                R.styleable.AnimatedBottomBar_abb_rippleEnabled,
+                tabStyle.rippleEnabled
+            )
+            rippleColor = attr.getColor(
+                R.styleable.AnimatedBottomBar_abb_rippleColor,
+                tabStyle.rippleColor
+            )
+
             // Colors
             tabColorSelected = attr.getColor(
                 R.styleable.AnimatedBottomBar_abb_tabColorSelected,
@@ -89,12 +103,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
             // Indicator
             indicatorHeight =
-                attr.getInt(
+                attr.getDimension(
                     R.styleable.AnimatedBottomBar_abb_indicatorHeight,
                     indicatorStyle.indicatorHeight
                 )
             indicatorMargin =
-                attr.getInt(
+                attr.getDimension(
                     R.styleable.AnimatedBottomBar_abb_indicatorMargin,
                     indicatorStyle.indicatorMargin
                 )
@@ -171,6 +185,15 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 setSelectedIndex(initialIndex, false)
             }
         }
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val desiredHeight = minimumHeight + paddingTop + paddingBottom
+
+        super.onMeasure(
+            widthMeasureSpec,
+            max(MeasureSpec.makeMeasureSpec(desiredHeight, MeasureSpec.EXACTLY), heightMeasureSpec)
+        );
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -275,6 +298,30 @@ class AnimatedBottomBar @JvmOverloads constructor(
         set(value) {
             tabStyle.animationInterpolator = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.ANIMATIONS)
+        }
+
+    // Ripple
+    var rippleEnabled
+        get() = tabStyle.rippleEnabled
+        set(value) {
+            tabStyle.rippleEnabled = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.RIPPLE)
+        }
+
+    var rippleColor
+        @ColorInt
+        get() = tabStyle.rippleColor
+        set(@ColorInt value) {
+            tabStyle.rippleColor = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.RIPPLE)
+        }
+
+    var rippleColorRes
+        @Deprecated("", level = DeprecationLevel.HIDDEN)
+        get() = Int.MIN_VALUE
+        set(@ColorRes value) {
+            tabStyle.rippleColor = ContextCompat.getColor(context, value)
+            applyTabStyle(BottomBarStyle.StyleUpdateType.RIPPLE)
         }
 
     // Colors

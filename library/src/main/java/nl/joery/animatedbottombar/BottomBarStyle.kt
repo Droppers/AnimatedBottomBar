@@ -19,16 +19,19 @@ internal object BottomBarStyle {
 
         // Colors
         @ColorInt var tabColorSelected: Int = Color.BLACK,
-        @ColorInt var tabColor: Int = Color.BLACK
+        @ColorInt var tabColor: Int = Color.BLACK,
+
+        // Ripple
+        var rippleEnabled: Boolean = false,
+        @ColorInt var rippleColor: Int = Color.BLACK
 
         // TODO: Implement these properties
         //@Dimension var textSize: Int = 0
-        //@ColorInt var rippleColor: Int = Color.BLACK
     )
 
     data class Indicator(
-        @Dimension var indicatorHeight: Int = 3.px,
-        @Dimension var indicatorMargin: Int = 0,
+        @Dimension var indicatorHeight: Float = 3.px.toFloat(),
+        @Dimension var indicatorMargin: Float = 0f,
         @ColorInt var indicatorColor: Int = Color.BLACK,
         var indicatorAppearance: AnimatedBottomBar.IndicatorAppearance = AnimatedBottomBar.IndicatorAppearance.SQUARE,
         var indicatorLocation: AnimatedBottomBar.IndicatorLocation = AnimatedBottomBar.IndicatorLocation.TOP,
@@ -38,6 +41,7 @@ internal object BottomBarStyle {
     enum class StyleUpdateType {
         TAB_TYPE,
         COLORS,
-        ANIMATIONS
+        ANIMATIONS,
+        RIPPLE
     }
 }

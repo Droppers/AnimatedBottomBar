@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.max
 
 
 internal class TabAdapter(
@@ -86,7 +87,7 @@ internal class TabAdapter(
             selectedTab = null
         } else if (bottomBar.autoSelectTabs && selectedTab == tab) {
             // Automatically select a tab when none selected
-            val newTabIndex = 0.coerceAtLeast(index - 1)
+            val newTabIndex = max(0, index - 1)
             selectedTab = tabs[newTabIndex]
             notifyItemChanged(
                 newTabIndex,
@@ -106,16 +107,24 @@ internal class TabAdapter(
         val newIndex = tabs.indexOf(tab)
         selectedTab = tab
 
-        notifyItemChanged(
-            lastIndex,
-            Payload(PayloadType.DeselectTab, animate)
-        )
+        if (lastIndex >= 0) {
+            notifyItemChanged(
+                lastIndex,
+                Payload(PayloadType.DeselectTab, animate)
+            )
+        }
         notifyItemChanged(
             newIndex,
             Payload(PayloadType.SelectTab, animate)
         )
 
-        onTabSelected?.invoke(lastIndex, tabs[lastIndex], newIndex, tab, animate)
+        onTabSelected?.invoke(
+            lastIndex,
+            if (lastIndex >= 0) tabs[lastIndex] else null,
+            newIndex,
+            tab,
+            animate
+        )
     }
 
     fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {

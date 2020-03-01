@@ -5,18 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#CCC"
     tools:context=".MainActivity">
 
-    <nl.joery.animatedbottombar.AnimatedBottomBar
-        android:id="@+id/bottomBar"
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        app:abb_animationType="fade"
-        app:abb_selectedTabType="text"
-        app:abb_tabs="@menu/test_tabs"
-        app:abb_indicatorAnimation="false"
-        app:abb_autoSelectTabs="true"
-        app:abb_selectedIndex="3"/>
+        android:layout_height="100dp" />
+
+<nl.joery.animatedbottombar.AnimatedBottomBar
+    android:id="@+id/bottom_bar"
+    android:background="#FFF"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:abb_selectedTabType="text"
+    app:abb_indicatorAppearance="rounded"
+    app:abb_indicatorMargin="16dp"
+    app:abb_animationTypeSelected="slide"
+    app:abb_animationType="none"
+    app:abb_indicatorHeight="4dp"
+    app:abb_animationDuration="600"
+    app:abb_rippleEnabled="true"
+    app:abb_rippleColor="#00FF00"
+    app:abb_tabs="@menu/test_tabs"
+    app:abb_selectedIndex="1" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <!--
+<nl.joery.animatedbottombar.AnimatedBottomBar
+    android:id="@+id/bottom_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:abb_animationType="fade"
+    app:abb_animationTypeSelected="slide"
+    app:abb_animationDuration="400"
+    app:abb_tabColor="@color/textColorSecondary"
+    app:abb_tabColorSelected="@color/colorAccent"
+    app:abb_selectedTabType="text"
+    app:abb_tabs="@menu/tabs"
+    app:abb_selectedIndex="3"/>
+    -->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/select"

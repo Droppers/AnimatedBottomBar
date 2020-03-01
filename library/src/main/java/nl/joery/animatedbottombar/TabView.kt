@@ -2,7 +2,9 @@ package nl.joery.animatedbottombar
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.RippleDrawable
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AlphaAnimation
@@ -51,6 +53,9 @@ internal class TabView @JvmOverloads constructor(
                 updateActiveColors()
                 updateColors()
             }
+            BottomBarStyle.StyleUpdateType.RIPPLE -> {
+                updateRipple()
+            }
         }
     }
 
@@ -89,6 +94,19 @@ internal class TabView @JvmOverloads constructor(
 
         if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
             ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(style.tabColor));
+        }
+    }
+
+    private fun updateRipple() {
+        if (style.rippleEnabled) {
+            // Fix for not being able to retrieve color from 'selectableItemBackgroundBorderless'
+            if (style.rippleColor > 0) {
+                setBackgroundResource(context.getResourceId(style.rippleColor))
+            } else {
+                background = RippleDrawable(ColorStateList.valueOf(style.rippleColor), null, null)
+            }
+        } else {
+            setBackgroundColor(Color.TRANSPARENT)
         }
     }
 

@@ -11,7 +11,7 @@
         <attr name="abb_animationTypeSelected" format="enum">
             <enum name="slide" value="0" />
             <enum name="fade" value="1" />
-            <enum name="none" value="1" />
+            <enum name="none" value="2" />
         </attr>
         <attr name="abb_animationType" format="enum">
             <enum name="slide" value="0" />
@@ -42,8 +42,10 @@
         <attr name="abb_tabs" format="reference" />
         <attr name="abb_selectedIndex" format="integer" />
 
+        <attr name="abb_rippleEnabled" format="boolean" />
+        <attr name="abb_rippleColor" format="color" />
+
         <!-- Todo: add these :) -->
         <attr name="abb_textSize" format="integer" />
-        <attr name="abb_rippleColor" format="color" />
     </declare-styleable>
 </resources>
