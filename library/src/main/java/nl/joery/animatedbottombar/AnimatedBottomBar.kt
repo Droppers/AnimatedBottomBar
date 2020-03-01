@@ -7,9 +7,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.Dimension
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexDirection
@@ -205,6 +203,20 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     fun setOnTabSelectListener(itemSelectListener: TabSelectListener) {
         this.tabSelectListener = itemSelectListener
+    }
+
+    fun createTab(icon: Drawable, text: String, id: Int = -1): Tab {
+        return Tab(icon, text, id)
+    }
+
+    fun createTab(@DrawableRes iconRes: Int, text: String, id: Int = -1): Tab {
+        val icon = ContextCompat.getDrawable(context, iconRes)
+        return createTab(icon!!, text, id)
+    }
+
+    fun createTab(@DrawableRes iconRes: Int, @StringRes textRes: Int, id: Int = -1): Tab {
+        val text = context.getString(textRes)
+        return createTab(iconRes, text, id)
     }
 
     fun addTab(tab: Tab) {
@@ -411,7 +423,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyIndicatorStyle()
         }
 
-    data class Tab(val icon: Drawable?, val title: String, val id: Int = -1)
+    class Tab internal constructor(val icon: Drawable, val title: String, val id: Int = -1)
 
     enum class TabType(val id: Int) {
         TEXT(0),

@@ -12,6 +12,13 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+<style name="CustomText" parent="TextAppearance.AppCompat.Small">
+    <item name="android:textAllCaps">true</item>
+    <item name="android:fontFamily">serif</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:textStyle">italic|bold</item>
+</style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

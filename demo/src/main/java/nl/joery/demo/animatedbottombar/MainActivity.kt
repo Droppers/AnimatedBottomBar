@@ -3,7 +3,6 @@ package nl.joery.demo.animatedbottombar
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
@@ -38,12 +37,7 @@ class MainActivity : AppCompatActivity() {
         select.setOnClickListener {
             bottom_bar.addTabAt(
                 0,
-                AnimatedBottomBar.Tab(
-                    ContextCompat.getDrawable(
-                        applicationContext,
-                        nl.joery.animatedbottombar.R.drawable.alarm
-                    ), "Added tab"
-                )
+                bottom_bar.createTab(R.drawable.alarm, R.string.app_name)
             )
         }
 
