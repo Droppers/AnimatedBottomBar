@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
+        bottom_bar.setTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
             override fun onTabSelected(
                 lastIndex: Int,
                 lastTab: AnimatedBottomBar.Tab?,
@@ -22,17 +22,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d("TAB_SELECTED", "Selected index: $newIndex, title: ${newTab.title}")
             }
         })
-
-//        for (i in 1..4) {
-//            bottomBar.addTab(
-//                AnimatedBottomBar.Tab(
-//                    ContextCompat.getDrawable(
-//                        applicationContext,
-//                        nl.joery.animatedbottombar.R.drawable.alarm
-//                    ), "Tab $i"
-//                )
-//            )
-//        }
 
         select.setOnClickListener {
             bottom_bar.addTabAt(

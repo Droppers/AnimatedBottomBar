@@ -23,6 +23,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
     private var tabSelectListener: TabSelectListener? = null
+    internal var tabInterceptListener: TabInterceptListener? = null
 
     internal val tabStyle: BottomBarStyle.Tab by lazy { BottomBarStyle.Tab() }
     internal val indicatorStyle: BottomBarStyle.Indicator by lazy { BottomBarStyle.Indicator() }
@@ -57,11 +58,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
         val attr: TypedArray =
             context.obtainStyledAttributes(attributeSet, R.styleable.AnimatedBottomBar, 0, 0)
         try {
-            autoSelectTabs = attr.getBoolean(
-                R.styleable.AnimatedBottomBar_abb_autoSelectTabs,
-                autoSelectTabs
-            )
-
             // Type
             selectedTabType = TabType.fromId(
                 attr.getInt(
@@ -207,8 +203,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
         recycler.postInvalidate()
     }
 
-    fun setOnTabSelectListener(itemSelectListener: TabSelectListener) {
+    fun setTabSelectListener(itemSelectListener: TabSelectListener) {
         this.tabSelectListener = itemSelectListener
+    }
+
+    fun setTabInterceptListener(tabInterceptListener: TabInterceptListener) {
+        this.tabInterceptListener = tabInterceptListener
     }
 
     fun createTab(icon: Drawable, text: String, id: Int = -1): Tab {
@@ -278,8 +278,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     val selectedIndex
         get() = adapter.selectedIndex
-
-    var autoSelectTabs: Boolean = false
 
     // Item type
     var selectedTabType
@@ -496,5 +494,9 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     interface TabSelectListener {
         fun onTabSelected(lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab)
+    }
+
+    interface TabInterceptListener {
+        fun onTabIntercepted(lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab): Boolean
     }
 }

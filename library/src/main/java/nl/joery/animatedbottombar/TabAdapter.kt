@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlin.math.max
 
 
 internal class TabAdapter(
@@ -58,12 +57,6 @@ internal class TabAdapter(
     }
 
     fun addTab(tab: AnimatedBottomBar.Tab, tabIndex: Int = -1) {
-        // Automatically select a tab when none selected
-        if (bottomBar.autoSelectTabs && tabs.size == 0) {
-            selectedTab = tab
-            onTabSelected?.invoke(RecyclerView.NO_POSITION, null, 0, tab, false)
-        }
-
         val addedIndex: Int?
         if (tabIndex == -1) {
             addedIndex = tabs.size
@@ -85,16 +78,6 @@ internal class TabAdapter(
 
         if (tabs.size == 0) {
             selectedTab = null
-        } else if (bottomBar.autoSelectTabs && selectedTab == tab) {
-            // Automatically select a tab when none selected
-            val newTabIndex = max(0, index - 1)
-            selectedTab = tabs[newTabIndex]
-            notifyItemChanged(
-                newTabIndex,
-                Payload(PayloadType.SelectTab, false)
-            )
-
-            onTabSelected?.invoke(RecyclerView.NO_POSITION, null, newTabIndex, selectedTab!!, false)
         }
     }
 
@@ -105,6 +88,11 @@ internal class TabAdapter(
 
         val lastIndex = tabs.indexOf(selectedTab)
         val newIndex = tabs.indexOf(tab)
+
+        if (!canSelectTab(lastIndex, selectedTab, newIndex, tab)) {
+            return
+        }
+
         selectedTab = tab
 
         if (lastIndex >= 0) {
@@ -132,6 +120,21 @@ internal class TabAdapter(
             0, tabs.size,
             Payload(PayloadType.ApplyStyle, type)
         )
+    }
+
+    private fun canSelectTab(
+        lastIndex: Int,
+        lastTab: AnimatedBottomBar.Tab?,
+        newIndex: Int,
+        newTab: AnimatedBottomBar.Tab
+    ): Boolean {
+        return bottomBar.tabInterceptListener?.onTabIntercepted(
+            lastIndex,
+            lastTab,
+            newIndex,
+            newTab
+        )
+            ?: true
     }
 
     inner class TabHolder(v: View) : RecyclerView.ViewHolder(v) {
