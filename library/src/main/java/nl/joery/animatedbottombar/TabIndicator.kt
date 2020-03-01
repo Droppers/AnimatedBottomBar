@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 internal class TabIndicator(
-    val bottomBar: AnimatedBottomBar,
-    val parent: RecyclerView,
-    val adapter: TabAdapter
+    private val bottomBar: AnimatedBottomBar,
+    private val parent: RecyclerView,
+    private val adapter: TabAdapter
 ) :
     RecyclerView.ItemDecoration() {
     private lateinit var paint: Paint
@@ -43,11 +43,11 @@ internal class TabIndicator(
         }
 
         if (shouldRender && currentWidth > 0) {
-            val left = currentLeft + bottomBar.indicatorStyle.indicatorMargin.toFloat();
-            val top = getTop();
+            val left = currentLeft + bottomBar.indicatorStyle.indicatorMargin
+            val top = getTop()
             val right =
-                currentLeft + currentWidth - bottomBar.indicatorStyle.indicatorMargin.toFloat();
-            val bottom = getBottom();
+                currentLeft + currentWidth - bottomBar.indicatorStyle.indicatorMargin
+            val bottom = getBottom()
 
             when (bottomBar.indicatorStyle.indicatorAppearance) {
                 AnimatedBottomBar.IndicatorAppearance.SQUARE ->
@@ -73,12 +73,12 @@ internal class TabIndicator(
             AnimatedBottomBar.IndicatorLocation.TOP ->
                 0f
             AnimatedBottomBar.IndicatorLocation.BOTTOM ->
-                parent.height - bottomBar.indicatorStyle.indicatorHeight.toFloat()
+                parent.height - bottomBar.indicatorStyle.indicatorHeight
         }
     }
 
     private fun getCorners(): FloatArray? {
-        val radius = bottomBar.indicatorStyle.indicatorHeight.toFloat()
+        val radius = bottomBar.indicatorStyle.indicatorHeight
         return when (bottomBar.indicatorStyle.indicatorLocation) {
             AnimatedBottomBar.IndicatorLocation.TOP ->
                 floatArrayOf(
@@ -100,7 +100,7 @@ internal class TabIndicator(
     private fun getBottom(): Float {
         return when (bottomBar.indicatorStyle.indicatorLocation) {
             AnimatedBottomBar.IndicatorLocation.TOP ->
-                bottomBar.indicatorStyle.indicatorHeight.toFloat()
+                bottomBar.indicatorStyle.indicatorHeight
             AnimatedBottomBar.IndicatorLocation.BOTTOM ->
                 parent.height.toFloat()
         }

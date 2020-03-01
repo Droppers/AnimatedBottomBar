@@ -191,7 +191,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         super.onMeasure(
             widthMeasureSpec,
             max(MeasureSpec.makeMeasureSpec(desiredHeight, MeasureSpec.EXACTLY), heightMeasureSpec)
-        );
+        )
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {

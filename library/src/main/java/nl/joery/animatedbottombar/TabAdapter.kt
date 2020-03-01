@@ -31,7 +31,7 @@ internal class TabAdapter(
         val v: TabView = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_tab, parent, false) as TabView
         v.applyStyle(bottomBar.tabStyle)
-        return TabHolder(v, this)
+        return TabHolder(v)
     }
 
     override fun onBindViewHolder(holder: TabHolder, position: Int) {
@@ -134,8 +134,7 @@ internal class TabAdapter(
         )
     }
 
-    inner class TabHolder(v: View, adapter: TabAdapter) : RecyclerView.ViewHolder(v) {
-        private val parent: TabAdapter = adapter
+    inner class TabHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val view: TabView = v as TabView
 
         init {

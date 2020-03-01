@@ -79,7 +79,7 @@ internal class TabView @JvmOverloads constructor(
             ImageViewCompat.setImageTintList(
                 imageView,
                 ColorStateList.valueOf(style.tabColorSelected)
-            );
+            )
         }
 
         if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
@@ -93,7 +93,7 @@ internal class TabView @JvmOverloads constructor(
         }
 
         if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
-            ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(style.tabColor));
+            ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(style.tabColor))
         }
     }
 
@@ -224,12 +224,12 @@ internal class TabView @JvmOverloads constructor(
 
     private fun getActiveAnimation(direction: AnimationDirection): Animation? {
         if (style.animationTypeSelected == AnimatedBottomBar.TabAnimationType.SLIDE) {
-            val deltaYFrom = if (direction == AnimationDirection.IN) height.toFloat() else 0f;
-            val deltaYTo = if (direction == AnimationDirection.IN) 0f else height.toFloat();
+            val deltaYFrom = if (direction == AnimationDirection.IN) height.toFloat() else 0f
+            val deltaYTo = if (direction == AnimationDirection.IN) 0f else height.toFloat()
             return TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
         } else if (style.animationTypeSelected == AnimatedBottomBar.TabAnimationType.FADE) {
-            val alphaFrom = if (direction == AnimationDirection.IN) 0f else 1f;
-            val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f;
+            val alphaFrom = if (direction == AnimationDirection.IN) 0f else 1f
+            val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f
             return AlphaAnimation(alphaFrom, alphaTo)
         }
 
@@ -238,12 +238,12 @@ internal class TabView @JvmOverloads constructor(
 
     private fun getAnimation(direction: AnimationDirection): Animation? {
         if (style.animationType == AnimatedBottomBar.TabAnimationType.SLIDE) {
-            val deltaYFrom = if (direction == AnimationDirection.IN) -height.toFloat() else 0f;
-            val deltaYTo = if (direction == AnimationDirection.IN) 0f else -height.toFloat();
+            val deltaYFrom = if (direction == AnimationDirection.IN) -height.toFloat() else 0f
+            val deltaYTo = if (direction == AnimationDirection.IN) 0f else -height.toFloat()
             return TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
         } else if (style.animationType == AnimatedBottomBar.TabAnimationType.FADE) {
-            val alphaFrom = if (direction == AnimationDirection.IN) 0f else 1f;
-            val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f;
+            val alphaFrom = if (direction == AnimationDirection.IN) 0f else 1f
+            val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f
             return AlphaAnimation(alphaFrom, alphaTo)
         }
 

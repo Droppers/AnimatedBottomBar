@@ -1,4 +1,4 @@
-package nl.joery.animatedbottombar.demo
+package nl.joery.demo.animatedbottombar
 
 import org.junit.Test
 
