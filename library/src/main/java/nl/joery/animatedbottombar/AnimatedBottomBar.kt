@@ -178,9 +178,9 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
         if (initialIndex != -1 && !isInEditMode) {
             if (initialIndex < 0 || initialIndex > adapter.tabs.size - 1) {
-                throw IndexOutOfBoundsException("attribute 'selectedIndex' is out of bounds.")
+                throw IndexOutOfBoundsException("Attribute 'selectedIndex' is out of bounds.")
             } else {
-                setSelectedIndex(initialIndex, false)
+                selectTab(initialIndex, false)
             }
         }
     }
@@ -196,7 +196,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-
         // Draws the tab indicator again
         recycler.postInvalidate()
     }
@@ -240,16 +239,16 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.removeTab(tab)
     }
 
-    fun setSelectedIndex(tabIndex: Int, animate: Boolean = true) {
+    fun selectTab(tabIndex: Int, animate: Boolean = true) {
         if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
             throw IndexOutOfBoundsException("Tab index is out of bounds.")
         }
 
         val tab = adapter.tabs[tabIndex]
-        setSelectedTab(tab, animate)
+        selectTab(tab, animate)
     }
 
-    fun setSelectedTab(tab: Tab, animate: Boolean = true) {
+    fun selectTab(tab: Tab, animate: Boolean = true) {
         adapter.selectTab(tab, animate)
     }
 
