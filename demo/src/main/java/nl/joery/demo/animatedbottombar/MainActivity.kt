@@ -2,7 +2,6 @@ package nl.joery.demo.animatedbottombar
 
 import android.os.Bundle
 import android.util.Log
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.joery.animatedbottombar.AnimatedBottomBar

@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
@@ -83,6 +84,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 R.styleable.AnimatedBottomBar_abb_animationDuration,
                 tabStyle.animationDuration.toInt()
             ).toLong()
+            animationInterpolator = Utils.loadInterpolator(
+                context, attr.getResourceId(
+                    R.styleable.AnimatedBottomBar_abb_animationInterpolator,
+                    -1
+                ), tabStyle.animationInterpolator
+            )
 
             // Ripple
             rippleEnabled = attr.getBoolean(
@@ -320,6 +327,14 @@ class AnimatedBottomBar @JvmOverloads constructor(
         get() = tabStyle.animationInterpolator
         set(value) {
             tabStyle.animationInterpolator = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.ANIMATIONS)
+        }
+
+    var animationInterpolatorRes: Int
+        @Deprecated("", level = DeprecationLevel.HIDDEN)
+        get() = 0
+        set(@AnimRes value) {
+            tabStyle.animationInterpolator = AnimationUtils.loadInterpolator(context, value)
             applyTabStyle(BottomBarStyle.StyleUpdateType.ANIMATIONS)
         }
 

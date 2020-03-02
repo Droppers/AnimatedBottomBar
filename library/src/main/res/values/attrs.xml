@@ -17,6 +17,7 @@
             <enum name="none" value="2" />
         </attr>
         <attr name="abb_animationDuration" format="integer" />
+        <attr name="abb_animationInterpolator" format="reference" />
 
         <attr name="abb_tabColorSelected" format="color" />
         <attr name="abb_tabColor" format="color" />
@@ -35,7 +36,10 @@
             <enum name="bottom" value="1" />
             <enum name="invisible" value="2" />
         </attr>
-        <attr name="abb_indicatorAnimation" format="boolean" />
+        <attr name="abb_indicatorAnimation" format="enum">
+            <enum name="none" value="0" />
+            <enum name="slide" value="1" />
+        </attr>
 
         <attr name="abb_tabs" format="reference" />
         <attr name="abb_selectedIndex" format="integer" />
