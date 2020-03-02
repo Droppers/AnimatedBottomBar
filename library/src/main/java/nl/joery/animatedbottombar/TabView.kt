@@ -13,6 +13,7 @@ import android.view.animation.Animation
 import android.view.animation.TranslateAnimation
 import android.widget.FrameLayout
 import androidx.core.widget.ImageViewCompat
+import androidx.core.widget.TextViewCompat
 import kotlinx.android.synthetic.main.view_tab.view.*
 
 
@@ -57,6 +58,9 @@ internal class TabView @JvmOverloads constructor(
             BottomBarStyle.StyleUpdateType.RIPPLE -> {
                 updateRipple()
             }
+            BottomBarStyle.StyleUpdateType.TEXT_APPEARANCE -> {
+                updateTextAppearance()
+            }
         }
     }
 
@@ -96,6 +100,10 @@ internal class TabView @JvmOverloads constructor(
         if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
             ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(style.tabColor))
         }
+    }
+
+    private fun updateTextAppearance() {
+        TextViewCompat.setTextAppearance(textView, style.textAppearance)
     }
 
     private fun updateRipple() {

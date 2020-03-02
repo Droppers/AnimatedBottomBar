@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.view.animation.Interpolator
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
+import androidx.annotation.StyleRes
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
 internal object BottomBarStyle {
@@ -23,10 +24,10 @@ internal object BottomBarStyle {
 
         // Ripple
         var rippleEnabled: Boolean = false,
-        @ColorInt var rippleColor: Int = Color.BLACK
+        @ColorInt var rippleColor: Int = Color.BLACK,
 
-        // TODO: Implement these properties
-        //@Dimension var textSize: Int = 0
+        // Text appearance
+        @StyleRes var textAppearance: Int = R.style.AnimatedBottomBar_TextAppearance
     )
 
     data class Indicator(
@@ -42,6 +43,7 @@ internal object BottomBarStyle {
         TAB_TYPE,
         COLORS,
         ANIMATIONS,
-        RIPPLE
+        RIPPLE,
+        TEXT_APPEARANCE
     }
 }

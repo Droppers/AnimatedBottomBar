@@ -100,7 +100,14 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 tabStyle.tabColorSelected
             )
             tabColor =
-                attr.getColor(R.styleable.AnimatedBottomBar_abb_tabColor, tabStyle.tabColor)
+                attr.getInt(R.styleable.AnimatedBottomBar_abb_tabColor, tabStyle.tabColor)
+
+            // Text appearance
+            textAppearance =
+                attr.getResourceId(
+                    R.styleable.AnimatedBottomBar_abb_textAppearance,
+                    tabStyle.textAppearance
+                )
 
             // Indicator
             indicatorHeight =
@@ -376,6 +383,15 @@ class AnimatedBottomBar @JvmOverloads constructor(
         set(@ColorRes value) {
             tabStyle.tabColor = ContextCompat.getColor(context, value)
             applyTabStyle(BottomBarStyle.StyleUpdateType.COLORS)
+        }
+
+    // Text appearance
+    var textAppearance
+        @StyleRes
+        get() = tabStyle.textAppearance
+        set(@StyleRes value) {
+            tabStyle.textAppearance = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT_APPEARANCE)
         }
 
     // Indicator

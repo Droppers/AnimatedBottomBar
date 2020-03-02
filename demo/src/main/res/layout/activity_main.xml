@@ -17,7 +17,7 @@
     android:background="#FFF"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:abb_selectedTabType="text"
+    app:abb_selectedTabType="icon"
     app:abb_indicatorAppearance="rounded"
     app:abb_indicatorMargin="16dp"
     app:abb_animationTypeSelected="slide"
@@ -27,6 +27,7 @@
     app:abb_rippleEnabled="true"
     app:abb_rippleColor="#00FF00"
     app:abb_tabs="@menu/test_tabs"
+    app:abb_textAppearance="@style/CustomText"
     app:abb_selectedIndex="1" />
 
     <Space
