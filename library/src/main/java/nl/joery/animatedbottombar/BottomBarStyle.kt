@@ -15,7 +15,7 @@ internal object BottomBarStyle {
         // Animations
         var tabAnimationSelected: AnimatedBottomBar.TabAnimation = AnimatedBottomBar.TabAnimation.SLIDE,
         var tabAnimation: AnimatedBottomBar.TabAnimation = AnimatedBottomBar.TabAnimation.SLIDE,
-        var animationDuration: Long = 400L,
+        var animationDuration: Int = 400,
         var animationInterpolator: Interpolator = FastOutSlowInInterpolator(),
 
         // Colors
@@ -31,8 +31,8 @@ internal object BottomBarStyle {
     )
 
     data class Indicator(
-        @Dimension var indicatorHeight: Float = 3.px.toFloat(),
-        @Dimension var indicatorMargin: Float = 0f,
+        @Dimension var indicatorHeight: Int = 3.px,
+        @Dimension var indicatorMargin: Int = 0,
         @ColorInt var indicatorColor: Int = Color.BLACK,
         var indicatorAppearance: AnimatedBottomBar.IndicatorAppearance = AnimatedBottomBar.IndicatorAppearance.SQUARE,
         var indicatorLocation: AnimatedBottomBar.IndicatorLocation = AnimatedBottomBar.IndicatorLocation.TOP,

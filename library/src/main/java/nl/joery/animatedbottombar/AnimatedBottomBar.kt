@@ -82,8 +82,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
             ) ?: tabStyle.tabAnimation
             animationDuration = attr.getInt(
                 R.styleable.AnimatedBottomBar_abb_animationDuration,
-                tabStyle.animationDuration.toInt()
-            ).toLong()
+                tabStyle.animationDuration
+            )
             animationInterpolator = Utils.loadInterpolator(
                 context, attr.getResourceId(
                     R.styleable.AnimatedBottomBar_abb_animationInterpolator,
@@ -120,13 +120,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
             indicatorHeight =
                 attr.getDimension(
                     R.styleable.AnimatedBottomBar_abb_indicatorHeight,
-                    indicatorStyle.indicatorHeight
-                )
+                    indicatorStyle.indicatorHeight.toFloat()
+                ).toInt()
             indicatorMargin =
                 attr.getDimension(
                     R.styleable.AnimatedBottomBar_abb_indicatorMargin,
-                    indicatorStyle.indicatorMargin
-                )
+                    indicatorStyle.indicatorMargin.toFloat()
+                ).toInt()
             indicatorColor =
                 attr.getColor(
                     R.styleable.AnimatedBottomBar_abb_indicatorColor,

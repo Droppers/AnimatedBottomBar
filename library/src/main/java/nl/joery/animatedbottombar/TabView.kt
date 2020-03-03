@@ -170,7 +170,7 @@ internal class TabView @JvmOverloads constructor(
 
     private fun updateAnimations() {
         activeInAnimation = getActiveAnimation(AnimationDirection.IN)?.apply {
-            duration = style.animationDuration
+            duration = style.animationDuration.toLong()
             interpolator = style.animationInterpolator
             setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {
@@ -187,7 +187,7 @@ internal class TabView @JvmOverloads constructor(
         }
 
         activeOutAnimation = getActiveAnimation(AnimationDirection.OUT)?.apply {
-            duration = style.animationDuration
+            duration = style.animationDuration.toLong()
             interpolator = style.animationInterpolator
             setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {
@@ -203,7 +203,7 @@ internal class TabView @JvmOverloads constructor(
         }
 
         inAnimation = getAnimation(AnimationDirection.IN)?.apply {
-            duration = style.animationDuration
+            duration = style.animationDuration.toLong()
             interpolator = style.animationInterpolator
             setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {
@@ -219,7 +219,7 @@ internal class TabView @JvmOverloads constructor(
         }
 
         outAnimation = getAnimation(AnimationDirection.OUT)?.apply {
-            duration = style.animationDuration
+            duration = style.animationDuration.toLong()
             interpolator = style.animationInterpolator
             setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {

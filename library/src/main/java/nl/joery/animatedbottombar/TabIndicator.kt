@@ -49,21 +49,21 @@ internal class TabIndicator(
                 currentLeft = newView.left.toFloat()
             }
 
-            drawIndicator(c, currentLeft, currentWidth);
+            drawIndicator(c, currentLeft, currentWidth)
         } else if (bottomBar.indicatorAnimation == AnimatedBottomBar.IndicatorAnimation.FADE) {
             if (isAnimating && lastView != null) {
-                val alpha = 255;
-                val lastAlpha = alpha - alpha * animatedFraction;
-                val newAlpha = alpha * animatedFraction;
+                val alpha = 255
+                val lastAlpha = alpha - alpha * animatedFraction
+                val newAlpha = alpha * animatedFraction
                 drawIndicator(
                     c,
                     lastView.left.toFloat(),
                     lastView.width.toFloat(),
                     lastAlpha.toInt()
-                );
-                drawIndicator(c, newView.left.toFloat(), newView.width.toFloat(), newAlpha.toInt());
+                )
+                drawIndicator(c, newView.left.toFloat(), newView.width.toFloat(), newAlpha.toInt())
             } else {
-                drawIndicator(c, newView.left.toFloat(), newView.width.toFloat());
+                drawIndicator(c, newView.left.toFloat(), newView.width.toFloat())
             }
         }
     }
@@ -106,12 +106,12 @@ internal class TabIndicator(
             AnimatedBottomBar.IndicatorLocation.TOP ->
                 0f
             AnimatedBottomBar.IndicatorLocation.BOTTOM ->
-                parent.height - bottomBar.indicatorStyle.indicatorHeight
+                parent.height - bottomBar.indicatorStyle.indicatorHeight.toFloat()
         }
     }
 
     private fun getCorners(): FloatArray? {
-        val radius = bottomBar.indicatorStyle.indicatorHeight
+        val radius = bottomBar.indicatorStyle.indicatorHeight.toFloat()
         return when (bottomBar.indicatorStyle.indicatorLocation) {
             AnimatedBottomBar.IndicatorLocation.TOP ->
                 floatArrayOf(
@@ -133,7 +133,7 @@ internal class TabIndicator(
     private fun getBottom(): Float {
         return when (bottomBar.indicatorStyle.indicatorLocation) {
             AnimatedBottomBar.IndicatorLocation.TOP ->
-                bottomBar.indicatorStyle.indicatorHeight
+                bottomBar.indicatorStyle.indicatorHeight.toFloat()
             AnimatedBottomBar.IndicatorLocation.BOTTOM ->
                 parent.height.toFloat()
         }
@@ -157,7 +157,7 @@ internal class TabIndicator(
 
         val newView = parent.getChildAt(newIndex)
         animator = ValueAnimator.ofFloat(currentLeft, newView.left.toFloat()).apply {
-            duration = bottomBar.tabStyle.animationDuration
+            duration = bottomBar.tabStyle.animationDuration.toLong()
             interpolator = bottomBar.tabStyle.animationInterpolator
             addUpdateListener {
                 parent.postInvalidate()
