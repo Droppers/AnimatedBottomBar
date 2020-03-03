@@ -6,15 +6,15 @@
             <enum name="icon" value="1" />
         </attr>
 
-        <attr name="abb_animationTypeSelected" format="enum">
-            <enum name="slide" value="0" />
-            <enum name="fade" value="1" />
-            <enum name="none" value="2" />
+        <attr name="abb_tabAnimationSelected" format="enum">
+            <enum name="none" value="0" />
+            <enum name="slide" value="1" />
+            <enum name="fade" value="2" />
         </attr>
-        <attr name="abb_animationType" format="enum">
-            <enum name="slide" value="0" />
-            <enum name="fade" value="1" />
-            <enum name="none" value="2" />
+        <attr name="abb_tabAnimation" format="enum">
+            <enum name="none" value="0" />
+            <enum name="slide" value="1" />
+            <enum name="fade" value="2" />
         </attr>
         <attr name="abb_animationDuration" format="integer" />
         <attr name="abb_animationInterpolator" format="reference" />
@@ -27,18 +27,18 @@
         <attr name="abb_indicatorHeight" format="dimension" />
         <attr name="abb_indicatorMargin" format="dimension" />
         <attr name="abb_indicatorAppearance" format="enum">
-            <enum name="square" value="0" />
-            <enum name="rounded" value="1" />
-            <enum name="none" value="2" />
+            <enum name="invisible" value="0" />
+            <enum name="square" value="1" />
+            <enum name="round" value="2" />
         </attr>
         <attr name="abb_indicatorLocation" format="enum">
             <enum name="top" value="0" />
             <enum name="bottom" value="1" />
-            <enum name="invisible" value="2" />
         </attr>
         <attr name="abb_indicatorAnimation" format="enum">
             <enum name="none" value="0" />
             <enum name="slide" value="1" />
+            <enum name="fade" value="2" />
         </attr>
 
         <attr name="abb_tabs" format="reference" />

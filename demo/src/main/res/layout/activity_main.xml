@@ -12,21 +12,42 @@
         android:layout_width="match_parent"
         android:layout_height="100dp" />
 
-<nl.joery.animatedbottombar.AnimatedBottomBar
-    android:id="@+id/bottom_bar"
-    android:background="#FFF"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:abb_selectedTabType="icon"
-    app:abb_indicatorAppearance="rounded"
-    app:abb_indicatorMargin="16dp"
-    app:abb_animationTypeSelected="slide"
-    app:abb_animationType="slide"
-    app:abb_indicatorHeight="4dp"
-    app:abb_animationDuration="600"
-    app:abb_tabs="@menu/test_tabs"
-    app:abb_animationInterpolator="@android:anim/overshoot_interpolator"
-    app:abb_selectedIndex="1" />
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        app:abb_indicatorAppearance="round"
+        app:abb_selectedTabType="text"
+        app:abb_tabAnimationSelected="slide"
+        app:abb_tabAnimation="slide"
+        app:abb_indicatorAnimation="fade"
+        app:abb_indicatorHeight="4dp"
+        app:abb_indicatorMargin="16dp"
+        app:abb_animationDuration="600"
+        app:abb_tabs="@menu/test_tabs"
+        app:abb_selectedIndex="1" />
+
+<!--<nl.joery.animatedbottombar.AnimatedBottomBar-->
+<!--    android:id="@+id/bottom_bar"-->
+<!--    android:background="#FFF"-->
+<!--    app:abb_tabColor="?android:textColorPrimary"-->
+<!--    app:abb_tabColorSelected="#BA68C8"-->
+<!--    app:abb_indicatorColor="#BA68C8"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    app:abb_selectedTabType="text"-->
+<!--    app:abb_indicatorAppearance="rounded"-->
+<!--    app:abb_indicatorMargin="16dp"-->
+<!--    app:abb_tabAnimationSelected="fade"-->
+<!--    app:abb_tabAnimation="fade"-->
+<!--    app:abb_indicatorAnimation="fade"-->
+<!--    app:abb_indicatorHeight="4dp"-->
+<!--    app:abb_animationDuration="600"-->
+<!--    app:abb_indicatorLocation="bottom"-->
+<!--    app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"-->
+<!--    app:abb_tabs="@menu/clock_tabs"-->
+<!--    app:abb_selectedIndex="1" />-->
 
     <Space
         android:layout_width="match_parent"

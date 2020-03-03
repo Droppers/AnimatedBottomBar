@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/test"
+        android:icon="@drawable/alarm"
+        android:title="Alarm" />
+    <item
+        android:id="@+id/test2"
+        android:icon="@drawable/bed"
+        android:title="Bedtime" />
+    <item
+        android:id="@+id/test3"
+        android:icon="@drawable/stopwatch"
+        android:title="Stopwatch" />
+    <item
+        android:id="@+id/test4"
+        android:icon="@drawable/timer"
+        android:title="Timer" />
+</menu>

@@ -12,11 +12,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="CustomText" parent="AnimatedBottomBar.TextAppearance">
+    <style name="CustomText">
         <item name="android:textAllCaps">true</item>
-        <item name="android:fontFamily">serif</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">italic|bold</item>
+        <item name="android:textSize">13sp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

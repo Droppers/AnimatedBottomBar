@@ -13,8 +13,8 @@ internal object BottomBarStyle {
         var selectedTabType: AnimatedBottomBar.TabType = AnimatedBottomBar.TabType.TEXT,
 
         // Animations
-        var animationTypeSelected: AnimatedBottomBar.TabAnimationType = AnimatedBottomBar.TabAnimationType.SLIDE,
-        var animationType: AnimatedBottomBar.TabAnimationType = AnimatedBottomBar.TabAnimationType.SLIDE,
+        var tabAnimationSelected: AnimatedBottomBar.TabAnimation = AnimatedBottomBar.TabAnimation.SLIDE,
+        var tabAnimation: AnimatedBottomBar.TabAnimation = AnimatedBottomBar.TabAnimation.SLIDE,
         var animationDuration: Long = 400L,
         var animationInterpolator: Interpolator = FastOutSlowInInterpolator(),
 
@@ -36,7 +36,7 @@ internal object BottomBarStyle {
         @ColorInt var indicatorColor: Int = Color.BLACK,
         var indicatorAppearance: AnimatedBottomBar.IndicatorAppearance = AnimatedBottomBar.IndicatorAppearance.SQUARE,
         var indicatorLocation: AnimatedBottomBar.IndicatorLocation = AnimatedBottomBar.IndicatorLocation.TOP,
-        var indicatorAnimation: Boolean = true
+        var indicatorAnimation: AnimatedBottomBar.IndicatorAnimation = AnimatedBottomBar.IndicatorAnimation.SLIDE
     )
 
     enum class StyleUpdateType {

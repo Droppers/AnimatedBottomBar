@@ -68,18 +68,18 @@ class AnimatedBottomBar @JvmOverloads constructor(
             ) ?: tabStyle.selectedTabType
 
             // Animations
-            animationTypeSelected = TabAnimationType.fromId(
+            tabAnimationSelected = TabAnimation.fromId(
                 attr.getInt(
-                    R.styleable.AnimatedBottomBar_abb_animationTypeSelected,
-                    tabStyle.animationTypeSelected.id
+                    R.styleable.AnimatedBottomBar_abb_tabAnimationSelected,
+                    tabStyle.tabAnimationSelected.id
                 )
-            ) ?: tabStyle.animationTypeSelected
-            animationType = TabAnimationType.fromId(
+            ) ?: tabStyle.tabAnimationSelected
+            tabAnimation = TabAnimation.fromId(
                 attr.getInt(
-                    R.styleable.AnimatedBottomBar_abb_animationType,
-                    tabStyle.animationType.id
+                    R.styleable.AnimatedBottomBar_abb_tabAnimation,
+                    tabStyle.tabAnimation.id
                 )
-            ) ?: tabStyle.animationType
+            ) ?: tabStyle.tabAnimation
             animationDuration = attr.getInt(
                 R.styleable.AnimatedBottomBar_abb_animationDuration,
                 tabStyle.animationDuration.toInt()
@@ -107,7 +107,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 tabStyle.tabColorSelected
             )
             tabColor =
-                attr.getInt(R.styleable.AnimatedBottomBar_abb_tabColor, tabStyle.tabColor)
+                attr.getColor(R.styleable.AnimatedBottomBar_abb_tabColor, tabStyle.tabColor)
 
             // Text appearance
             textAppearance =
@@ -144,10 +144,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
                     indicatorStyle.indicatorLocation.id
                 )
             ) ?: indicatorStyle.indicatorLocation
-            indicatorAnimation = attr.getBoolean(
-                R.styleable.AnimatedBottomBar_abb_indicatorAnimation,
-                indicatorStyle.indicatorAnimation
-            )
+            indicatorAnimation = IndicatorAnimation.fromId(
+                attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_indicatorAnimation,
+                    indicatorStyle.indicatorAnimation.id
+                )
+            ) ?: indicatorStyle.indicatorAnimation
 
             // Initials tabs
             val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1)
@@ -302,17 +304,17 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
     // Animations
-    var animationTypeSelected
-        get() = tabStyle.animationTypeSelected
+    var tabAnimationSelected
+        get() = tabStyle.tabAnimationSelected
         set(value) {
-            tabStyle.animationTypeSelected = value
+            tabStyle.tabAnimationSelected = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.ANIMATIONS)
         }
 
-    var animationType
-        get() = tabStyle.animationType
+    var tabAnimation
+        get() = tabStyle.tabAnimation
         set(value) {
-            tabStyle.animationType = value
+            tabStyle.tabAnimation = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.ANIMATIONS)
         }
 
@@ -334,8 +336,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         @Deprecated("", level = DeprecationLevel.HIDDEN)
         get() = 0
         set(@AnimRes value) {
-            tabStyle.animationInterpolator = AnimationUtils.loadInterpolator(context, value)
-            applyTabStyle(BottomBarStyle.StyleUpdateType.ANIMATIONS)
+            animationInterpolator = AnimationUtils.loadInterpolator(context, value)
         }
 
     // Ripple
@@ -363,8 +364,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         get() = Int.MIN_VALUE
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         set(@ColorRes value) {
-            tabStyle.rippleColor = ContextCompat.getColor(context, value)
-            applyTabStyle(BottomBarStyle.StyleUpdateType.RIPPLE)
+            rippleColor = ContextCompat.getColor(context, value)
         }
 
     // Colors
@@ -380,8 +380,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         @Deprecated("", level = DeprecationLevel.HIDDEN)
         get() = Int.MIN_VALUE
         set(@ColorRes value) {
-            tabStyle.tabColorSelected = ContextCompat.getColor(context, value)
-            applyTabStyle(BottomBarStyle.StyleUpdateType.COLORS)
+            tabColorSelected = ContextCompat.getColor(context, value)
         }
 
     var tabColor
@@ -396,8 +395,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         @Deprecated("", level = DeprecationLevel.HIDDEN)
         get() = Int.MIN_VALUE
         set(@ColorRes value) {
-            tabStyle.tabColor = ContextCompat.getColor(context, value)
-            applyTabStyle(BottomBarStyle.StyleUpdateType.COLORS)
+            tabColor = ContextCompat.getColor(context, value)
         }
 
     // Text appearance
@@ -438,8 +436,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         @Deprecated("", level = DeprecationLevel.HIDDEN)
         get() = Int.MIN_VALUE
         set(@ColorRes value) {
-            indicatorStyle.indicatorColor = ContextCompat.getColor(context, value)
-            applyIndicatorStyle()
+            indicatorColor = ContextCompat.getColor(context, value)
         }
 
     var indicatorAppearance
@@ -479,13 +476,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
     }
 
-    enum class TabAnimationType(val id: Int) {
-        SLIDE(0),
-        FADE(1),
-        NONE(2);
+    enum class TabAnimation(val id: Int) {
+        NONE(0),
+        SLIDE(1),
+        FADE(2);
 
         companion object {
-            fun fromId(id: Int): TabAnimationType? {
+            fun fromId(id: Int): TabAnimation? {
                 for (f in values()) {
                     if (f.id == id) return f
                 }
@@ -509,12 +506,27 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     enum class IndicatorAppearance(val id: Int) {
-        SQUARE(0),
-        ROUNDED(1),
-        NONE(2);
+        INVISIBLE(0),
+        SQUARE(1),
+        ROUND(2);
 
         companion object {
             fun fromId(id: Int): IndicatorAppearance? {
+                for (f in values()) {
+                    if (f.id == id) return f
+                }
+                throw IllegalArgumentException()
+            }
+        }
+    }
+
+    enum class IndicatorAnimation(val id: Int) {
+        NONE(0),
+        SLIDE(1),
+        FADE(2);
+
+        companion object {
+            fun fromId(id: Int): IndicatorAnimation? {
                 for (f in values()) {
                     if (f.id == id) return f
                 }

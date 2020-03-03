@@ -18,11 +18,11 @@ internal class TabIndicator(
     private var corners: FloatArray? = null
     private var animator: ValueAnimator? = null
 
-    private var currentWidth: Float = 0f
+    private var lastSelectedIndex: Int = RecyclerView.NO_POSITION
     private var currentLeft: Float = 0f
 
     private val shouldRender: Boolean
-        get() = bottomBar.indicatorStyle.indicatorAppearance != AnimatedBottomBar.IndicatorAppearance.NONE
+        get() = bottomBar.indicatorStyle.indicatorAppearance != AnimatedBottomBar.IndicatorAppearance.INVISIBLE
 
     init {
         applyStyle()
@@ -31,47 +31,73 @@ internal class TabIndicator(
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
 
-        if (adapter.selectedIndex == RecyclerView.NO_POSITION) {
+        if (adapter.selectedIndex == RecyclerView.NO_POSITION || !shouldRender) {
             return
         }
 
-        if (animator?.isRunning == true) {
-            currentLeft = animator!!.animatedValue as Float
-        } else {
-            val view = parent.getChildAt(adapter.selectedIndex)
-            currentLeft = view.left.toFloat()
-            currentWidth = view.width.toFloat()
-        }
+        val isAnimating = animator?.isRunning == true
+        val animatedFraction = animator?.animatedFraction ?: 1f
+        val lastView = parent.getChildAt(lastSelectedIndex)
+        val newView = parent.getChildAt(adapter.selectedIndex) ?: return
+        var currentWidth = newView.width.toFloat()
 
-        if (shouldRender && currentWidth > 0) {
-            val left = currentLeft + bottomBar.indicatorStyle.indicatorMargin
-            val top = getTop()
-            val right =
-                currentLeft + currentWidth - bottomBar.indicatorStyle.indicatorMargin
-            val bottom = getBottom()
-
-            if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.SQUARE ||
-                Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-            ) {
-                c.drawRect(
-                    left,
-                    top,
-                    right,
-                    bottom, paint
-                )
-
-            } else if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.ROUNDED) {
-                val path = Path()
-                path.addRoundRect(
-                    left,
-                    top,
-                    right,
-                    bottom,
-                    getCorners()!!,
-                    Path.Direction.CW
-                )
-                c.drawPath(path, paint)
+        if (bottomBar.indicatorAnimation == AnimatedBottomBar.IndicatorAnimation.SLIDE) {
+            if (isAnimating && lastView != null) {
+                currentWidth = lastView.width + (newView.width - lastView.width) * animatedFraction
+                currentLeft = animator?.animatedValue as Float
+            } else {
+                currentLeft = newView.left.toFloat()
             }
+
+            drawIndicator(c, currentLeft, currentWidth);
+        } else if (bottomBar.indicatorAnimation == AnimatedBottomBar.IndicatorAnimation.FADE) {
+            if (isAnimating && lastView != null) {
+                val alpha = 255;
+                val lastAlpha = alpha - alpha * animatedFraction;
+                val newAlpha = alpha * animatedFraction;
+                drawIndicator(
+                    c,
+                    lastView.left.toFloat(),
+                    lastView.width.toFloat(),
+                    lastAlpha.toInt()
+                );
+                drawIndicator(c, newView.left.toFloat(), newView.width.toFloat(), newAlpha.toInt());
+            } else {
+                drawIndicator(c, newView.left.toFloat(), newView.width.toFloat());
+            }
+        }
+    }
+
+    private fun drawIndicator(c: Canvas, viewLeft: Float, viewWidth: Float, alpha: Int = 255) {
+        val left = viewLeft + bottomBar.indicatorStyle.indicatorMargin
+        val top = getTop()
+        val right =
+            viewLeft + viewWidth - bottomBar.indicatorStyle.indicatorMargin
+        val bottom = getBottom()
+
+        paint.alpha = alpha
+
+        if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.SQUARE ||
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
+        ) {
+            c.drawRect(
+                left,
+                top,
+                right,
+                bottom, paint
+            )
+
+        } else if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.ROUND) {
+            val path = Path()
+            path.addRoundRect(
+                left,
+                top,
+                right,
+                bottom,
+                corners!!,
+                Path.Direction.CW
+            )
+            c.drawPath(path, paint)
         }
     }
 
@@ -115,28 +141,25 @@ internal class TabIndicator(
 
     fun setSelectedIndex(lastIndex: Int, newIndex: Int, animate: Boolean) {
         if (animator?.isRunning == true) {
-            animator!!.cancel()
+            animator?.cancel()
         }
 
         if (!shouldRender) {
             return
         }
 
-        if (!animate || lastIndex == -1 || !bottomBar.indicatorStyle.indicatorAnimation) {
+        if (!animate || lastIndex == -1) {
             parent.postInvalidate()
             return
         }
 
-        val lastView = parent.getChildAt(lastIndex)
-        val newView = parent.getChildAt(newIndex)
-        val lastWidth = lastView.width.toFloat()
-        val newWidth = newView.width.toFloat()
+        lastSelectedIndex = lastIndex
 
+        val newView = parent.getChildAt(newIndex)
         animator = ValueAnimator.ofFloat(currentLeft, newView.left.toFloat()).apply {
             duration = bottomBar.tabStyle.animationDuration
             interpolator = bottomBar.tabStyle.animationInterpolator
-            addUpdateListener { animation ->
-                currentWidth = (lastWidth + (newWidth - lastWidth) * animation.animatedFraction)
+            addUpdateListener {
                 parent.postInvalidate()
             }
             start()
