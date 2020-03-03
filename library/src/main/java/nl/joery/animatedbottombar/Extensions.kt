@@ -1,6 +1,5 @@
 package nl.joery.animatedbottombar
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.util.TypedValue
@@ -9,9 +8,22 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 
 @ColorInt
-@SuppressLint("ResourceAsColor")
 fun Context.getColorResCompat(@AttrRes id: Int): Int {
     return ContextCompat.getColor(this, getResourceId(id))
+}
+
+@ColorInt
+fun Context.getTextColor(@AttrRes id: Int): Int {
+    val typedValue = TypedValue()
+    theme.resolveAttribute(id, typedValue, true)
+    val arr = obtainStyledAttributes(
+        typedValue.data, intArrayOf(
+            id
+        )
+    )
+    val color = arr.getColor(0, -1)
+    arr.recycle()
+    return color
 }
 
 fun Context.getResourceId(id: Int): Int {

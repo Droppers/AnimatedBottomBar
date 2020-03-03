@@ -2,5 +2,6 @@
 <resources>
 
     <style name="AnimatedBottomBar.TextAppearance" />
+
     <style name="AnimatedBottomBar" />
 </resources>

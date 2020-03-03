@@ -45,15 +45,15 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private fun initAttributes(
         attributeSet: AttributeSet?
     ) {
-        tabColor = context.getColorResCompat(android.R.attr.textColorPrimary)
+        tabColor = context.getTextColor(android.R.attr.textColorPrimary)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rippleColor = android.R.attr.selectableItemBackgroundBorderless
             tabColorSelected = context.getColorResCompat(android.R.attr.colorPrimary)
             indicatorColor = context.getColorResCompat(android.R.attr.colorPrimary)
         } else {
-            tabColorSelected = context.getColorResCompat(android.R.attr.textColorPrimary)
-            indicatorColor = context.getColorResCompat(android.R.attr.textColorPrimary)
+            tabColorSelected = context.getTextColor(android.R.attr.textColorPrimary)
+            indicatorColor = context.getTextColor(android.R.attr.textColorPrimary)
         }
 
         val attr: TypedArray =
@@ -195,7 +195,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             addTab(tab)
         }
 
-        if (initialIndex != -1 && !isInEditMode) {
+        if (initialIndex != -1) {
             if (initialIndex < 0 || initialIndex > adapter.tabs.size - 1) {
                 throw IndexOutOfBoundsException("Attribute 'selectedIndex' is out of bounds.")
             } else {

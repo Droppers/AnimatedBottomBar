@@ -12,6 +12,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val bottomBars = arrayOf(bottom_bar, bottom_bar2, bottom_bar3, bottom_bar4)
+
         bottom_bar.setTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
             override fun onTabSelected(
                 lastIndex: Int,
@@ -24,25 +26,33 @@ class MainActivity : AppCompatActivity() {
         })
 
         select.setOnClickListener {
-            bottom_bar.addTabAt(
-                0,
-                bottom_bar.createTab(R.drawable.alarm, R.string.app_name)
-            )
+            for (bottomBar in bottomBars) {
+                bottomBar.addTabAt(
+                    0,
+                    bottom_bar.createTab(R.drawable.alarm, R.string.app_name)
+                )
+            }
         }
 
         deselect.setOnClickListener {
-            if (bottom_bar.tabCount > 0) {
-                val tab = bottom_bar.tabs.last()
-                bottom_bar.removeTab(tab)
+            for (bottomBar in bottomBars) {
+                if (bottomBar.tabCount > 0) {
+                    val tab = bottomBar.tabs.last()
+                    bottomBar.removeTab(tab)
+                }
             }
         }
 
         select_first.setOnClickListener {
-            bottom_bar.selectTabAt(0)
+            for (bottomBar in bottomBars) {
+                bottomBar.selectTabAt(0)
+            }
         }
 
         select_last.setOnClickListener {
-            bottom_bar.selectTabAt(bottom_bar.tabCount - 1)
+            for (bottomBar in bottomBars) {
+                bottomBar.selectTabAt(bottom_bar.tabCount - 1)
+            }
         }
     }
 }

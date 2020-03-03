@@ -5,80 +5,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#CCC"
     tools:context=".MainActivity">
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="32dp" />
 
     <nl.joery.animatedbottombar.AnimatedBottomBar
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFF"
-        app:abb_indicatorAppearance="round"
-        app:abb_selectedTabType="text"
-        app:abb_tabAnimationSelected="slide"
-        app:abb_tabAnimation="slide"
-        app:abb_indicatorAnimation="fade"
-        app:abb_indicatorHeight="4dp"
-        app:abb_indicatorMargin="16dp"
         app:abb_animationDuration="600"
-        app:abb_tabs="@menu/test_tabs"
-        app:abb_selectedIndex="1" />
-
-<!--<nl.joery.animatedbottombar.AnimatedBottomBar-->
-<!--    android:id="@+id/bottom_bar"-->
-<!--    android:background="#FFF"-->
-<!--    app:abb_tabColor="?android:textColorPrimary"-->
-<!--    app:abb_tabColorSelected="#BA68C8"-->
-<!--    app:abb_indicatorColor="#BA68C8"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    app:abb_selectedTabType="text"-->
-<!--    app:abb_indicatorAppearance="rounded"-->
-<!--    app:abb_indicatorMargin="16dp"-->
-<!--    app:abb_tabAnimationSelected="fade"-->
-<!--    app:abb_tabAnimation="fade"-->
-<!--    app:abb_indicatorAnimation="fade"-->
-<!--    app:abb_indicatorHeight="4dp"-->
-<!--    app:abb_animationDuration="600"-->
-<!--    app:abb_indicatorLocation="bottom"-->
-<!--    app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"-->
-<!--    app:abb_tabs="@menu/clock_tabs"-->
-<!--    app:abb_selectedIndex="1" />-->
+        app:abb_indicatorAppearance="round"
+        app:abb_indicatorColor="#B867C8"
+        app:abb_indicatorHeight="4dp"
+        app:abb_indicatorLocation="bottom"
+        app:abb_indicatorMargin="16dp"
+        app:abb_selectedIndex="1"
+        app:abb_selectedTabType="text"
+        app:abb_tabAnimation="fade"
+        app:abb_tabAnimationSelected="fade"
+        app:abb_tabColorSelected="#B867C8"
+        app:abb_tabs="@menu/clock_tabs" />
 
     <Space
         android:layout_width="match_parent"
-        android:layout_height="100dp" />
+        android:layout_height="32dp" />
 
-    <!--
-<nl.joery.animatedbottombar.AnimatedBottomBar
-    android:id="@+id/bottom_bar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:abb_animationType="fade"
-    app:abb_animationTypeSelected="slide"
-    app:abb_animationDuration="400"
-    app:abb_tabColor="@color/textColorSecondary"
-    app:abb_tabColorSelected="@color/colorAccent"
-    app:abb_selectedTabType="text"
-    app:abb_tabs="@menu/tabs"
-    app:abb_selectedIndex="3"/>
-    -->
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/bottom_bar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#292637"
+        app:abb_animationDuration="600"
+        app:abb_animationInterpolator="@android:anim/overshoot_interpolator"
+        app:abb_indicatorAppearance="round"
+        app:abb_indicatorColor="#4189FC"
+        app:abb_indicatorHeight="4dp"
+        app:abb_indicatorMargin="16dp"
+        app:abb_selectedIndex="1"
+        app:abb_selectedTabType="text"
+        app:abb_tabAnimation="slide"
+        app:abb_tabColor="#CCFFFFFF"
+        app:abb_tabColorSelected="#4189FC"
+        app:abb_tabs="@menu/clock_tabs" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="32dp" />
+
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/bottom_bar3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        app:abb_animationDuration="600"
+        app:abb_indicatorColor="#F54033"
+        app:abb_selectedIndex="1"
+        app:abb_tabAnimation="fade"
+        app:abb_tabColor="#CC000000"
+        app:abb_tabColorSelected="#000"
+        app:abb_tabs="@menu/clock_tabs" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="32dp" />
+
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/bottom_bar4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#6200ED"
+        app:abb_animationDuration="600"
+        app:abb_indicatorAnimation="fade"
+        app:abb_indicatorColor="#EA3D7C"
+        app:abb_indicatorMargin="8dp"
+        app:abb_selectedIndex="1"
+        app:abb_tabAnimation="fade"
+        app:abb_tabColor="#CCFFFFFF"
+        app:abb_tabColorSelected="#FFF"
+        app:abb_textAppearance="@style/CustomText"
+        app:abb_tabs="@menu/clock_tabs" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="32dp" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select" />
+        android:text="Add to start" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/deselect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Deselect" />
+        android:text="Remove last" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/select_first"
@@ -91,9 +115,4 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select last" />
-    <TextView
-        android:id="@+id/logs"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:singleLine="false" />
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -10,7 +10,7 @@ import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 internal object BottomBarStyle {
     data class Tab(
         // Type
-        var selectedTabType: AnimatedBottomBar.TabType = AnimatedBottomBar.TabType.TEXT,
+        var selectedTabType: AnimatedBottomBar.TabType = AnimatedBottomBar.TabType.ICON,
 
         // Animations
         var tabAnimationSelected: AnimatedBottomBar.TabAnimation = AnimatedBottomBar.TabAnimation.SLIDE,
