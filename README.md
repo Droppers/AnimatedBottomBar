@@ -78,7 +78,7 @@ Create a file named `tabs.xml` in the `res/menu/` resources folder:
 
 Get notified when the selected tab changes:
 ```java
-bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
+bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
     override fun onTabSelected(
         lastIndex: Int,
         lastTab: AnimatedBottomBar.Tab?,
@@ -134,7 +134,7 @@ AnimatedBottomBar.selectTabAt(1)
 Could be useful for example restricting access to a premium area.
 
 ```kotlin
-bottom_bar.setTabInterceptListener(object : AnimatedBottomBar.TabInterceptListener {
+bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptListener {
     override fun onTabIntercepted(
         lastIndex: Int,
         lastTab: AnimatedBottomBar.Tab?,
