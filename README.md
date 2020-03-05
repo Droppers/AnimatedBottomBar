@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-   compile 'nl.joery.animatedbottombar:0.0.1'
+   implementation 'com.github.Droppers:AnimatedBottomBar:1.0.0'
 }
 ```
 
