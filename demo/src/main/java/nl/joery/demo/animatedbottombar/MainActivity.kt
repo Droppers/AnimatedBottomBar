@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         val bottomBars = arrayOf(bottom_bar, bottom_bar2, bottom_bar3, bottom_bar4)
 
-        bottom_bar.setTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
+        bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
             override fun onTabSelected(
                 lastIndex: Int,
                 lastTab: AnimatedBottomBar.Tab?,

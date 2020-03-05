@@ -128,7 +128,7 @@ internal class TabAdapter(
         newIndex: Int,
         newTab: AnimatedBottomBar.Tab
     ): Boolean {
-        return bottomBar.tabInterceptListener?.onTabIntercepted(
+        return bottomBar.onTabInterceptListener?.onTabIntercepted(
             lastIndex,
             lastTab,
             newIndex,

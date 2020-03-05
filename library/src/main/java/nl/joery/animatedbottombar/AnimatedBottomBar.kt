@@ -23,8 +23,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
-    private var tabSelectListener: TabSelectListener? = null
-    internal var tabInterceptListener: TabInterceptListener? = null
+    private var onTabSelectListener: OnTabSelectListener? = null
+    internal var onTabInterceptListener: OnTabInterceptListener? = null
 
     internal val tabStyle: BottomBarStyle.Tab by lazy { BottomBarStyle.Tab() }
     internal val indicatorStyle: BottomBarStyle.Indicator by lazy { BottomBarStyle.Indicator() }
@@ -175,7 +175,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.onTabSelected =
             { lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab, animated: Boolean ->
                 tabIndicator.setSelectedIndex(lastIndex, newIndex, animated)
-                tabSelectListener?.onTabSelected(lastIndex, lastTab, newIndex, newTab)
+                onTabSelectListener?.onTabSelected(lastIndex, lastTab, newIndex, newTab)
             }
         recycler.adapter = adapter
     }
@@ -219,60 +219,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
         recycler.postInvalidate()
     }
 
-    fun setTabSelectListener(itemSelectListener: TabSelectListener) {
-        this.tabSelectListener = itemSelectListener
+    fun setOnTabSelectListener(itemSelectListenerOn: OnTabSelectListener) {
+        this.onTabSelectListener = itemSelectListenerOn
     }
 
-    fun setTabInterceptListener(tabInterceptListener: TabInterceptListener) {
-        this.tabInterceptListener = tabInterceptListener
-    }
-
-    fun createTab(icon: Drawable, text: String, id: Int = -1): Tab {
-        return Tab(icon, text, id)
-    }
-
-    fun createTab(@DrawableRes iconRes: Int, text: String, id: Int = -1): Tab {
-        val icon = ContextCompat.getDrawable(context, iconRes)
-        return createTab(icon!!, text, id)
-    }
-
-    fun createTab(@DrawableRes iconRes: Int, @StringRes textRes: Int, id: Int = -1): Tab {
-        val text = context.getString(textRes)
-        return createTab(iconRes, text, id)
-    }
-
-    fun addTab(tab: Tab) {
-        adapter.addTab(tab)
-    }
-
-    fun addTabAt(tabIndex: Int, tab: Tab) {
-        adapter.addTab(tab, tabIndex)
-    }
-
-    fun removeTab(tab: Tab) {
-        adapter.removeTab(tab)
-    }
-
-    fun removeTabAt(tabIndex: Int) {
-        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
-            throw IndexOutOfBoundsException("Tab index is out of bounds.")
-        }
-
-        val tab = adapter.tabs[tabIndex]
-        adapter.removeTab(tab)
-    }
-
-    fun selectTabAt(tabIndex: Int, animate: Boolean = true) {
-        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
-            throw IndexOutOfBoundsException("Tab index is out of bounds.")
-        }
-
-        val tab = adapter.tabs[tabIndex]
-        selectTab(tab, animate)
-    }
-
-    fun selectTab(tab: Tab, animate: Boolean = true) {
-        adapter.selectTab(tab, animate)
+    fun setOnTabInterceptListener(onTabInterceptListener: OnTabInterceptListener) {
+        this.onTabInterceptListener = onTabInterceptListener
     }
 
     private fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {
@@ -283,19 +235,135 @@ class AnimatedBottomBar @JvmOverloads constructor(
         tabIndicator.applyStyle()
     }
 
+    /**
+     * Creates a new [Tab] instance with the given parameters.
+     *
+     * @param icon A drawable of the tab icon.
+     * @param title The title of the tab.
+     * @param id A unique identifier of a tab.
+     */
+    fun createTab(icon: Drawable, text: String, @IdRes id: Int = -1): Tab {
+        return Tab(icon, text, id)
+    }
+
+    /**
+     * Creates a new [Tab] instance with the given parameters.
+     *
+     * @param iconRes A drawable resource of the tab icon.
+     * @param title The title of the tab.
+     * @param id A unique identifier of a tab.
+     */
+    fun createTab(@DrawableRes iconRes: Int, title: String, @IdRes id: Int = -1): Tab {
+        val icon = ContextCompat.getDrawable(context, iconRes)
+        return createTab(icon!!, title, id)
+    }
+
+    /**
+     * Creates a new [Tab] instance with the given parameters.
+     *
+     * @param iconRes A drawable resource of the tab icon.
+     * @param title A string resourceRes of the tab title.
+     * @param id A unique identifier of a tab.
+     */
+    fun createTab(@DrawableRes iconRes: Int, @StringRes titleRes: Int, @IdRes id: Int = -1): Tab {
+        val title = context.getString(titleRes)
+        return createTab(iconRes, title, id)
+    }
+
+    /**
+     * Appends the given tab to the end of the BottomBar.
+     *
+     * @param tab The [Tab] to be appended.
+     */
+    fun addTab(tab: Tab) {
+        adapter.addTab(tab)
+    }
+
+    /**
+     * Adds the given tab to the specified [tabIndex].
+     *
+     * @param tabIndex The index the tab needs to be added at.
+     * @param tab The [Tab] to be appended.
+     */
+    fun addTabAt(tabIndex: Int, tab: Tab) {
+        adapter.addTab(tab, tabIndex)
+    }
+
+    /**
+     * Remove a tab from the BottomBar by [Tab] instance, use [tabs] to retrieve a list of tabs.
+     *
+     * @param tab The [Tab] instance to be removed.
+     */
+    fun removeTab(tab: Tab) {
+        adapter.removeTab(tab)
+    }
+
+    /**
+     * Remove a tab from the BottomBar by the specified [tabIndex] index.
+     *
+     * @param tabIndex The index of the tab to be removed.
+     */
+    fun removeTabAt(tabIndex: Int) {
+        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+            throw IndexOutOfBoundsException("Tab index is out of bounds.")
+        }
+
+        val tab = adapter.tabs[tabIndex]
+        adapter.removeTab(tab)
+    }
+
+    /**
+     * Select a tab on the BottomBar by the specified [tabIndex] index.
+     *
+     * @param tabIndex The index of the tab to be selected.
+     */
+    fun selectTabAt(tabIndex: Int, animate: Boolean = true) {
+        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+            throw IndexOutOfBoundsException("Tab index is out of bounds.")
+        }
+
+        val tab = adapter.tabs[tabIndex]
+        selectTab(tab, animate)
+    }
+
+    /**
+     * Select a tab on the BottomBar by [Tab] instance, use [tabs] to retrieve a list of tabs.
+     *
+     * @param tab The [Tab] instance to be selected.
+     */
+    fun selectTab(tab: Tab, animate: Boolean = true) {
+        adapter.selectTab(tab, animate)
+    }
+
+    /**
+     * Retrieve a list of all tabs.
+     */
     val tabs
         get() = ArrayList(adapter.tabs)
 
+    /**
+     * Get the amount of tabs.
+     */
     val tabCount
         get() = adapter.tabs.size
 
+    /**
+     * Get the currently selected [Tab] instance.
+     *
+     * @return Null when no tab is selected.
+     */
     val selectedTab
         get() = adapter.selectedTab
 
+    /**
+     * Get the currently selected tab index.
+     *
+     * @return -1 when no tab is selected.
+     */
     val selectedIndex
         get() = adapter.selectedIndex
 
-    // Item type
+
     var selectedTabType
         get() = tabStyle.selectedTabType
         set(value) {
@@ -303,7 +371,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyTabStyle(BottomBarStyle.StyleUpdateType.TAB_TYPE)
         }
 
-    // Animations
+
     var tabAnimationSelected
         get() = tabStyle.tabAnimationSelected
         set(value) {
@@ -339,7 +407,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             animationInterpolator = AnimationUtils.loadInterpolator(context, value)
         }
 
-    // Ripple
+
     var rippleEnabled
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         get() = tabStyle.rippleEnabled
@@ -367,7 +435,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             rippleColor = ContextCompat.getColor(context, value)
         }
 
-    // Colors
+
     var tabColorSelected
         @ColorInt
         get() = tabStyle.tabColorSelected
@@ -398,7 +466,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             tabColor = ContextCompat.getColor(context, value)
         }
 
-    // Text appearance
+
     var textAppearance
         @StyleRes
         get() = tabStyle.textAppearance
@@ -535,11 +603,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
     }
 
-    interface TabSelectListener {
+    interface OnTabSelectListener {
         fun onTabSelected(lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab)
     }
 
-    interface TabInterceptListener {
+    interface OnTabInterceptListener {
         fun onTabIntercepted(lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab): Boolean
     }
 }
