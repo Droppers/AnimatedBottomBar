@@ -65,6 +65,8 @@ internal class TabIndicator(
             } else {
                 drawIndicator(c, newView.left.toFloat(), newView.width.toFloat())
             }
+        } else {
+            drawIndicator(c, newView.left.toFloat(), newView.width.toFloat())
         }
     }
 
