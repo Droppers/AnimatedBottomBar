@@ -345,7 +345,7 @@ An overview of all configuration options. All options can also be accessed and s
 </table>
 
 ## Credits
-- https://www.uplabs.com/posts/officialfoldingtabbar-android<br>For the awesome concept :)
+- https://dribbble.com/shots/6130593-Readable-Tab-Bar<br>For the awesome concept :)
 - https://github.com/iammert/ReadableBottomBar<br>Awesome library, but it was lacking the configurability I needed for my own project.
 
 ## License
