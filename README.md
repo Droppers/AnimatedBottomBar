@@ -1,4 +1,5 @@
 # AnimatedBottomBar
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16) 
 [![](https://jitpack.io/v/Droppers/AnimatedBottomBar.svg)](https://jitpack.io/#Droppers/AnimatedBottomBar)
 [![](https://jitci.com/gh/Droppers/AnimatedBottomBar/svg)](https://jitci.com/gh/Droppers/AnimatedBottomBar)
@@ -34,7 +35,7 @@ repositories {
 }
 
 dependencies {
-   compile 'nl.joery.animatedbottombar:0.0.1'
+   implementation 'com.github.Droppers:AnimatedBottomBar:1.0.0'
 }
 ```
 
@@ -78,7 +79,7 @@ Create a file named `tabs.xml` in the `res/menu/` resources folder:
 
 Get notified when the selected tab changes:
 ```java
-bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.TabSelectListener {
+bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
     override fun onTabSelected(
         lastIndex: Int,
         lastTab: AnimatedBottomBar.Tab?,
@@ -134,7 +135,7 @@ AnimatedBottomBar.selectTabAt(1)
 Could be useful for example restricting access to a premium area.
 
 ```kotlin
-bottom_bar.setTabInterceptListener(object : AnimatedBottomBar.TabInterceptListener {
+bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptListener {
     override fun onTabIntercepted(
         lastIndex: Int,
         lastTab: AnimatedBottomBar.Tab?,
