@@ -27,16 +27,10 @@ Download the app showcasing the examples: [demo.apk](./media/demo.apk)
 <img src="./media/getting-started-demo.gif" width="400" />
 
 
-In your build.gradle:
+Add the following dependency to your <b>build.gradle</b>:
 
 ```gradle
-repositories {
-    maven { url 'https://jitpack.io' }
-}
-
-dependencies {
-   implementation 'com.github.Droppers:AnimatedBottomBar:1.0.0'
-}
+implementation 'nl.joery.animatedbottombar:library:1.0.0'
 ```
 
 Define `AnimatedBottomBar` in your XML layout with custom attributes.
@@ -55,7 +49,6 @@ Define `AnimatedBottomBar` in your XML layout with custom attributes.
 ```
 
 Create a file named `tabs.xml` in the `res/menu/` resources folder:
-
 ```xml
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item

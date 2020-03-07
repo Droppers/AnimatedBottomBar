@@ -1,6 +1,30 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+ext {
+    bintrayRepo = "AnimatedBottomBar"
+    bintrayName = "nl.joery.animatedbottombar"
+
+    publishedGroupId = 'nl.joery.animatedbottombar'
+    libraryName = 'library'
+    artifact = 'library'
+
+    libraryVersion = '1.0.0'
+    libraryDescription = 'A customizable and easy to use BottomBar navigation view with sleek animations.'
+    siteUrl = 'https://github.com/Droppers/AnimatedBottomBar'
+    gitUrl = 'https://github.com/Droppers/AnimatedBottomBar.git'
+
+    developerId = 'Droppers'
+    developerName = 'Joery Droppers'
+    developerEmail = 'mail@joery.nl'
+
+    licenseName = 'The MIT License'
+    licenseUrl = 'https://github.com/Droppers/AnimatedBottomBar/blob/master/LICENSE'
+    allLicenses = ["MIT"]
+}
 
 android {
     compileSdkVersion 29
@@ -21,6 +45,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -37,5 +62,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
 
+if (project.rootProject.file('local.properties').exists()) {
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/jcenter/master/installv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/jcenter/master/bintrayv1.gradle'
 }
