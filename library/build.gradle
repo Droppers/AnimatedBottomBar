@@ -12,7 +12,7 @@ ext {
     libraryName = 'library'
     artifact = 'library'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
     libraryDescription = 'A customizable and easy to use BottomBar navigation view with sleek animations.'
     siteUrl = 'https://github.com/Droppers/AnimatedBottomBar'
     gitUrl = 'https://github.com/Droppers/AnimatedBottomBar.git'
@@ -33,7 +33,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName libraryVersion
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -49,6 +49,8 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+
+        kotlinOptions.freeCompilerArgs += ['-module-name', "${publishedGroupId}.${artifact}"]
     }
 }
 
@@ -66,5 +68,5 @@ dependencies {
 
 if (project.rootProject.file('local.properties').exists()) {
     apply from: 'https://raw.githubusercontent.com/nuuneoi/jcenter/master/installv1.gradle'
-    apply from: 'https://raw.githubusercontent.com/nuuneoi/jcenter/master/bintrayv1.gradle'
+    apply from: '../publish.gradle'
 }

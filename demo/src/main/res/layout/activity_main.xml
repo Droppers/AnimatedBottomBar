@@ -96,27 +96,77 @@
         android:layout_width="match_parent"
         android:layout_height="32dp" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/select"
-        android:layout_width="wrap_content"
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/bottom_bar5"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add to start" />
+        android:background="#FFF"
+        app:abb_animationDuration="400"
+        app:abb_indicatorAnimation="fade"
+        app:abb_selectedIndex="1"
+        app:abb_indicatorHeight="4dp"
+        app:abb_tabAnimationSelected="fade"
+        app:abb_tabAnimation="fade"
+        app:abb_selectedTabType="text"
+        app:abb_indicatorAppearance="round"
+        app:abb_indicatorMargin="8dp"
+        app:abb_tabColorSelected="#000"
+        app:abb_tabColor="#CC000000"
+        app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"
+        app:abb_tabs="@menu/clock_tabs" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/deselect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Remove last" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/select_first"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select first" />
+        android:layout_margin="16dp">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/select_last"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select last" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to start"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/deselect"
+            app:layout_constraintTop_toBottomOf="@+id/select_last" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/deselect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove last"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/select"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_first" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/select_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select first"
+            app:layout_constraintBottom_toTopOf="@+id/deselect"
+            app:layout_constraintEnd_toStartOf="@+id/select_last"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/select_last"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select last"
+            app:layout_constraintBottom_toTopOf="@+id/select"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/select_first"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
