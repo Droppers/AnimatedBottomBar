@@ -1,7 +1,8 @@
 # AnimatedBottomBar
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16) 
-[ ![Download](https://api.bintray.com/packages/droppers/AnimatedBottomBar/nl.joery.animatedbottombar/images/download.svg) ](https://bintray.com/droppers/AnimatedBottomBar/nl.joery.animatedbottombar/_latestVersion)
+[![Download](https://api.bintray.com/packages/droppers/AnimatedBottomBar/nl.joery.animatedbottombar/images/download.svg) ](https://bintray.com/droppers/AnimatedBottomBar/nl.joery.animatedbottombar/_latestVersion)
+![androidweekly.net](https://androidweekly.net/issues/issue-404/badge)
 
 A customizable and easy to use bottom bar view with sleek animations.
 
@@ -29,7 +30,7 @@ Download the app showcasing the examples: [demo.apk](./media/demo.apk)
 Add the following dependency to your <b>build.gradle</b>:
 
 ```gradle
-implementation 'nl.joery.animatedbottombar:library:1.0.0'
+implementation 'nl.joery.animatedbottombar:library:1.0.1'
 ```
 
 Define `AnimatedBottomBar` in your XML layout with custom attributes.
