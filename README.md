@@ -21,6 +21,7 @@ Download the app showcasing the examples: [demo.apk](./media/demo.apk)
 ## Contents
 - [Getting started](#getting-started)
 - [Managing tabs](#managing-tabs)
+- [Usage with ViewPager](#usage-with-viewpager)
 - [Configuration](#configuration)
 
 ## Getting started
@@ -92,8 +93,8 @@ Short overview on how to manage tabs using code.
 // Creating a tab by passing values
 val bottomBarTab1 = AnimatedBottomBar.createTab(drawable, "Tab 1")
 
-// Creating a tab by passing Resource IDs
-val bottomBarTab2 = AnimatedBottomBar.createTab(R.drawable.ic_home, R.string.tab_2)
+// Creating a tab by passing resources
+val bottomBarTab2 = AnimatedBottomBar.createTab(R.drawable.ic_home, R.string.tab_2, R.id.tab_home)
 ```
 ### Adding new tabs
 ```kotlin 
@@ -112,6 +113,9 @@ AnimatedBottomBar.removeTab(tabToRemove)
 
 // Removing a tab at a specific position
 AnimatedBottomBar.removeTabAt(tabPosition)
+
+// Removing a tab by the given ID resource
+AnimatedBottomBar.removeTabById(R.id.tab_home)
 ```
 
 ### Selecting tabs
@@ -122,6 +126,9 @@ AnimatedBottomBar.selectTab(tabToSelect)
 
 // Selecting a tab at a specific position
 AnimatedBottomBar.selectTabAt(1)
+
+// Selecting a tab by the given ID resource
+AnimatedBottomBar.selectTabById(R.id.tab_home)
 ```
 
 ### Intercepting tabs
@@ -142,6 +149,14 @@ bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptLi
         return false
     }
 })
+```
+
+## Usage with ViewPager
+It is easy to use the BottomBar with a ViewPager, you can simply use the `setupWithViewPager()` method. Please note that the number of tabs and ViewPager pages need to be identical in order for it to function properly.
+
+<b>Usage</b>
+```kotlin
+bottom_bar.setupWithViewPager(yourViewPager);
 ```
 
 ## Configuration
