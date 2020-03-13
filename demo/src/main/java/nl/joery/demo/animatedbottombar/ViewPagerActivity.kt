@@ -24,7 +24,7 @@ class ViewPagerActivity : FragmentActivity() {
         }
 
         override fun getCount(): Int {
-            return 4
+            return 5
         }
     }
 }

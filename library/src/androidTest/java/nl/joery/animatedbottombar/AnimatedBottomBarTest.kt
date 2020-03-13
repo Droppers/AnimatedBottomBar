@@ -15,7 +15,7 @@ class AnimatedBottomBarTest {
         bottomBar.addTab(bottomBar.createTab(R.drawable.alarm, "Tab 1", 1))
         bottomBar.addTab(bottomBar.createTab(R.drawable.alarm, "Tab 2", 2))
         bottomBar.addTab(bottomBar.createTab(R.drawable.alarm, "Tab 3", 3))
-        bottomBar.addTab(bottomBar.createTab(R.drawable.alarm, "Tab 4", 4))
+        bottomBar.addTab(bottomBar.createTab(R.drawable.alarm, "Tab 4", R.id.tab_with_id))
         return bottomBar
     }
 
@@ -61,6 +61,17 @@ class AnimatedBottomBarTest {
     }
 
     @Test
+    fun removeTabWithId() {
+        val bottomBar = setupBottomBar()
+        bottomBar.removeTabById(R.id.tab_with_id)
+
+        assertEquals(3, bottomBar.tabCount)
+        for (tab in bottomBar.tabs) {
+            assertNotEquals(R.id.tab_with_id, tab.id)
+        }
+    }
+
+    @Test
     fun removeTabAtEmpty() {
         try {
             val bottomBar = setupEmptyBottomBar()
@@ -83,7 +94,7 @@ class AnimatedBottomBarTest {
     }
 
     @Test
-    fun selectTabByIndex() {
+    fun selectTabAt() {
         val bottomBar = setupBottomBar()
         bottomBar.selectTabAt(1, false)
         assertEquals(1, bottomBar.selectedIndex)
@@ -92,7 +103,16 @@ class AnimatedBottomBarTest {
     }
 
     @Test
-    fun selectTabByIndexOutOfBounds() {
+    fun selectTabById() {
+        val bottomBar = setupBottomBar()
+        bottomBar.selectTabById(1, false)
+        assertEquals(1, bottomBar.selectedIndex)
+        bottomBar.selectTabById(R.id.tab_with_id, false)
+        assertEquals(R.id.tab_with_id, bottomBar.selectedTab?.id)
+    }
+
+    @Test
+    fun selectTabAtIndexOutOfBounds() {
         try {
             val bottomBar = setupBottomBar()
             bottomBar.selectTabAt(100)

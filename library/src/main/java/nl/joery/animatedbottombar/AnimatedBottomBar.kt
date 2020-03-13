@@ -247,8 +247,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param title The title of the tab.
      * @param id A unique identifier of a tab.
      */
-    fun createTab(icon: Drawable, text: String, @IdRes id: Int = -1): Tab {
-        return Tab(icon, text, id)
+    fun createTab(icon: Drawable, title: String, @IdRes id: Int = -1): Tab {
+        return Tab(icon, title, id)
     }
 
     /**
@@ -267,7 +267,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * Creates a new [Tab] instance with the given parameters.
      *
      * @param iconRes A drawable resource of the tab icon.
-     * @param title A string resourceRes of the tab title.
+     * @param titleRes A string resourceRes of the tab title.
      * @param id A unique identifier of a tab.
      */
     fun createTab(@DrawableRes iconRes: Int, @StringRes titleRes: Int, @IdRes id: Int = -1): Tab {
@@ -295,25 +295,35 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     /**
-     * Remove a tab from the BottomBar by [Tab] instance, use [tabs] to retrieve a list of tabs.
-     *
-     * @param tab The [Tab] instance to be removed.
-     */
-    fun removeTab(tab: Tab) {
-        adapter.removeTab(tab)
-    }
-
-    /**
      * Remove a tab from the BottomBar by the specified [tabIndex] index.
      *
      * @param tabIndex The index of the tab to be removed.
      */
     fun removeTabAt(tabIndex: Int) {
         if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
-            throw IndexOutOfBoundsException("Tab index is out of bounds.")
+            throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
         val tab = adapter.tabs[tabIndex]
+        removeTab(tab)
+    }
+
+    /**
+     * Remove a tab from the BottomBar by the specified tab [id].
+     *
+     * @param id The id of the tab to be removed.
+     */
+    fun removeTabById(@IdRes id: Int) {
+        val tab = findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
+        removeTab(tab)
+    }
+
+    /**
+     * Remove a tab from the BottomBar by [Tab] instance, use [tabs] to retrieve a list of tabs.
+     *
+     * @param tab The [Tab] instance to be removed.
+     */
+    fun removeTab(tab: Tab) {
         adapter.removeTab(tab)
     }
 
@@ -324,10 +334,20 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun selectTabAt(tabIndex: Int, animate: Boolean = true) {
         if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
-            throw IndexOutOfBoundsException("Tab index is out of bounds.")
+            throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
         val tab = adapter.tabs[tabIndex]
+        selectTab(tab, animate)
+    }
+
+    /**
+     * Select a tab on the BottomBar by the specified tab [id].
+     *
+     * @param id The id of the tab to be selected.
+     */
+    fun selectTabById(@IdRes id: Int, animate: Boolean = true) {
+        val tab = findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
         selectTab(tab, animate)
     }
 
@@ -338,6 +358,16 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun selectTab(tab: Tab, animate: Boolean = true) {
         adapter.selectTab(tab, animate)
+    }
+
+    private fun findTabWithId(@IdRes id: Int): Tab? {
+        for (tab in tabs) {
+            if (tab.id == id) {
+                return tab
+            }
+        }
+
+        return null
     }
 
     /**
@@ -375,7 +405,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         get() = ArrayList(adapter.tabs)
 
     /**
-     * Get the amount of tabs.
+     * Get the number of tabs in the BottomBar.
      */
     val tabCount
         get() = adapter.tabs.size
@@ -383,7 +413,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     /**
      * Get the currently selected [Tab] instance.
      *
-     * @return Null when no tab is selected.
+     * @return Currently selected tab, null when no tab is selected.
      */
     val selectedTab
         get() = adapter.selectedTab
@@ -391,7 +421,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     /**
      * Get the currently selected tab index.
      *
-     * @return -1 when no tab is selected.
+     * @return Currently selected tab index, -1 when no tab is selected.
      */
     val selectedIndex
         get() = adapter.selectedIndex
