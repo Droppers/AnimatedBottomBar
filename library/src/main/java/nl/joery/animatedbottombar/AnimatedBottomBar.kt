@@ -12,6 +12,7 @@ import android.widget.FrameLayout
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -32,6 +33,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: TabAdapter
     private lateinit var tabIndicator: TabIndicator
+
+    private var viewPager: ViewPager? = null
 
     init {
         minimumHeight = 64.px
@@ -176,6 +179,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
             { lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab, animated: Boolean ->
                 tabIndicator.setSelectedIndex(lastIndex, newIndex, animated)
                 onTabSelectListener?.onTabSelected(lastIndex, lastTab, newIndex, newTab)
+
+                viewPager?.currentItem = newIndex
             }
         recycler.adapter = adapter
     }
@@ -333,6 +338,34 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun selectTab(tab: Tab, animate: Boolean = true) {
         adapter.selectTab(tab, animate)
+    }
+
+    /**
+     * This method will link the given ViewPager and this AnimatedBottomBar together so that changes in one are automatically reflected in the other. This includes scroll state changes and clicks.
+     *
+     * @param viewPager The ViewPager to link to, or null to clear any previous link
+     */
+    fun setupWithViewPager(viewPager: ViewPager?) {
+        this.viewPager = viewPager
+
+        if (viewPager != null) {
+            selectTabAt(viewPager.currentItem, false)
+            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+
+                override fun onPageScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    selectTabAt(position)
+                }
+            })
+        }
     }
 
     /**

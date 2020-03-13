@@ -1,10 +1,15 @@
 package nl.joery.demo.animatedbottombar
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.joery.animatedbottombar.AnimatedBottomBar
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,6 +58,10 @@ class MainActivity : AppCompatActivity() {
             for (bottomBar in bottomBars) {
                 bottomBar.selectTabAt(bottom_bar.tabCount - 1)
             }
+        }
+
+        open_view_pager.setOnClickListener {
+            startActivity(Intent(this, ViewPagerActivity::class.java))
         }
     }
 }
