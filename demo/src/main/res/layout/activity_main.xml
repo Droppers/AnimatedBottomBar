@@ -23,7 +23,7 @@
         app:abb_indicatorHeight="4dp"
         app:abb_indicatorLocation="bottom"
         app:abb_indicatorMargin="16dp"
-        app:abb_selectedTabId="@id/test"
+        app:abb_selectedIndex="1"
         app:abb_selectedTabType="icon"
         app:abb_tabAnimation="slide"
         app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"

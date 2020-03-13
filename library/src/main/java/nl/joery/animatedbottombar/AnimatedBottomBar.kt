@@ -157,7 +157,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
             // Initials tabs
             val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1)
             val initialIndex = attr.getInt(R.styleable.AnimatedBottomBar_abb_selectedIndex, -1)
-            val initialTabId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_selectedTabId, -1)
+            val initialTabId =
+                attr.getResourceId(R.styleable.AnimatedBottomBar_abb_selectedTabId, -1)
             initInitialTabs(tabsResId, initialIndex, initialTabId)
         } finally {
             attr.recycle()
@@ -212,8 +213,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         if (initialTabId != -1) {
             val tab = findTabWithId(initialTabId)
                 ?: throw IllegalArgumentException("Attribute 'selectedTabId', tab with this id does not exist.")
-
-            selectTabById(initialTabId, false)
+            selectTab(tab, false)
         }
     }
 

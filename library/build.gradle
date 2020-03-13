@@ -12,7 +12,7 @@ ext {
     libraryName = 'library'
     artifact = 'library'
 
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.0.2'
     libraryDescription = 'A customizable and easy to use BottomBar navigation view with sleek animations.'
     siteUrl = 'https://github.com/Droppers/AnimatedBottomBar'
     gitUrl = 'https://github.com/Droppers/AnimatedBottomBar.git'
