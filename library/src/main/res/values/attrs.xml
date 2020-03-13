@@ -43,6 +43,7 @@
 
         <attr name="abb_tabs" format="reference" />
         <attr name="abb_selectedIndex" format="integer" />
+        <attr name="abb_selectedTabId" format="reference" />
 
         <attr name="abb_rippleEnabled" format="boolean" />
         <attr name="abb_rippleColor" format="color" />

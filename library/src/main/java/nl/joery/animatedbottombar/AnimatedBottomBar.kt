@@ -157,7 +157,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
             // Initials tabs
             val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1)
             val initialIndex = attr.getInt(R.styleable.AnimatedBottomBar_abb_selectedIndex, -1)
-            initInitialTabs(tabsResId, initialIndex)
+            val initialTabId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_selectedTabId, -1)
+            initInitialTabs(tabsResId, initialIndex, initialTabId)
         } finally {
             attr.recycle()
         }
@@ -190,7 +191,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         recycler.addItemDecoration(tabIndicator)
     }
 
-    private fun initInitialTabs(tabsResId: Int, initialIndex: Int) {
+    private fun initInitialTabs(tabsResId: Int, initialIndex: Int, initialTabId: Int) {
         if (tabsResId == -1) {
             return
         }
@@ -202,10 +203,17 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
         if (initialIndex != -1) {
             if (initialIndex < 0 || initialIndex > adapter.tabs.size - 1) {
-                throw IndexOutOfBoundsException("Attribute 'selectedIndex' is out of bounds.")
+                throw IndexOutOfBoundsException("Attribute 'selectedIndex' ($initialIndex) is out of bounds.")
             } else {
                 selectTabAt(initialIndex, false)
             }
+        }
+
+        if (initialTabId != -1) {
+            val tab = findTabWithId(initialTabId)
+                ?: throw IllegalArgumentException("Attribute 'selectedTabId', tab with this id does not exist.")
+
+            selectTabById(initialTabId, false)
         }
     }
 
@@ -314,7 +322,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param id The id of the tab to be removed.
      */
     fun removeTabById(@IdRes id: Int) {
-        val tab = findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
+        val tab =
+            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
         removeTab(tab)
     }
 
@@ -347,7 +356,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param id The id of the tab to be selected.
      */
     fun selectTabById(@IdRes id: Int, animate: Boolean = true) {
-        val tab = findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
+        val tab =
+            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
         selectTab(tab, animate)
     }
 
@@ -591,7 +601,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyIndicatorStyle()
         }
 
-    class Tab internal constructor(val icon: Drawable, val title: String, val id: Int = -1)
+    class Tab internal constructor(val icon: Drawable, val title: String, @IdRes val id: Int = -1)
 
     enum class TabType(val id: Int) {
         TEXT(0),
