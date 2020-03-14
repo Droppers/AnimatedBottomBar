@@ -52,7 +52,6 @@ internal class TabView @JvmOverloads constructor(
             BottomBarStyle.StyleUpdateType.ANIMATIONS ->
                 updateAnimations()
             BottomBarStyle.StyleUpdateType.COLORS -> {
-                updateActiveColors()
                 updateColors()
             }
             BottomBarStyle.StyleUpdateType.RIPPLE -> {
@@ -79,26 +78,16 @@ internal class TabView @JvmOverloads constructor(
         activeAnimatedView.bringToFront()
     }
 
-    private fun updateActiveColors() {
+    private fun updateColors() {
         if (style.selectedTabType == AnimatedBottomBar.TabType.ICON) {
             ImageViewCompat.setImageTintList(
                 imageView,
                 ColorStateList.valueOf(style.tabColorSelected)
             )
-        }
-
-        if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
-            textView.setTextColor(style.tabColorSelected)
-        }
-    }
-
-    private fun updateColors() {
-        if (style.selectedTabType == AnimatedBottomBar.TabType.ICON) {
             textView.setTextColor(style.tabColor)
-        }
-
-        if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
+        } else if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
             ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(style.tabColor))
+            textView.setTextColor(style.tabColorSelected)
         }
     }
 

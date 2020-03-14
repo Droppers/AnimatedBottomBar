@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 internal class TabAdapter(
-    private val bottomBar: AnimatedBottomBar
+    private val bottomBar: AnimatedBottomBar,
+    private val recycler: RecyclerView
 ) :
     RecyclerView.Adapter<TabAdapter.TabHolder>() {
     var onTabSelected: ((lastIndex: Int, lastTab: AnimatedBottomBar.Tab?, newIndex: Int, newTab: AnimatedBottomBar.Tab, animated: Boolean) -> Unit)? =
@@ -45,7 +46,7 @@ internal class TabAdapter(
                 when (payload.type) {
                     PayloadType.ApplyStyle ->
                         holder.applyStyle(
-                            payloads[0] as BottomBarStyle.StyleUpdateType
+                            payload.value as BottomBarStyle.StyleUpdateType
                         )
                     PayloadType.SelectTab ->
                         holder.select(payload.value as Boolean)
@@ -96,15 +97,9 @@ internal class TabAdapter(
         selectedTab = tab
 
         if (lastIndex >= 0) {
-            notifyItemChanged(
-                lastIndex,
-                Payload(PayloadType.DeselectTab, animate)
-            )
+            findViewHolder(lastIndex)?.deselect(animate)
         }
-        notifyItemChanged(
-            newIndex,
-            Payload(PayloadType.SelectTab, animate)
-        )
+        findViewHolder(newIndex)?.select(animate)
 
         onTabSelected?.invoke(
             lastIndex,
@@ -135,6 +130,11 @@ internal class TabAdapter(
             newTab
         )
             ?: true
+    }
+
+    private fun findViewHolder(position: Int): TabHolder? {
+        val viewHolder = recycler.findViewHolderForAdapterPosition(position)
+        return if (viewHolder == null) null else viewHolder as TabHolder
     }
 
     inner class TabHolder(v: View) : RecyclerView.ViewHolder(v) {

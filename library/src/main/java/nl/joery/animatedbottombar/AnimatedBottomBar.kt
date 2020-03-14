@@ -13,6 +13,7 @@ import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -35,6 +36,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private lateinit var tabIndicator: TabIndicator
 
     private var viewPager: ViewPager? = null
+    private var viewPager2: ViewPager2? = null
 
     init {
         minimumHeight = 64.px
@@ -176,13 +178,14 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     private fun initAdapter() {
-        adapter = TabAdapter(this)
+        adapter = TabAdapter(this, recycler)
         adapter.onTabSelected =
             { lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab, animated: Boolean ->
                 tabIndicator.setSelectedIndex(lastIndex, newIndex, animated)
                 onTabSelectListener?.onTabSelected(lastIndex, lastTab, newIndex, newTab)
 
                 viewPager?.currentItem = newIndex
+                viewPager2?.currentItem = newIndex
             }
         recycler.adapter = adapter
     }
@@ -401,6 +404,24 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 ) {
                 }
 
+                override fun onPageSelected(position: Int) {
+                    selectTabAt(position)
+                }
+            })
+        }
+    }
+
+    /**
+     * This method will link the given ViewPager2 and this AnimatedBottomBar together so that changes in one are automatically reflected in the other. This includes scroll state changes and clicks.
+     *
+     * @param viewPager2 The ViewPager2 to link to, or null to clear any previous link
+     */
+    fun setupWithViewPager2(viewPager2: ViewPager2?) {
+        this.viewPager2 = viewPager2
+
+        if (viewPager2 != null) {
+            selectTabAt(viewPager2.currentItem, false)
+            viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     selectTabAt(position)
                 }

@@ -1,6 +1,7 @@
 package nl.joery.demo.animatedbottombar
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             for (bottomBar in bottomBars) {
                 bottomBar.selectTabAt(bottom_bar.tabCount - 1)
             }
+            bottom_bar.tabColor = Color.RED
         }
 
         open_view_pager.setOnClickListener {

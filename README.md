@@ -152,11 +152,15 @@ bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptLi
 ```
 
 ## Usage with ViewPager
-It is easy to use the BottomBar with a ViewPager, you can simply use the `setupWithViewPager()` method. Please note that the number of tabs and ViewPager pages need to be identical in order for it to function properly.
+It is easy to use the BottomBar with a ViewPager or ViewPager2, you can simply use the `setupWithViewPager()` method. Please note that the number of tabs and ViewPager pages need to be identical in order for it to function properly.
 
 <b>Usage</b>
 ```kotlin
+// For ViewPager use:
 bottom_bar.setupWithViewPager(yourViewPager);
+
+// For ViewPager2 use:
+bottom_bar.setupWithViewPager2(yourViewPager2);
 ```
 
 ## Configuration
@@ -186,6 +190,11 @@ An overview of all configuration options. All options can also be accessed and s
     <tr>
         <td><b>abb_selectedIndex</b></td>
         <td>Define the default selected tab index.</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><b>abb_selectedTabId</b></td>
+        <td>Define the default selected tab by its ID, for example <i>@id/tab_id</i></td>
         <td></td>
     </tr>
 </table>
