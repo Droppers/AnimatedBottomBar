@@ -5,14 +5,14 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
 ext {
-    bintrayRepo = "AnimatedBottomBar"
-    bintrayName = "nl.joery.animatedbottombar"
+    bintrayRepo = 'AnimatedBottomBar'
+    bintrayName = 'nl.joery.animatedbottombar'
 
     publishedGroupId = 'nl.joery.animatedbottombar'
-    libraryName = 'library'
+    libraryName = 'l1ibrary'
     artifact = 'library'
 
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.4'
     libraryDescription = 'A customizable and easy to use BottomBar navigation view with sleek animations.'
     siteUrl = 'https://github.com/Droppers/AnimatedBottomBar'
     gitUrl = 'https://github.com/Droppers/AnimatedBottomBar.git'
@@ -23,7 +23,7 @@ ext {
 
     licenseName = 'The MIT License'
     licenseUrl = 'https://github.com/Droppers/AnimatedBottomBar/blob/master/LICENSE'
-    allLicenses = ["MIT"]
+    allLicenses = ['MIT']
 }
 
 android {
@@ -35,8 +35,8 @@ android {
         versionCode 1
         versionName libraryVersion
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        consumerProguardFiles 'consumer-rules.pro'
     }
 
     buildTypes {
@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'

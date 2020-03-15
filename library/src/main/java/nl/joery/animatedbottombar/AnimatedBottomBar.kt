@@ -258,7 +258,10 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param title The title of the tab.
      * @param id A unique identifier of a tab.
      */
-    fun createTab(icon: Drawable, title: String, @IdRes id: Int = -1): Tab {
+    fun createTab(icon: Drawable?, title: String, @IdRes id: Int = -1): Tab {
+        if (icon == null) {
+            throw IllegalArgumentException("Icon drawable cannot be null.")
+        }
         return Tab(icon, title, id)
     }
 
@@ -271,7 +274,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun createTab(@DrawableRes iconRes: Int, title: String, @IdRes id: Int = -1): Tab {
         val icon = ContextCompat.getDrawable(context, iconRes)
-        return createTab(icon!!, title, id)
+        return createTab(icon, title, id)
     }
 
     /**

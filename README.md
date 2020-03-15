@@ -31,7 +31,7 @@ Download the app showcasing the examples: [demo.apk](./media/demo.apk)
 Add the following dependency to your <b>build.gradle</b>:
 
 ```gradle
-implementation 'nl.joery.animatedbottombar:library:1.0.2'
+implementation 'nl.joery.animatedbottombar:library:1.0.4'
 ```
 
 Define `AnimatedBottomBar` in your XML layout with custom attributes.

@@ -150,14 +150,14 @@ internal class TabIndicator(
             return
         }
 
-        if (!animate || lastIndex == -1) {
+        val newView = parent.getChildAt(newIndex)
+        if (!animate || lastIndex == -1 || newView == null) {
             parent.postInvalidate()
             return
         }
 
         lastSelectedIndex = lastIndex
 
-        val newView = parent.getChildAt(newIndex)
         animator = ValueAnimator.ofFloat(currentLeft, newView.left.toFloat()).apply {
             duration = bottomBar.tabStyle.animationDuration.toLong()
             interpolator = bottomBar.tabStyle.animationInterpolator
