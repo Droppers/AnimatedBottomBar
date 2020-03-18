@@ -3,6 +3,7 @@ package nl.joery.animatedbottombar
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Matrix
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Build
@@ -10,6 +11,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.view.animation.Transformation
 import android.view.animation.TranslateAnimation
 import android.widget.FrameLayout
 import androidx.core.widget.ImageViewCompat
@@ -125,6 +127,8 @@ internal class TabView @JvmOverloads constructor(
     }
 
     fun select(animate: Boolean = true) {
+        updateAnimations()
+
         if (animate && style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
             activeAnimatedView.startAnimation(activeInAnimation)
         } else {
@@ -139,6 +143,8 @@ internal class TabView @JvmOverloads constructor(
     }
 
     fun deselect(animate: Boolean = true) {
+        updateAnimations()
+
         if (animate && style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
             activeAnimatedView.startAnimation(activeOutAnimation)
         } else {
@@ -158,6 +164,10 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun updateAnimations() {
+        if (style.tabAnimation == AnimatedBottomBar.TabAnimation.NONE) {
+            return
+        }
+
         activeInAnimation = getActiveAnimation(AnimationDirection.IN)?.apply {
             duration = style.animationDuration.toLong()
             interpolator = style.animationInterpolator
@@ -225,12 +235,15 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun getActiveAnimation(direction: AnimationDirection): Animation? {
+        val transformation = getTransformation(activeAnimatedView)
         if (style.tabAnimationSelected == AnimatedBottomBar.TabAnimation.SLIDE) {
-            val deltaYFrom = if (direction == AnimationDirection.IN) height.toFloat() else 0f
+            val deltaYFrom =
+                if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) height.toFloat() else 0f)
             val deltaYTo = if (direction == AnimationDirection.IN) 0f else height.toFloat()
             return TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
         } else if (style.tabAnimationSelected == AnimatedBottomBar.TabAnimation.FADE) {
-            val alphaFrom = if (direction == AnimationDirection.IN) 0f else 1f
+            val alphaFrom =
+                transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
             val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f
             return AlphaAnimation(alphaFrom, alphaTo)
         }
@@ -239,17 +252,37 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun getAnimation(direction: AnimationDirection): Animation? {
+        val transformation = getTransformation(animatedView)
         if (style.tabAnimation == AnimatedBottomBar.TabAnimation.SLIDE) {
-            val deltaYFrom = if (direction == AnimationDirection.IN) -height.toFloat() else 0f
+            val deltaYFrom =
+                if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) -height.toFloat() else 0f)
             val deltaYTo = if (direction == AnimationDirection.IN) 0f else -height.toFloat()
+
             return TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
         } else if (style.tabAnimation == AnimatedBottomBar.TabAnimation.FADE) {
-            val alphaFrom = if (direction == AnimationDirection.IN) 0f else 1f
+            val alphaFrom =
+                transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
             val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f
             return AlphaAnimation(alphaFrom, alphaTo)
         }
 
         return null
+    }
+
+    private fun getTransformation(view: View): Transformation? {
+        if (view.animation == null) {
+            return null
+        }
+
+        val transformation = Transformation()
+        view.animation.getTransformation(view.drawingTime, transformation)
+        return transformation
+    }
+
+    private fun getTranslateY(transformation: Transformation): Float {
+        val v = FloatArray(9)
+        transformation.matrix?.getValues(v)
+        return v[Matrix.MTRANS_Y]
     }
 
     private enum class AnimationDirection {
