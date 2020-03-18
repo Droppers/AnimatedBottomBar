@@ -72,7 +72,7 @@ Create a file named `tabs.xml` in the `res/menu/` resources folder:
 ```
 
 Get notified when the selected tab changes:
-```java
+```kotlin
 bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
     override fun onTabSelected(
         lastIndex: Int,
@@ -81,6 +81,11 @@ bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener
         newTab: AnimatedBottomBar.Tab
     ) {
         Log.d("TAB_SELECTED", "Selected index: $newIndex, title: ${newTab.title}")
+    }
+
+    // An optional method that will be fired whenever an already selected tab has been selected again.
+    override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
+        Log.d("TAB_RESELECTED", "Reselected index: $index, title: ${tab.title}")
     }
 })
 ```
@@ -369,7 +374,7 @@ An overview of all configuration options. All options can also be accessed and s
 ```
 MIT License
 
-Copyright (c) 2020 Joery Doppers (https://github.com/Droppers)
+Copyright (c) 2020 Joery Droppers (https://github.com/Droppers)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

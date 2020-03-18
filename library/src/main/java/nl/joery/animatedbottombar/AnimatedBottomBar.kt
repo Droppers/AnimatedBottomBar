@@ -25,7 +25,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
-    private var onTabSelectListener: OnTabSelectListener? = null
+    internal var onTabSelectListener: OnTabSelectListener? = null
     internal var onTabInterceptListener: OnTabInterceptListener? = null
 
     internal val tabStyle: BottomBarStyle.Tab by lazy { BottomBarStyle.Tab() }
@@ -235,8 +235,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         recycler.postInvalidate()
     }
 
-    fun setOnTabSelectListener(itemSelectListenerOn: OnTabSelectListener) {
-        this.onTabSelectListener = itemSelectListenerOn
+    fun setOnTabSelectListener(onTabSelectListener: OnTabSelectListener) {
+        this.onTabSelectListener = onTabSelectListener
     }
 
     fun setOnTabInterceptListener(onTabInterceptListener: OnTabInterceptListener) {
@@ -702,6 +702,9 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     interface OnTabSelectListener {
         fun onTabSelected(lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab)
+
+        fun onTabReselected(index: Int, tab: Tab) {
+        }
     }
 
     interface OnTabInterceptListener {

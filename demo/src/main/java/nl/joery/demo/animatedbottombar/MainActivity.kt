@@ -5,9 +5,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
@@ -28,6 +25,11 @@ class MainActivity : AppCompatActivity() {
                 newTab: AnimatedBottomBar.Tab
             ) {
                 Log.d("TAB_SELECTED", "Selected index: $newIndex, title: ${newTab.title}")
+            }
+
+            // An optional method that will be fired whenever an already selected tab has been selected again.
+            override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
+                Log.d("TAB_RESELECTED", "Reselected index: $index, title: ${tab.title}")
             }
         })
 

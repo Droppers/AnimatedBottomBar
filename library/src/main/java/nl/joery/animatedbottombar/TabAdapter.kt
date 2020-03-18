@@ -83,13 +83,14 @@ internal class TabAdapter(
     }
 
     fun selectTab(tab: AnimatedBottomBar.Tab, animate: Boolean) {
+        val newIndex = tabs.indexOf(tab)
+
         if (tab == selectedTab) {
+            bottomBar.onTabSelectListener?.onTabReselected(newIndex, tab)
             return
         }
 
         val lastIndex = tabs.indexOf(selectedTab)
-        val newIndex = tabs.indexOf(tab)
-
         if (!canSelectTab(lastIndex, selectedTab, newIndex, tab)) {
             return
         }
