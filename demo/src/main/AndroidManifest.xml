@@ -23,6 +23,11 @@
             android:name=".ViewPagerActivity"
             android:label="ViewPagerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".playground.PlaygroundActivity"
+            android:label="ConfiguratorActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

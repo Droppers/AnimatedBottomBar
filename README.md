@@ -27,11 +27,9 @@ Download the app showcasing the examples: [demo.apk](./media/demo.apk)
 ## Getting started
 <img src="./media/getting-started-demo.gif" width="400" />
 
-
 Add the following dependency to your <b>build.gradle</b>:
-
 ```gradle
-implementation 'nl.joery.animatedbottombar:library:1.0.4'
+implementation 'nl.joery.animatedbottombar:library:1.0.5'
 ```
 
 Define `AnimatedBottomBar` in your XML layout with custom attributes.
@@ -212,6 +210,17 @@ An overview of all configuration options. All options can also be accessed and s
         <th>Default</th>
     </tr>
     <tr>
+        <td><b>abb_selectedTabType</b></td>
+        <td>
+            Determines whether the icon or text should be shown when a tab has been selected.<br><br>
+            <b>icon</b><br>
+            <img src="./media/static/type-icon.png" width="240" /><br>
+            <b>text</b><br>
+            <img src="./media/static/type-text.png" width="240" /><br>
+        </td>
+        <td>icon</td>
+    </tr>
+    <tr>
         <td><b>abb_tabColor</b></td>
         <td>The color of the icon or text when the tab is not selected.</td>
         <td>@color/textColorPrimary</td>
@@ -258,15 +267,11 @@ An overview of all configuration options. All options can also be accessed and s
         <th>Default</th>
     </tr>
     <tr>
-        <td><b>abb_selectedTabType</b></td>
+        <td><b>abb_animationDuration</b></td>
         <td>
-            Determines whether the icon or text should be shown when a tab has been selected.<br><br>
-            <b>icon</b><br>
-            <img src="./media/static/type-icon.png" width="240" /><br>
-            <b>text</b><br>
-            <img src="./media/static/type-text.png" width="240" /><br>
+            The duration of all animations, including the indicator animation.
         </td>
-        <td>icon</td>
+        <td>400</td>
     </tr>
     <tr>
         <td><b>abb_tabAnimation</b></td>
@@ -287,7 +292,7 @@ An overview of all configuration options. All options can also be accessed and s
             The enter and exit animation style of the selected tab.<br><br>
             <b>none</b><br>
             <img src="./media/anim-active-none.gif" width="240" /><br>
-            <b>slide</b<br><br>
+            <b>slide</b><br>
             <img src="./media/anim-active-slide.gif" width="240" /><br>
             <b>fade</b><br>
             <img src="./media/anim-active-fade.gif" width="240" /><br>

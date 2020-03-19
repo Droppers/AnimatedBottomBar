@@ -7,15 +7,23 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.joery.animatedbottombar.AnimatedBottomBar
+import nl.joery.demo.animatedbottombar.playground.PlaygroundActivity
+import java.lang.reflect.Type
 
 
 class MainActivity : AppCompatActivity() {
+
+    private fun setProperty(instance: Any, property: String, value: Any) {
+        val methodName = "set" + property.capitalize()
+        val method = instance.javaClass.methods.toList().find { it.name == methodName }
+        method?.invoke(instance, value)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val bottomBars = arrayOf(bottom_bar, bottom_bar2, bottom_bar3, bottom_bar4)
+        val bottomBars = arrayOf(bottom_bar, bottom_bar2, bottom_bar3, bottom_bar4, bottom_bar5)
 
         bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
             override fun onTabSelected(
@@ -61,11 +69,14 @@ class MainActivity : AppCompatActivity() {
             for (bottomBar in bottomBars) {
                 bottomBar.selectTabAt(bottom_bar.tabCount - 1)
             }
-            bottom_bar.tabColor = Color.RED
         }
 
         open_view_pager.setOnClickListener {
             startActivity(Intent(this, ViewPagerActivity::class.java))
+        }
+
+        open_playground.setOnClickListener {
+            startActivity(Intent(this, PlaygroundActivity::class.java))
         }
     }
 }

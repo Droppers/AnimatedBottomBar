@@ -26,10 +26,10 @@ internal class TabView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private lateinit var animatedView: View
-    private lateinit var activeAnimatedView: View
+    private lateinit var selectedAnimatedView: View
 
-    private var activeOutAnimation: Animation? = null
-    private var activeInAnimation: Animation? = null
+    private var selectedOutAnimation: Animation? = null
+    private var selectedInAnimation: Animation? = null
     private var outAnimation: Animation? = null
     private var inAnimation: Animation? = null
 
@@ -70,14 +70,20 @@ internal class TabView @JvmOverloads constructor(
             AnimatedBottomBar.TabType.TEXT -> imageView
             AnimatedBottomBar.TabType.ICON -> textView
         }
-        animatedView.visibility = View.VISIBLE
 
-        activeAnimatedView = when (style.selectedTabType) {
+        selectedAnimatedView = when (style.selectedTabType) {
             AnimatedBottomBar.TabType.TEXT -> textView
             AnimatedBottomBar.TabType.ICON -> imageView
         }
-        activeAnimatedView.visibility = View.INVISIBLE
-        activeAnimatedView.bringToFront()
+        selectedAnimatedView.bringToFront()
+
+        if (selectedAnimatedView.visibility == View.VISIBLE) {
+            animatedView.visibility = View.VISIBLE
+            selectedAnimatedView.visibility = View.INVISIBLE
+        } else {
+            animatedView.visibility = View.INVISIBLE
+            selectedAnimatedView.visibility = View.VISIBLE
+        }
     }
 
     private fun updateColors() {
@@ -130,9 +136,9 @@ internal class TabView @JvmOverloads constructor(
         updateAnimations()
 
         if (animate && style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
-            activeAnimatedView.startAnimation(activeInAnimation)
+            selectedAnimatedView.startAnimation(selectedInAnimation)
         } else {
-            activeAnimatedView.visibility = View.VISIBLE
+            selectedAnimatedView.visibility = View.VISIBLE
         }
 
         if (animate && style.tabAnimation != AnimatedBottomBar.TabAnimation.NONE) {
@@ -146,9 +152,9 @@ internal class TabView @JvmOverloads constructor(
         updateAnimations()
 
         if (animate && style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
-            activeAnimatedView.startAnimation(activeOutAnimation)
+            selectedAnimatedView.startAnimation(selectedOutAnimation)
         } else {
-            activeAnimatedView.visibility = View.INVISIBLE
+            selectedAnimatedView.visibility = View.INVISIBLE
         }
 
         if (animate && style.tabAnimation != AnimatedBottomBar.TabAnimation.NONE) {
@@ -168,7 +174,7 @@ internal class TabView @JvmOverloads constructor(
             return
         }
 
-        activeInAnimation = getActiveAnimation(AnimationDirection.IN)?.apply {
+        selectedInAnimation = getSelectedAnimation(AnimationDirection.IN)?.apply {
             duration = style.animationDuration.toLong()
             interpolator = style.animationInterpolator
             setAnimationListener(object : Animation.AnimationListener {
@@ -179,13 +185,13 @@ internal class TabView @JvmOverloads constructor(
                 }
 
                 override fun onAnimationStart(animation: Animation?) {
-                    activeAnimatedView.visibility = View.VISIBLE
+                    selectedAnimatedView.visibility = View.VISIBLE
                 }
 
             })
         }
 
-        activeOutAnimation = getActiveAnimation(AnimationDirection.OUT)?.apply {
+        selectedOutAnimation = getSelectedAnimation(AnimationDirection.OUT)?.apply {
             duration = style.animationDuration.toLong()
             interpolator = style.animationInterpolator
             setAnimationListener(object : Animation.AnimationListener {
@@ -193,7 +199,7 @@ internal class TabView @JvmOverloads constructor(
                 }
 
                 override fun onAnimationEnd(animation: Animation?) {
-                    activeAnimatedView.visibility = View.INVISIBLE
+                    selectedAnimatedView.visibility = View.INVISIBLE
                 }
 
                 override fun onAnimationStart(animation: Animation?) {
@@ -234,8 +240,8 @@ internal class TabView @JvmOverloads constructor(
         }
     }
 
-    private fun getActiveAnimation(direction: AnimationDirection): Animation? {
-        val transformation = getTransformation(activeAnimatedView)
+    private fun getSelectedAnimation(direction: AnimationDirection): Animation? {
+        val transformation = getTransformation(selectedAnimatedView)
         if (style.tabAnimationSelected == AnimatedBottomBar.TabAnimation.SLIDE) {
             val deltaYFrom =
                 if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) height.toFloat() else 0f)
