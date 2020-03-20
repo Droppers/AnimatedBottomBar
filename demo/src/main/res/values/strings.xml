@@ -1,12 +1,36 @@
 <resources>
     <string name="app_name">AnimatedBottomBar</string>
-    <string name="title_activity_main">MainActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="sample_fragment_content">Example fragment: %1$d</string>
+
+    <string name="copied_xml_clipboard">Copied XML to clipboard</string>
+    <string name="copy_to_clipboard">Copy to clipboard</string>
+    <string name="generate_xml_title">Generated XML</string>
+
+    <string name="category_general">General</string>
+    <string name="category_tab">Tab appearance</string>
+    <string name="category_indicator">Indicator appearance</string>
+    <string name="category_animations">Animations</string>
+
+    <string name="tab_actions_title">Example tab actions</string>
+    <string name="add_start">Add to start</string>
+    <string name="remove_last">Remove last</string>
+    <string name="select_first">Select first</string>
+    <string name="select_last">Select last</string>
+    <string name="open_viewpager_example">Open ViewPager example</string>
+
+    <string name="generate_xml">Generate XML</string>
+    <string name="show_examples">Show examples</string>
+
+    <string name="tab_alarm">Alarm</string>
+    <string name="tab_bedtime">Bedtime</string>
+    <string name="tab_stopwatch">Stopwatch</string>
+    <string name="tab_timer">Timer</string>
+
+    <string name="set_property_value">Set %1$s value</string>
+    <string name="apply">Apply</string>
+    <string name="pick_color">Pick a color</string>
+
+    <string name="example_styles">Example styles</string>
+    <string name="view_pager_demo">ViewPager demo</string>
 </resources>

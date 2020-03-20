@@ -3,17 +3,17 @@
     <item
         android:id="@+id/test"
         android:icon="@drawable/alarm"
-        android:title="Alarm" />
+        android:title="@string/tab_alarm" />
     <item
         android:id="@+id/test2"
         android:icon="@drawable/bed"
-        android:title="Bedtime" />
+        android:title="@string/tab_bedtime" />
     <item
         android:id="@+id/test3"
         android:icon="@drawable/stopwatch"
-        android:title="Stopwatch" />
+        android:title="@string/tab_stopwatch" />
     <item
         android:id="@+id/test4"
         android:icon="@drawable/timer"
-        android:title="Timer" />
+        android:title="@string/tab_timer" />
 </menu>

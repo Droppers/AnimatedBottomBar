@@ -7,7 +7,7 @@ import androidx.annotation.Dimension
 import androidx.annotation.StyleRes
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
-internal object BottomBarStyle {
+object BottomBarStyle {
     data class Tab(
         // Type
         var selectedTabType: AnimatedBottomBar.TabType = AnimatedBottomBar.TabType.ICON,

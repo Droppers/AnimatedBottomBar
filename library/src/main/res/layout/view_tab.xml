@@ -8,9 +8,9 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:ellipsize="none"
         android:gravity="center"
         android:singleLine="true"
-        android:ellipsize="none"
         tools:text="Test" />
 
     <androidx.appcompat.widget.AppCompatImageView

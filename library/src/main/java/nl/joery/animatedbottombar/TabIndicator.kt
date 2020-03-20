@@ -4,7 +4,7 @@ import android.animation.ValueAnimator
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
-import android.os.Build
+import android.graphics.RectF
 import androidx.recyclerview.widget.RecyclerView
 
 
@@ -20,6 +20,8 @@ internal class TabIndicator(
 
     private var lastSelectedIndex: Int = RecyclerView.NO_POSITION
     private var currentLeft: Float = 0f
+
+    private val indicatorRect: RectF = RectF(0f, 0f, 0f, 0f)
 
     private val shouldRender: Boolean
         get() = bottomBar.indicatorStyle.indicatorAppearance != AnimatedBottomBar.IndicatorAppearance.INVISIBLE
@@ -71,31 +73,24 @@ internal class TabIndicator(
     }
 
     private fun drawIndicator(c: Canvas, viewLeft: Float, viewWidth: Float, alpha: Int = 255) {
-        val left = viewLeft + bottomBar.indicatorStyle.indicatorMargin
-        val top = getTop()
-        val right =
-            viewLeft + viewWidth - bottomBar.indicatorStyle.indicatorMargin
-        val bottom = getBottom()
+        indicatorRect.set(
+            viewLeft + bottomBar.indicatorStyle.indicatorMargin,
+            getTop(),
+            viewLeft + viewWidth - bottomBar.indicatorStyle.indicatorMargin,
+            getBottom()
+        )
 
         paint.alpha = alpha
 
-        if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.SQUARE ||
-            Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP
-        ) {
+        if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.SQUARE) {
             c.drawRect(
-                left,
-                top,
-                right,
-                bottom, paint
+                indicatorRect, paint
             )
 
         } else if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.ROUND) {
             val path = Path()
             path.addRoundRect(
-                left,
-                top,
-                right,
-                bottom,
+                indicatorRect,
                 corners!!,
                 Path.Direction.CW
             )

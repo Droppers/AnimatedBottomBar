@@ -147,7 +147,7 @@ bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptLi
     ): Boolean {
         if (newTab.id == R.id.tab_pro_feature && !hasProVersion) {
             // e.g. show a dialog
-            return true;
+            return true
         }
         return false
     }
@@ -160,10 +160,10 @@ It is easy to use the BottomBar with a ViewPager or ViewPager2, you can simply u
 <b>Usage</b>
 ```kotlin
 // For ViewPager use:
-bottom_bar.setupWithViewPager(yourViewPager);
+bottom_bar.setupWithViewPager(yourViewPager)
 
 // For ViewPager2 use:
-bottom_bar.setupWithViewPager2(yourViewPager2);
+bottom_bar.setupWithViewPager2(yourViewPager2)
 ```
 
 ## Configuration
@@ -372,8 +372,7 @@ An overview of all configuration options. All options can also be accessed and s
 </table>
 
 ## Credits
-- https://dribbble.com/shots/6130593-Readable-Tab-Bar<br>For the awesome concept :)
-- https://github.com/iammert/ReadableBottomBar<br>Awesome library, but it was lacking the configurability I needed for my own project.
+- https://dribbble.com/shots/6130593-Readable-Tab-Bar<br>Inspiration for creating this library.
 
 ## License
 ```

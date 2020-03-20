@@ -13,10 +13,10 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
         android:layout_marginBottom="12dp"
+        android:textColor="?android:textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="?android:textColorPrimary"
         tools:text="Example property" />
 
     <com.google.android.material.card.MaterialCardView
@@ -24,13 +24,13 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginEnd="8dp"
-        app:strokeColor="@color/divider"
-        app:strokeWidth="1dp"
         app:cardCornerRadius="2dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/value"
         app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/divider"
+        app:strokeWidth="1dp"
         tools:background="@color/colorPrimary" />
 
     <TextView

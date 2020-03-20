@@ -5,7 +5,7 @@ version = libraryVersion
 
 if (project.hasProperty("android")) { // Android libraries
     task sourcesJar(type: Jar) {
-        classifier = 'sources'
+        archiveClassifier.set("sources")
         from android.sourceSets.main.java.srcDirs
     }
 
@@ -15,13 +15,13 @@ if (project.hasProperty("android")) { // Android libraries
     }
 } else { // Java libraries
     task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
+        archiveClassifier.set("sources")
         from sourceSets.main.allSource
     }
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    archiveClassifier.set("javadoc")
     from javadoc.destinationDir
 }
 
@@ -30,7 +30,6 @@ artifacts {
     archives sourcesJar
 }
 
-// Bintray
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
@@ -101,11 +100,11 @@ publishing {
             artifact sourcesJar
 
             pom.withXml {
-                asNode().appendNode('name', libraryName);
-                asNode().appendNode('description', libraryDescription);
-                asNode().appendNode('url', siteUrl);
+                asNode().appendNode('name', libraryName)
+                asNode().appendNode('description', libraryDescription)
+                asNode().appendNode('url', siteUrl)
 
-                def dependenciesNode = asNode().appendNode('dependencies');
+                def dependenciesNode = asNode().appendNode('dependencies')
                 configurations.implementation.allDependencies.each {
                     if (it.name != 'unspecified') {
                         def dependencyNode = dependenciesNode.appendNode('dependency')

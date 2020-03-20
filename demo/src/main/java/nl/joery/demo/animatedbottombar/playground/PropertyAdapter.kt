@@ -3,22 +3,23 @@
 package nl.joery.demo.animatedbottombar.playground
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import nl.joery.animatedbottombar.AnimatedBottomBar
 import nl.joery.demo.animatedbottombar.R
-import nl.joery.demo.animatedbottombar.Utils
+import nl.joery.demo.animatedbottombar.ReflectionUtils
 import nl.joery.demo.animatedbottombar.dp
 import nl.joery.demo.animatedbottombar.playground.properties.*
 import nl.joery.demo.animatedbottombar.px
@@ -104,7 +105,9 @@ internal class PropertyAdapter(
 
         @SuppressLint("DefaultLocale")
         protected open fun getValue(): String {
-            return Utils.getProperty(bottomBar, property.name).toString().toLowerCase().capitalize()
+            return ReflectionUtils.getPropertyValue(bottomBar, property.name).toString()
+                .toLowerCase()
+                .capitalize()
         }
 
         protected abstract fun handleClick()
@@ -115,6 +118,12 @@ internal class PropertyAdapter(
             }
 
             value.text = getValue()
+        }
+
+        protected fun setValue(value: Any) {
+            ReflectionUtils.setPropertyValue(bottomBar, property.name, value)
+            property.modified = true
+            updateValue()
         }
 
         internal open fun bind(property: T) {
@@ -133,19 +142,17 @@ internal class PropertyAdapter(
             val enumValues = property.enumClass.enumConstants as Array<Enum<*>>
             val items = enumValues.map { it.name.toLowerCase().capitalize() }.toTypedArray()
 
-            val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
-            builder.setTitle("Set ${property.name} value")
-            builder.setSingleChoiceItems(
-                items, items.indexOf(getValue())
-            ) { dialog, item ->
-                Utils.setProperty(bottomBar, property.name, enumValues.first {
-                    it.name == items[item].toUpperCase()
-                })
-                updateValue()
-                dialog.dismiss()
-            }
-            val dialog = builder.create()
-            dialog.show()
+            MaterialAlertDialogBuilder(view.context, R.style.DialogStyle)
+                .setTitle(view.context.getString(R.string.set_property_value, property.name))
+                .setSingleChoiceItems(
+                    items, items.indexOf(getValue())
+                ) { dialog, item ->
+                    setValue(enumValues.first {
+                        it.name == items[item].toUpperCase()
+                    })
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 
@@ -161,9 +168,12 @@ internal class PropertyAdapter(
         override fun handleClick() {
             val activity = view.context as FragmentActivity
             val builder = ColorPickerDialog.newBuilder()
+                .setColor(ColorUtils.setAlphaComponent(getColor(), 255))
                 .setAllowCustom(true)
                 .setAllowPresets(true)
                 .setShowColorShades(true)
+                .setDialogTitle(R.string.pick_color)
+                .setSelectedButtonText(R.string.apply)
 
             val dialog = builder.create()
             dialog.setColorPickerDialogListener(object : ColorPickerDialogListener {
@@ -171,8 +181,7 @@ internal class PropertyAdapter(
                 }
 
                 override fun onColorSelected(dialogId: Int, color: Int) {
-                    Utils.setProperty(bottomBar, property.name, color)
-                    updateValue()
+                    setValue(color)
                     updateColor()
                 }
             })
@@ -184,7 +193,7 @@ internal class PropertyAdapter(
         }
 
         private fun getColor(): Int {
-            return Utils.getProperty(bottomBar, property.name) as Int? ?: 0
+            return ReflectionUtils.getPropertyValue(bottomBar, property.name) as Int? ?: 0
         }
 
         override fun bind(property: ColorProperty) {
@@ -214,21 +223,18 @@ internal class PropertyAdapter(
             val editText = view.findViewById<TextInputEditText>(R.id.edit_text)
             editText.setText(getValue().replace("dp", ""))
 
-            val builder: AlertDialog.Builder = AlertDialog.Builder(view.context)
-                .setTitle("Set ${property.name} value")
-                .setPositiveButton("Select") { dialog, _ ->
+            MaterialAlertDialogBuilder(view.context)
+                .setTitle(view.context.getString(R.string.set_property_value, property.name))
+                .setPositiveButton(R.string.apply) { dialog, _ ->
                     var newValue = editText.text.toString().toInt()
                     if (property.dimension) {
                         newValue = newValue.px
                     }
-                    Utils.setProperty(bottomBar, property.name, newValue)
-                    updateValue()
+                    setValue(newValue)
                     dialog.dismiss()
                 }
                 .setView(view)
-
-            val dialog = builder.create()
-            dialog.show()
+                .show()
         }
     }
 
@@ -237,7 +243,8 @@ internal class PropertyAdapter(
         private val booleanSwitch = view.findViewById<SwitchMaterial>(R.id.booleanSwitch)
 
         override fun updateValue() {
-            booleanSwitch.isChecked = Utils.getProperty(bottomBar, property.name) as Boolean
+            booleanSwitch.isChecked =
+                ReflectionUtils.getPropertyValue(bottomBar, property.name) as Boolean
         }
 
         override fun handleClick() {
@@ -247,8 +254,7 @@ internal class PropertyAdapter(
             super.bind(property)
 
             booleanSwitch.setOnCheckedChangeListener { _, isChecked ->
-                Utils.setProperty(bottomBar, property.name, isChecked)
-                updateValue()
+                setValue(isChecked)
             }
         }
     }

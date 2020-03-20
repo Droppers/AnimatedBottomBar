@@ -5,24 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ExampleActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/example_styles" />
 
     <nl.joery.animatedbottombar.AnimatedBottomBar
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFF"
+        android:elevation="2dp"
         app:abb_animationDuration="450"
+        app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"
+        app:abb_indicatorAnimation="slide"
         app:abb_indicatorAppearance="round"
         app:abb_indicatorColor="#B867C8"
-        app:abb_indicatorAnimation="slide"
         app:abb_indicatorHeight="4dp"
         app:abb_indicatorLocation="bottom"
         app:abb_indicatorMargin="16dp"
         app:abb_selectedIndex="1"
         app:abb_selectedTabType="icon"
         app:abb_tabAnimation="slide"
-        app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"
         app:abb_tabColorSelected="#B867C8"
         app:abb_tabs="@menu/clock_tabs" />
 
@@ -35,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#292637"
+        android:elevation="2dp"
         app:abb_animationDuration="600"
         app:abb_animationInterpolator="@android:anim/overshoot_interpolator"
         app:abb_indicatorAppearance="round"
@@ -57,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFF"
+        android:elevation="2dp"
         app:abb_animationDuration="600"
         app:abb_indicatorColor="#F54033"
         app:abb_selectedIndex="1"
@@ -74,19 +86,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#6200ED"
+        android:elevation="2dp"
         app:abb_animationDuration="600"
+        app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"
         app:abb_indicatorAnimation="fade"
         app:abb_indicatorColor="#EA3D7C"
         app:abb_indicatorMargin="8dp"
         app:abb_selectedIndex="1"
-        app:abb_tabAnimationSelected="fade"
-        app:abb_tabAnimation="slide"
-        app:abb_tabColor="#CCFFFFFF"
         app:abb_selectedTabType="text"
+        app:abb_tabAnimation="slide"
+        app:abb_tabAnimationSelected="fade"
+        app:abb_tabColor="#CCFFFFFF"
         app:abb_tabColorSelected="#FFF"
-        app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"
-        app:abb_textAppearance="@style/CustomText"
-        app:abb_tabs="@menu/clock_tabs" />
+        app:abb_tabs="@menu/clock_tabs"
+        app:abb_textAppearance="@style/CustomText" />
 
     <Space
         android:layout_width="match_parent"
@@ -97,24 +110,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFF"
+        android:elevation="2dp"
         app:abb_animationDuration="400"
-        app:abb_indicatorAnimation="fade"
-        app:abb_selectedIndex="1"
-        app:abb_indicatorHeight="4dp"
-        app:abb_tabAnimationSelected="fade"
-        app:abb_tabAnimation="fade"
-        app:abb_selectedTabType="text"
-        app:abb_indicatorAppearance="round"
-        app:abb_indicatorMargin="8dp"
-        app:abb_tabColorSelected="#000"
-        app:abb_tabColor="#CC000000"
         app:abb_animationInterpolator="@android:anim/accelerate_decelerate_interpolator"
+        app:abb_indicatorAnimation="fade"
+        app:abb_indicatorAppearance="round"
+        app:abb_indicatorHeight="4dp"
+        app:abb_indicatorMargin="8dp"
+        app:abb_selectedIndex="1"
+        app:abb_selectedTabType="text"
+        app:abb_tabAnimation="fade"
+        app:abb_tabAnimationSelected="fade"
+        app:abb_tabColor="#CC000000"
+        app:abb_tabColorSelected="#000"
         app:abb_tabs="@menu/clock_tabs" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -128,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Example tab actions"
+            android:text="@string/tab_actions_title"
             android:textColor="?android:textColorPrimary"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -143,7 +157,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="Add to start"
+            android:text="@string/add_start"
             app:layout_constraintBottom_toTopOf="@+id/open_view_pager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/deselect"
@@ -157,7 +171,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Remove last"
+            android:text="@string/remove_last"
             app:layout_constraintBottom_toTopOf="@+id/open_view_pager"
             app:layout_constraintEnd_toStartOf="@+id/select"
             app:layout_constraintStart_toStartOf="parent"
@@ -171,7 +185,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:text="Select first"
+            android:text="@string/select_first"
             app:layout_constraintEnd_toStartOf="@+id/select_last"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/actions_title" />
@@ -184,36 +198,23 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:text="Select last"
+            android:text="@string/select_last"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/select_first"
             app:layout_constraintTop_toBottomOf="@+id/actions_title" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/open_view_pager"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="Open ViewPager example"
-            app:layout_constraintBottom_toTopOf="@+id/open_playground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/select" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/open_playground"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Show playground"
+            android:text="@string/open_viewpager_example"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

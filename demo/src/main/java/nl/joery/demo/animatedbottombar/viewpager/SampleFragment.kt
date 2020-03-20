@@ -1,4 +1,4 @@
-package nl.joery.demo.animatedbottombar
+package nl.joery.demo.animatedbottombar.viewpager
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_sample.*
+import nl.joery.demo.animatedbottombar.R
 
 
 class SampleFragment : Fragment() {
     companion object {
-        fun newInstance(content: String): SampleFragment {
-            val instance = SampleFragment()
+        fun newInstance(position: Int): SampleFragment {
+            val instance =
+                SampleFragment()
             val args = Bundle()
-            args.putString("content", content)
+            args.putInt("position", position)
             instance.arguments = args
             return instance
         }
@@ -28,7 +30,7 @@ class SampleFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val content = arguments?.getString("content") ?: "";
-        text_content.text = content
+        val position = arguments?.getInt("position", -1) ?: -1
+        text_content.text = getString(R.string.sample_fragment_content, position)
     }
 }
