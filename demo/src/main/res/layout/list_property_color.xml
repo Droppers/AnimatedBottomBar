@@ -19,19 +19,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Example property" />
 
-    <com.google.android.material.card.MaterialCardView
+    <View
         android:id="@+id/color"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginEnd="8dp"
-        app:cardCornerRadius="2dp"
-        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/value"
-        app:layout_constraintTop_toTopOf="parent"
-        app:strokeColor="@color/divider"
-        app:strokeWidth="1dp"
-        tools:background="@color/colorPrimary" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/value"

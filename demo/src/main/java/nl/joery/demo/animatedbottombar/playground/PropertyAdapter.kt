@@ -3,6 +3,8 @@
 package nl.joery.demo.animatedbottombar.playground
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +14,6 @@ import androidx.annotation.LayoutRes
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
@@ -20,10 +21,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import nl.joery.animatedbottombar.AnimatedBottomBar
 import nl.joery.demo.animatedbottombar.*
-import nl.joery.demo.animatedbottombar.ReflectionUtils
-import nl.joery.demo.animatedbottombar.dp
 import nl.joery.demo.animatedbottombar.playground.properties.*
-import nl.joery.demo.animatedbottombar.dpPx
 
 
 internal class PropertyAdapter(
@@ -162,7 +160,7 @@ internal class PropertyAdapter(
     class ColorHolder(v: View, bottomBar: AnimatedBottomBar) :
         BaseHolder<ColorProperty>(v, bottomBar) {
 
-        private val color = view.findViewById<MaterialCardView>(R.id.color)
+        private val color = view.findViewById<View>(R.id.color)
 
         override fun getValue(): String {
             return "#%06X".format(0xFFFFFF and getColor())
@@ -192,7 +190,12 @@ internal class PropertyAdapter(
         }
 
         private fun updateColor() {
-            color.setCardBackgroundColor(getColor())
+            val shape = GradientDrawable()
+            shape.shape = GradientDrawable.RECTANGLE
+            shape.cornerRadii = FloatArray(8) { 3.dpPx.toFloat() }
+            shape.setColor(getColor())
+            shape.setStroke(1.dpPx, Color.rgb(200, 200, 200))
+            color.background = shape
         }
 
         private fun getColor(): Int {
@@ -230,14 +233,17 @@ internal class PropertyAdapter(
             MaterialAlertDialogBuilder(view.context)
                 .setTitle(view.context.getString(R.string.set_property_value, property.name))
                 .setPositiveButton(R.string.apply) { dialog, _ ->
-                    var newValue = editText.text.toString().toInt()
-                    newValue = when (property.density) {
-                        TypedValue.COMPLEX_UNIT_DIP -> newValue.dpPx
-                        TypedValue.COMPLEX_UNIT_SP -> newValue.spPx
-                        else -> newValue
+                    try {
+                        var newValue = editText.text.toString().toInt()
+                        newValue = when (property.density) {
+                            TypedValue.COMPLEX_UNIT_DIP -> newValue.dpPx
+                            TypedValue.COMPLEX_UNIT_SP -> newValue.spPx
+                            else -> newValue
+                        }
+                        setValue(newValue)
+                        dialog.dismiss()
+                    } catch (e: NumberFormatException) {
                     }
-                    setValue(newValue)
-                    dialog.dismiss()
                 }
                 .setView(view)
                 .show()

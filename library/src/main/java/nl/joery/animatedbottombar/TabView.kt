@@ -178,8 +178,6 @@ internal class TabView @JvmOverloads constructor(
     private fun updateAnimations() {
         if (style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
             selectedInAnimation = getSelectedAnimation(AnimationDirection.IN)?.apply {
-                duration = style.animationDuration.toLong()
-                interpolator = style.animationInterpolator
                 setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationRepeat(animation: Animation?) {
                     }
@@ -190,13 +188,10 @@ internal class TabView @JvmOverloads constructor(
                     override fun onAnimationStart(animation: Animation?) {
                         selectedAnimatedView.visibility = View.VISIBLE
                     }
-
                 })
             }
 
             selectedOutAnimation = getSelectedAnimation(AnimationDirection.OUT)?.apply {
-                duration = style.animationDuration.toLong()
-                interpolator = style.animationInterpolator
                 setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationRepeat(animation: Animation?) {
                     }
@@ -213,8 +208,6 @@ internal class TabView @JvmOverloads constructor(
 
         if (style.tabAnimation != AnimatedBottomBar.TabAnimation.NONE) {
             inAnimation = getAnimation(AnimationDirection.IN)?.apply {
-                duration = style.animationDuration.toLong()
-                interpolator = style.animationInterpolator
                 setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationRepeat(animation: Animation?) {
                     }
@@ -229,8 +222,6 @@ internal class TabView @JvmOverloads constructor(
             }
 
             outAnimation = getAnimation(AnimationDirection.OUT)?.apply {
-                duration = style.animationDuration.toLong()
-                interpolator = style.animationInterpolator
                 setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationRepeat(animation: Animation?) {
                     }
@@ -247,38 +238,50 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun getSelectedAnimation(direction: AnimationDirection): Animation? {
+        var animation: Animation? = null
         val transformation = getTransformation(selectedAnimatedView)
         if (style.tabAnimationSelected == AnimatedBottomBar.TabAnimation.SLIDE) {
             val deltaYFrom =
                 if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) height.toFloat() else 0f)
             val deltaYTo = if (direction == AnimationDirection.IN) 0f else height.toFloat()
-            return TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
+            animation = TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
         } else if (style.tabAnimationSelected == AnimatedBottomBar.TabAnimation.FADE) {
             val alphaFrom =
                 transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
             val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f
-            return AlphaAnimation(alphaFrom, alphaTo)
+            animation = AlphaAnimation(alphaFrom, alphaTo)
         }
 
-        return null
+        animation?.apply {
+            duration = style.animationDuration.toLong()
+            interpolator = style.animationInterpolator
+        }
+
+        return animation
     }
 
     private fun getAnimation(direction: AnimationDirection): Animation? {
+        var animation: Animation? = null
         val transformation = getTransformation(animatedView)
         if (style.tabAnimation == AnimatedBottomBar.TabAnimation.SLIDE) {
             val deltaYFrom =
                 if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) -height.toFloat() else 0f)
             val deltaYTo = if (direction == AnimationDirection.IN) 0f else -height.toFloat()
 
-            return TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
+            animation = TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
         } else if (style.tabAnimation == AnimatedBottomBar.TabAnimation.FADE) {
             val alphaFrom =
                 transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
             val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f
-            return AlphaAnimation(alphaFrom, alphaTo)
+            animation = AlphaAnimation(alphaFrom, alphaTo)
         }
 
-        return null
+        animation?.apply {
+            duration = style.animationDuration.toLong()
+            interpolator = style.animationInterpolator
+        }
+
+        return animation
     }
 
     private fun getTransformation(view: View): Transformation? {
