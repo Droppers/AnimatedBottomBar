@@ -8,13 +8,12 @@
     <nl.joery.animatedbottombar.AnimatedBottomBar
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="#FFF"
         android:elevation="2dp"
         app:abb_selectedIndex="0"
         app:abb_tabs="@menu/clock_tabs"
-        app:abb_textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

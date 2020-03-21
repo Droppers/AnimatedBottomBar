@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.math.abs
 
 
 internal class TabIndicator(
@@ -80,7 +81,11 @@ internal class TabIndicator(
             getBottom()
         )
 
-        paint.alpha = alpha
+        paint.alpha = when {
+            alpha < 0 -> abs(alpha)
+            alpha > 255 -> 255 - (alpha - 255)
+            else -> alpha
+        }
 
         if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.SQUARE) {
             c.drawRect(
