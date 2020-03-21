@@ -2,6 +2,7 @@ package nl.joery.animatedbottombar
 
 import android.content.Context
 import android.content.res.TypedArray
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
@@ -39,7 +40,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private var viewPager2: ViewPager2? = null
 
     init {
-        minimumHeight = 64.px
+        minimumHeight = 64.dpPx
 
         initRecyclerView()
         initAdapter()
@@ -114,11 +115,22 @@ class AnimatedBottomBar @JvmOverloads constructor(
             tabColor =
                 attr.getColor(R.styleable.AnimatedBottomBar_abb_tabColor, tabStyle.tabColor)
 
-            // Text appearance
+            // Text
             textAppearance =
                 attr.getResourceId(
                     R.styleable.AnimatedBottomBar_abb_textAppearance,
                     tabStyle.textAppearance
+                )
+            val textStyle =
+                attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_textStyle,
+                    typeface.style
+                )
+            typeface = Typeface.create(typeface, textStyle)
+            textSize =
+                attr.getDimensionPixelSize(
+                    R.styleable.AnimatedBottomBar_abb_textSize,
+                    tabStyle.textSize
                 )
 
             // Indicator
@@ -563,13 +575,26 @@ class AnimatedBottomBar @JvmOverloads constructor(
             tabColor = ContextCompat.getColor(context, value)
         }
 
-
+    // Text
     var textAppearance
         @StyleRes
         get() = tabStyle.textAppearance
         set(@StyleRes value) {
             tabStyle.textAppearance = value
-            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT_APPEARANCE)
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
+        }
+    var typeface
+        get() = tabStyle.typeface
+        set(value) {
+            tabStyle.typeface = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
+        }
+    var textSize
+        @Dimension
+        get() = tabStyle.textSize
+        set(@Dimension value) {
+            tabStyle.textSize = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
         }
 
     // Indicator

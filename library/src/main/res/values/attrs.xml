@@ -49,5 +49,11 @@
         <attr name="abb_rippleColor" format="color" />
 
         <attr name="abb_textAppearance" format="reference" />
+        <attr name="abb_textStyle" format="flags">
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="normal" value="0" />
+        </attr>
+        <attr name="abb_textSize" format="dimension" />
     </declare-styleable>
 </resources>

@@ -249,6 +249,17 @@ An overview of all configuration options. All options can also be accessed and s
         <td></td>
     </tr>
     <tr>
+        <td><b>abb_textStyle</b></td>
+        <td>Style (normal, bold, italic, bold|italic) for the text.<br><br>
+            Use <i>bottom_bar.typeface</i> to programmatically set text style.</td>
+        <td>normal</td>
+    </tr>
+    <tr>
+        <td><b>abb_textSize</b></td>
+        <td>Size of the text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).</td>
+        <td>14sp</td>
+    </tr>
+    <tr>
         <td><b>abb_rippleEnabled</b></td>
         <td>Enables the 'ripple' effect when selecting a tab.<br><br>
             <img src="./media/static/ripple.png" width="240" /></td>

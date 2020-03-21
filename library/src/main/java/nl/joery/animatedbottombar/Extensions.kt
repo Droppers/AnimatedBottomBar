@@ -7,6 +7,7 @@ import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
+import kotlin.math.roundToInt
 
 @ColorInt
 internal fun Context.getColorResCompat(@AttrRes id: Int): Int {
@@ -43,5 +44,8 @@ internal fun ValueAnimator.fixDurationScale() {
     }
 }
 
-internal val Int.px: Int
-    get() = (this * Resources.getSystem().displayMetrics.density).toInt()
+internal val Int.dpPx: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).roundToInt()
+
+internal val Int.spPx: Int
+    get() = (this * Resources.getSystem().displayMetrics.scaledDensity).roundToInt()

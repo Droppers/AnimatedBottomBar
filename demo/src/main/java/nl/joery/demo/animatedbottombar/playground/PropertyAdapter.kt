@@ -3,6 +3,7 @@
 package nl.joery.demo.animatedbottombar.playground
 
 import android.annotation.SuppressLint
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +19,11 @@ import com.google.android.material.textfield.TextInputEditText
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import nl.joery.animatedbottombar.AnimatedBottomBar
-import nl.joery.demo.animatedbottombar.R
+import nl.joery.demo.animatedbottombar.*
 import nl.joery.demo.animatedbottombar.ReflectionUtils
 import nl.joery.demo.animatedbottombar.dp
 import nl.joery.demo.animatedbottombar.playground.properties.*
-import nl.joery.demo.animatedbottombar.px
+import nl.joery.demo.animatedbottombar.dpPx
 
 
 internal class PropertyAdapter(
@@ -210,10 +211,11 @@ internal class PropertyAdapter(
 
         override fun getValue(): String {
             val value = super.getValue()
-            return if (property.dimension)
-                value.toInt().dp.toString() + "dp"
-            else
-                value
+            return when (property.density) {
+                TypedValue.COMPLEX_UNIT_DIP -> value.toInt().dp.toString() + "dp"
+                TypedValue.COMPLEX_UNIT_SP -> value.toInt().sp.toString() + "sp"
+                else -> value
+            }
         }
 
         @SuppressLint("InflateParams")
@@ -223,14 +225,16 @@ internal class PropertyAdapter(
                 null
             )
             val editText = view.findViewById<TextInputEditText>(R.id.edit_text)
-            editText.setText(getValue().replace("dp", ""))
+            editText.setText(getValue().replace("[^\\dxX]+".toRegex(), ""))
 
             MaterialAlertDialogBuilder(view.context)
                 .setTitle(view.context.getString(R.string.set_property_value, property.name))
                 .setPositiveButton(R.string.apply) { dialog, _ ->
                     var newValue = editText.text.toString().toInt()
-                    if (property.dimension) {
-                        newValue = newValue.px
+                    newValue = when (property.density) {
+                        TypedValue.COMPLEX_UNIT_DIP -> newValue.dpPx
+                        TypedValue.COMPLEX_UNIT_SP -> newValue.spPx
+                        else -> newValue
                     }
                     setValue(newValue)
                     dialog.dismiss()

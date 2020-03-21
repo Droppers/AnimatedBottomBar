@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.text.Spanned
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -21,6 +22,7 @@ import nl.joery.animatedbottombar.BottomBarStyle
 import nl.joery.demo.animatedbottombar.ExampleActivity
 import nl.joery.demo.animatedbottombar.R
 import nl.joery.demo.animatedbottombar.playground.properties.*
+import nl.joery.demo.animatedbottombar.dpPx
 
 
 class PlaygroundActivity : AppCompatActivity() {
@@ -76,6 +78,12 @@ class PlaygroundActivity : AppCompatActivity() {
             )
         )
         properties.add(
+            IntegerProperty(
+                "textSize",
+                TypedValue.COMPLEX_UNIT_SP
+            )
+        )
+        properties.add(
             BooleanProperty(
                 "rippleEnabled"
             )
@@ -99,13 +107,13 @@ class PlaygroundActivity : AppCompatActivity() {
         properties.add(
             IntegerProperty(
                 "indicatorHeight",
-                true
+                TypedValue.COMPLEX_UNIT_DIP
             )
         )
         properties.add(
             IntegerProperty(
                 "indicatorMargin",
-                true
+                TypedValue.COMPLEX_UNIT_DIP
             )
         )
         properties.add(
@@ -160,6 +168,9 @@ class PlaygroundActivity : AppCompatActivity() {
         recycler.layoutManager =
             LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
         recycler.adapter = PropertyAdapter(bottom_bar, properties)
+
+//        bottom_bar.typeface = Typeface.DEFAULT_BOLD
+        bottom_bar.textSize = 14.dpPx
     }
 
     private fun showXmlDialog() {

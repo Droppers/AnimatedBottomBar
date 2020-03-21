@@ -1,9 +1,11 @@
 package nl.joery.demo.animatedbottombar.playground
 
 import android.annotation.SuppressLint
+import android.util.TypedValue
 import nl.joery.demo.animatedbottombar.ReflectionUtils
 import nl.joery.demo.animatedbottombar.dp
 import nl.joery.demo.animatedbottombar.playground.properties.*
+import nl.joery.demo.animatedbottombar.sp
 
 object XmlGenerator {
     fun generateHtmlXml(
@@ -66,9 +68,13 @@ object XmlGenerator {
     private fun getHumanValue(property: Property, value: Any): String {
         return when (property) {
             is ColorProperty -> "#%06X".format(0xFFFFFF and (value as Int))
-            is IntegerProperty -> if (property.dimension) (value as Int).dp.toString() + "dp" else value.toString()
+            is IntegerProperty -> when (property.density) {
+                TypedValue.COMPLEX_UNIT_DIP -> (value as Int).dp.toString() + "dp"
+                TypedValue.COMPLEX_UNIT_SP -> (value as Int).sp.toString() + "sp"
+                else -> value.toString()
+            }
             is EnumProperty -> value.toString().toLowerCase()
-            is InterpolatorProperty -> "@android:anim/" + ReflectionUtils.pascalCaseToSnakeCase(value::class.java.simpleName);
+            is InterpolatorProperty -> "@android:anim/" + ReflectionUtils.pascalCaseToSnakeCase(value::class.java.simpleName)
             else -> value.toString()
         }
     }

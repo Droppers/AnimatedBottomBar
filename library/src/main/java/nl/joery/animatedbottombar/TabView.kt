@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Build
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -59,8 +60,8 @@ internal class TabView @JvmOverloads constructor(
             BottomBarStyle.StyleUpdateType.RIPPLE -> {
                 updateRipple()
             }
-            BottomBarStyle.StyleUpdateType.TEXT_APPEARANCE -> {
-                updateTextAppearance()
+            BottomBarStyle.StyleUpdateType.TEXT -> {
+                updateText()
             }
         }
     }
@@ -99,8 +100,13 @@ internal class TabView @JvmOverloads constructor(
         }
     }
 
-    private fun updateTextAppearance() {
-        TextViewCompat.setTextAppearance(textView, style.textAppearance)
+    private fun updateText() {
+        textView.typeface = style.typeface
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.textSize.toFloat())
+
+        if (style.textAppearance != -1) {
+            TextViewCompat.setTextAppearance(textView, style.textAppearance)
+        }
     }
 
     private fun updateRipple() {

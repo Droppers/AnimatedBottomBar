@@ -1,6 +1,7 @@
 package nl.joery.animatedbottombar
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.animation.Interpolator
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
@@ -27,11 +28,13 @@ object BottomBarStyle {
         @ColorInt var rippleColor: Int = Color.BLACK,
 
         // Text appearance
-        @StyleRes var textAppearance: Int = R.style.AnimatedBottomBar_TextAppearance
+        @StyleRes var textAppearance: Int = -1,
+        var typeface: Typeface = Typeface.DEFAULT,
+        var textSize: Int = 14.spPx
     )
 
     data class Indicator(
-        @Dimension var indicatorHeight: Int = 3.px,
+        @Dimension var indicatorHeight: Int = 3.dpPx,
         @Dimension var indicatorMargin: Int = 0,
         @ColorInt var indicatorColor: Int = Color.BLACK,
         var indicatorAppearance: AnimatedBottomBar.IndicatorAppearance = AnimatedBottomBar.IndicatorAppearance.SQUARE,
@@ -44,6 +47,6 @@ object BottomBarStyle {
         COLORS,
         ANIMATIONS,
         RIPPLE,
-        TEXT_APPEARANCE
+        TEXT
     }
 }
