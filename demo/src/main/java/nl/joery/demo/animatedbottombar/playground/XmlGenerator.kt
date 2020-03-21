@@ -68,6 +68,7 @@ object XmlGenerator {
             is ColorProperty -> "#%06X".format(0xFFFFFF and (value as Int))
             is IntegerProperty -> if (property.dimension) (value as Int).dp.toString() + "dp" else value.toString()
             is EnumProperty -> value.toString().toLowerCase()
+            is InterpolatorProperty -> "@android:anim/" + ReflectionUtils.pascalCaseToSnakeCase(value::class.java.simpleName);
             else -> value.toString()
         }
     }

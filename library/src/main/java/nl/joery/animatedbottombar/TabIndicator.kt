@@ -156,6 +156,7 @@ internal class TabIndicator(
         animator = ValueAnimator.ofFloat(currentLeft, newView.left.toFloat()).apply {
             duration = bottomBar.tabStyle.animationDuration.toLong()
             interpolator = bottomBar.tabStyle.animationInterpolator
+            fixDurationScale()
             addUpdateListener {
                 parent.postInvalidate()
             }

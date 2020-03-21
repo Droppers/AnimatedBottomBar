@@ -120,12 +120,6 @@ class PlaygroundActivity : AppCompatActivity() {
                 AnimatedBottomBar.IndicatorLocation::class.java
             )
         )
-        properties.add(
-            EnumProperty(
-                "indicatorAnimation",
-                AnimatedBottomBar.IndicatorAnimation::class.java
-            )
-        )
 
         properties.add(
             CategoryProperty(
@@ -138,6 +132,11 @@ class PlaygroundActivity : AppCompatActivity() {
             )
         )
         properties.add(
+            InterpolatorProperty(
+                "animationInterpolator"
+            )
+        )
+        properties.add(
             EnumProperty(
                 "tabAnimation",
                 AnimatedBottomBar.TabAnimation::class.java
@@ -147,6 +146,12 @@ class PlaygroundActivity : AppCompatActivity() {
             EnumProperty(
                 "tabAnimationSelected",
                 AnimatedBottomBar.TabAnimation::class.java
+            )
+        )
+        properties.add(
+            EnumProperty(
+                "indicatorAnimation",
+                AnimatedBottomBar.IndicatorAnimation::class.java
             )
         )
     }

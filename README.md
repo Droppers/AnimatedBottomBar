@@ -15,8 +15,10 @@ A customizable and easy to use bottom bar view with sleek animations.
 <br>
 <img src="./media/example/example-4.gif" width="550" />
 
-### Demo app
-Download the app showcasing the examples: [demo.apk](./media/demo.apk)
+### Playground app
+<img src="./media/static/playground-demo.png"  width="500" />
+
+Download the playground app: <a href="./media/demo.apk">demo.apk</a>. In this app you can try out all features and even generate XML layouts.
 
 ## Contents
 - [Getting started](#getting-started)

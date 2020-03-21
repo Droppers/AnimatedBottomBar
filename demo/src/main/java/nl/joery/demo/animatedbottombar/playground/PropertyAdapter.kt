@@ -42,6 +42,7 @@ internal class PropertyAdapter(
             Property.TYPE_ENUM -> EnumHolder(v, bottomBar)
             Property.TYPE_COLOR -> ColorHolder(v, bottomBar)
             Property.TYPE_BOOLEAN -> BooleanHolder(v, bottomBar)
+            Property.TYPE_INTERPOLATOR -> InterpolatorHolder(v, bottomBar)
             Property.TYPE_CATEGORY -> CategoryHolder(v)
             else -> IntegerHolder(v, bottomBar)
         }
@@ -61,6 +62,7 @@ internal class PropertyAdapter(
             is ColorProperty -> Property.TYPE_COLOR
             is IntegerProperty -> Property.TYPE_INTEGER
             is BooleanProperty -> Property.TYPE_BOOLEAN
+            is InterpolatorProperty -> Property.TYPE_INTERPOLATOR
             is CategoryProperty -> Property.TYPE_CATEGORY
             else -> -1
         }
@@ -256,6 +258,32 @@ internal class PropertyAdapter(
             booleanSwitch.setOnCheckedChangeListener { _, isChecked ->
                 setValue(isChecked)
             }
+        }
+    }
+
+    class InterpolatorHolder(v: View, bottomBar: AnimatedBottomBar) :
+        BaseHolder<InterpolatorProperty>(v, bottomBar) {
+
+        override fun getValue(): String {
+            val value = ReflectionUtils.getPropertyValue(bottomBar, property.name)
+            return value!!::class.java.simpleName
+        }
+
+        override fun handleClick() {
+            val interpolatorNames =
+                InterpolatorProperty.interpolators.map { it::class.java.simpleName }.toTypedArray()
+
+            MaterialAlertDialogBuilder(view.context, R.style.DialogStyle)
+                .setTitle(view.context.getString(R.string.set_property_value, property.name))
+                .setSingleChoiceItems(
+                    interpolatorNames, interpolatorNames.indexOf(getValue())
+                ) { dialog, item ->
+                    setValue(InterpolatorProperty.interpolators.first {
+                        it::class.java.simpleName == interpolatorNames[item]
+                    })
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 }
