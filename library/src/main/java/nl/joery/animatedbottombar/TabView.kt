@@ -170,73 +170,73 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun updateAnimations() {
-        if (style.tabAnimation == AnimatedBottomBar.TabAnimation.NONE) {
-            return
+        if (style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
+            selectedInAnimation = getSelectedAnimation(AnimationDirection.IN)?.apply {
+                duration = style.animationDuration.toLong()
+                interpolator = style.animationInterpolator
+                setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationRepeat(animation: Animation?) {
+                    }
+
+                    override fun onAnimationEnd(animation: Animation?) {
+                    }
+
+                    override fun onAnimationStart(animation: Animation?) {
+                        selectedAnimatedView.visibility = View.VISIBLE
+                    }
+
+                })
+            }
+
+            selectedOutAnimation = getSelectedAnimation(AnimationDirection.OUT)?.apply {
+                duration = style.animationDuration.toLong()
+                interpolator = style.animationInterpolator
+                setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationRepeat(animation: Animation?) {
+                    }
+
+                    override fun onAnimationEnd(animation: Animation?) {
+                        selectedAnimatedView.visibility = View.INVISIBLE
+                    }
+
+                    override fun onAnimationStart(animation: Animation?) {
+                    }
+                })
+            }
         }
 
-        selectedInAnimation = getSelectedAnimation(AnimationDirection.IN)?.apply {
-            duration = style.animationDuration.toLong()
-            interpolator = style.animationInterpolator
-            setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(animation: Animation?) {
-                }
+        if (style.tabAnimation != AnimatedBottomBar.TabAnimation.NONE) {
+            inAnimation = getAnimation(AnimationDirection.IN)?.apply {
+                duration = style.animationDuration.toLong()
+                interpolator = style.animationInterpolator
+                setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationRepeat(animation: Animation?) {
+                    }
 
-                override fun onAnimationEnd(animation: Animation?) {
-                }
+                    override fun onAnimationEnd(animation: Animation?) {
+                    }
 
-                override fun onAnimationStart(animation: Animation?) {
-                    selectedAnimatedView.visibility = View.VISIBLE
-                }
+                    override fun onAnimationStart(animation: Animation?) {
+                        animatedView.visibility = View.VISIBLE
+                    }
+                })
+            }
 
-            })
-        }
+            outAnimation = getAnimation(AnimationDirection.OUT)?.apply {
+                duration = style.animationDuration.toLong()
+                interpolator = style.animationInterpolator
+                setAnimationListener(object : Animation.AnimationListener {
+                    override fun onAnimationRepeat(animation: Animation?) {
+                    }
 
-        selectedOutAnimation = getSelectedAnimation(AnimationDirection.OUT)?.apply {
-            duration = style.animationDuration.toLong()
-            interpolator = style.animationInterpolator
-            setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(animation: Animation?) {
-                }
+                    override fun onAnimationEnd(animation: Animation?) {
+                        animatedView.visibility = View.INVISIBLE
+                    }
 
-                override fun onAnimationEnd(animation: Animation?) {
-                    selectedAnimatedView.visibility = View.INVISIBLE
-                }
-
-                override fun onAnimationStart(animation: Animation?) {
-                }
-            })
-        }
-
-        inAnimation = getAnimation(AnimationDirection.IN)?.apply {
-            duration = style.animationDuration.toLong()
-            interpolator = style.animationInterpolator
-            setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(animation: Animation?) {
-                }
-
-                override fun onAnimationEnd(animation: Animation?) {
-                }
-
-                override fun onAnimationStart(animation: Animation?) {
-                    animatedView.visibility = View.VISIBLE
-                }
-            })
-        }
-
-        outAnimation = getAnimation(AnimationDirection.OUT)?.apply {
-            duration = style.animationDuration.toLong()
-            interpolator = style.animationInterpolator
-            setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationRepeat(animation: Animation?) {
-                }
-
-                override fun onAnimationEnd(animation: Animation?) {
-                    animatedView.visibility = View.INVISIBLE
-                }
-
-                override fun onAnimationStart(animation: Animation?) {
-                }
-            })
+                    override fun onAnimationStart(animation: Animation?) {
+                    }
+                })
+            }
         }
     }
 
@@ -276,7 +276,7 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun getTransformation(view: View): Transformation? {
-        if (view.animation == null) {
+        if (view.animation == null || !view.animation.hasStarted()) {
             return null
         }
 

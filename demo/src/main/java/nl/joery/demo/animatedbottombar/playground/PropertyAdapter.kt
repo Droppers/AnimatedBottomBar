@@ -144,7 +144,7 @@ internal class PropertyAdapter(
             val enumValues = property.enumClass.enumConstants as Array<Enum<*>>
             val items = enumValues.map { it.name.toLowerCase().capitalize() }.toTypedArray()
 
-            MaterialAlertDialogBuilder(view.context, R.style.DialogStyle)
+            MaterialAlertDialogBuilder(view.context)
                 .setTitle(view.context.getString(R.string.set_property_value, property.name))
                 .setSingleChoiceItems(
                     items, items.indexOf(getValue())
@@ -273,7 +273,7 @@ internal class PropertyAdapter(
             val interpolatorNames =
                 InterpolatorProperty.interpolators.map { it::class.java.simpleName }.toTypedArray()
 
-            MaterialAlertDialogBuilder(view.context, R.style.DialogStyle)
+            MaterialAlertDialogBuilder(view.context)
                 .setTitle(view.context.getString(R.string.set_property_value, property.name))
                 .setSingleChoiceItems(
                     interpolatorNames, interpolatorNames.indexOf(getValue())
