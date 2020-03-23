@@ -260,6 +260,11 @@ An overview of all configuration options. All options can also be accessed and s
         <td>14sp</td>
     </tr>
     <tr>
+        <td><b>abb_iconSize</b></td>
+        <td>Increase or decrease the size of the icon.</td>
+        <td>24dp</td>
+    </tr>
+    <tr>
         <td><b>abb_rippleEnabled</b></td>
         <td>Enables the 'ripple' effect when selecting a tab.<br><br>
             <img src="./media/static/ripple.png" width="240" /></td>

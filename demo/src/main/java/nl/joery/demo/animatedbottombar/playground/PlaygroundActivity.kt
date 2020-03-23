@@ -84,6 +84,12 @@ class PlaygroundActivity : AppCompatActivity() {
             )
         )
         properties.add(
+            IntegerProperty(
+                "iconSize",
+                TypedValue.COMPLEX_UNIT_DIP
+            )
+        )
+        properties.add(
             BooleanProperty(
                 "rippleEnabled"
             )

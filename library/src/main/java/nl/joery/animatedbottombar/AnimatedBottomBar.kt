@@ -133,6 +133,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
                     tabStyle.textSize
                 )
 
+            // Icon
+            iconSize =
+                attr.getDimension(
+                    R.styleable.AnimatedBottomBar_abb_iconSize,
+                    tabStyle.iconSize.toFloat()
+                ).toInt()
+
             // Indicator
             indicatorHeight =
                 attr.getDimension(
@@ -595,6 +602,15 @@ class AnimatedBottomBar @JvmOverloads constructor(
         set(@Dimension value) {
             tabStyle.textSize = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
+        }
+
+    // Icon
+    var iconSize
+        @Dimension
+        get() = tabStyle.iconSize
+        set(@Dimension value) {
+            tabStyle.iconSize = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.ICON)
         }
 
     // Indicator

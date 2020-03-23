@@ -27,10 +27,13 @@ object BottomBarStyle {
         var rippleEnabled: Boolean = false,
         @ColorInt var rippleColor: Int = Color.BLACK,
 
-        // Text appearance
+        // Text
         @StyleRes var textAppearance: Int = -1,
         var typeface: Typeface = Typeface.DEFAULT,
-        var textSize: Int = 14.spPx
+        var textSize: Int = 14.spPx,
+
+        // Icon
+        var iconSize: Int = 24.dpPx
     )
 
     data class Indicator(
@@ -47,6 +50,7 @@ object BottomBarStyle {
         COLORS,
         ANIMATIONS,
         RIPPLE,
-        TEXT
+        TEXT,
+        ICON
     }
 }

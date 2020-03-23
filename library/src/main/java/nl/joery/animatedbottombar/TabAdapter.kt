@@ -166,8 +166,8 @@ internal class TabAdapter(
                 deselect(false)
             }
 
-            view.setIcon(tab.icon)
-            view.setText(tab.title)
+            view.title = tab.title
+            view.icon = tab.icon
         }
     }
 

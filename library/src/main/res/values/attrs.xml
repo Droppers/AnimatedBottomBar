@@ -55,5 +55,7 @@
             <flag name="normal" value="0" />
         </attr>
         <attr name="abb_textSize" format="dimension" />
+
+        <attr name="abb_iconSize" format="dimension" />
     </declare-styleable>
 </resources>

@@ -36,6 +36,22 @@ internal class TabView @JvmOverloads constructor(
 
     private lateinit var style: BottomBarStyle.Tab
 
+    var title
+        get() = text_view.text.toString()
+        set(value) {
+            text_view.text = value
+        }
+
+    var icon: Drawable?
+        get() = icon_view.drawable
+        set(value) {
+            val newDrawable = value?.constantState?.newDrawable()
+
+            if (newDrawable != null) {
+                icon_view.setImageDrawable(newDrawable)
+            }
+        }
+
     init {
         View.inflate(context, R.layout.view_tab, this)
     }
@@ -50,31 +66,24 @@ internal class TabView @JvmOverloads constructor(
         this.style = style
 
         when (type) {
-            BottomBarStyle.StyleUpdateType.TAB_TYPE ->
-                updateTabType()
-            BottomBarStyle.StyleUpdateType.ANIMATIONS ->
-                updateAnimations()
-            BottomBarStyle.StyleUpdateType.COLORS -> {
-                updateColors()
-            }
-            BottomBarStyle.StyleUpdateType.RIPPLE -> {
-                updateRipple()
-            }
-            BottomBarStyle.StyleUpdateType.TEXT -> {
-                updateText()
-            }
+            BottomBarStyle.StyleUpdateType.TAB_TYPE -> updateTabType()
+            BottomBarStyle.StyleUpdateType.ANIMATIONS -> updateAnimations()
+            BottomBarStyle.StyleUpdateType.COLORS -> updateColors()
+            BottomBarStyle.StyleUpdateType.RIPPLE -> updateRipple()
+            BottomBarStyle.StyleUpdateType.TEXT -> updateText()
+            BottomBarStyle.StyleUpdateType.ICON -> updateIcon()
         }
     }
 
     private fun updateTabType() {
         animatedView = when (style.selectedTabType) {
-            AnimatedBottomBar.TabType.TEXT -> imageView
-            AnimatedBottomBar.TabType.ICON -> textView
+            AnimatedBottomBar.TabType.TEXT -> icon_view
+            AnimatedBottomBar.TabType.ICON -> text_view
         }
 
         selectedAnimatedView = when (style.selectedTabType) {
-            AnimatedBottomBar.TabType.TEXT -> textView
-            AnimatedBottomBar.TabType.ICON -> imageView
+            AnimatedBottomBar.TabType.TEXT -> text_view
+            AnimatedBottomBar.TabType.ICON -> icon_view
         }
         selectedAnimatedView.bringToFront()
 
@@ -90,22 +99,13 @@ internal class TabView @JvmOverloads constructor(
     private fun updateColors() {
         if (style.selectedTabType == AnimatedBottomBar.TabType.ICON) {
             ImageViewCompat.setImageTintList(
-                imageView,
+                icon_view,
                 ColorStateList.valueOf(style.tabColorSelected)
             )
-            textView.setTextColor(style.tabColor)
+            text_view.setTextColor(style.tabColor)
         } else if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
-            ImageViewCompat.setImageTintList(imageView, ColorStateList.valueOf(style.tabColor))
-            textView.setTextColor(style.tabColorSelected)
-        }
-    }
-
-    private fun updateText() {
-        textView.typeface = style.typeface
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.textSize.toFloat())
-
-        if (style.textAppearance != -1) {
-            TextViewCompat.setTextAppearance(textView, style.textAppearance)
+            ImageViewCompat.setImageTintList(icon_view, ColorStateList.valueOf(style.tabColor))
+            text_view.setTextColor(style.tabColorSelected)
         }
     }
 
@@ -126,16 +126,18 @@ internal class TabView @JvmOverloads constructor(
         }
     }
 
-    fun setText(text: String) {
-        textView.text = text
+    private fun updateText() {
+        text_view.typeface = style.typeface
+        text_view.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.textSize.toFloat())
+
+        if (style.textAppearance != -1) {
+            TextViewCompat.setTextAppearance(text_view, style.textAppearance)
+        }
     }
 
-    fun setIcon(drawable: Drawable?) {
-        val newDrawable = drawable?.constantState?.newDrawable()
-
-        if (newDrawable != null) {
-            imageView.setImageDrawable(newDrawable)
-        }
+    private fun updateIcon() {
+        icon_view.layoutParams.width = style.iconSize
+        icon_view.layoutParams.height = style.iconSize
     }
 
     fun select(animate: Boolean = true) {
@@ -177,103 +179,64 @@ internal class TabView @JvmOverloads constructor(
 
     private fun updateAnimations() {
         if (style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
-            selectedInAnimation = getSelectedAnimation(AnimationDirection.IN)?.apply {
-                setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationRepeat(animation: Animation?) {
-                    }
-
-                    override fun onAnimationEnd(animation: Animation?) {
-                    }
-
+            selectedInAnimation = getAnimation(true, AnimationDirection.IN)?.apply {
+                setAnimationListener(object : AnimationListener {
                     override fun onAnimationStart(animation: Animation?) {
                         selectedAnimatedView.visibility = View.VISIBLE
                     }
                 })
             }
 
-            selectedOutAnimation = getSelectedAnimation(AnimationDirection.OUT)?.apply {
-                setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationRepeat(animation: Animation?) {
-                    }
-
+            selectedOutAnimation = getAnimation(true, AnimationDirection.OUT)?.apply {
+                setAnimationListener(object : AnimationListener {
                     override fun onAnimationEnd(animation: Animation?) {
                         selectedAnimatedView.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationStart(animation: Animation?) {
                     }
                 })
             }
         }
 
         if (style.tabAnimation != AnimatedBottomBar.TabAnimation.NONE) {
-            inAnimation = getAnimation(AnimationDirection.IN)?.apply {
-                setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationRepeat(animation: Animation?) {
-                    }
-
-                    override fun onAnimationEnd(animation: Animation?) {
-                    }
-
+            inAnimation = getAnimation(false, AnimationDirection.IN)?.apply {
+                setAnimationListener(object : AnimationListener {
                     override fun onAnimationStart(animation: Animation?) {
                         animatedView.visibility = View.VISIBLE
                     }
                 })
             }
 
-            outAnimation = getAnimation(AnimationDirection.OUT)?.apply {
-                setAnimationListener(object : Animation.AnimationListener {
-                    override fun onAnimationRepeat(animation: Animation?) {
-                    }
-
+            outAnimation = getAnimation(false, AnimationDirection.OUT)?.apply {
+                setAnimationListener(object : AnimationListener {
                     override fun onAnimationEnd(animation: Animation?) {
                         animatedView.visibility = View.INVISIBLE
-                    }
-
-                    override fun onAnimationStart(animation: Animation?) {
                     }
                 })
             }
         }
     }
 
-    private fun getSelectedAnimation(direction: AnimationDirection): Animation? {
-        var animation: Animation? = null
-        val transformation = getTransformation(selectedAnimatedView)
-        if (style.tabAnimationSelected == AnimatedBottomBar.TabAnimation.SLIDE) {
-            val deltaYFrom =
-                if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) height.toFloat() else 0f)
-            val deltaYTo = if (direction == AnimationDirection.IN) 0f else height.toFloat()
-            animation = TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
-        } else if (style.tabAnimationSelected == AnimatedBottomBar.TabAnimation.FADE) {
-            val alphaFrom =
-                transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
-            val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f
-            animation = AlphaAnimation(alphaFrom, alphaTo)
-        }
-
-        animation?.apply {
-            duration = style.animationDuration.toLong()
-            interpolator = style.animationInterpolator
-        }
-
-        return animation
-    }
-
-    private fun getAnimation(direction: AnimationDirection): Animation? {
+    private fun getAnimation(selected: Boolean, direction: AnimationDirection): Animation? {
         var animation: Animation? = null
         val transformation = getTransformation(animatedView)
-        if (style.tabAnimation == AnimatedBottomBar.TabAnimation.SLIDE) {
-            val deltaYFrom =
-                if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) -height.toFloat() else 0f)
-            val deltaYTo = if (direction == AnimationDirection.IN) 0f else -height.toFloat()
 
-            animation = TranslateAnimation(0f, 0f, deltaYFrom, deltaYTo)
+        val valueFrom: Float
+        val valueTo: Float
+        if (style.tabAnimation == AnimatedBottomBar.TabAnimation.SLIDE) {
+            if (selected) {
+                valueFrom =
+                    if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) height.toFloat() else 0f)
+                valueTo = if (direction == AnimationDirection.IN) 0f else height.toFloat()
+            } else {
+                valueFrom =
+                    if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) -height.toFloat() else 0f)
+                valueTo = if (direction == AnimationDirection.IN) 0f else -height.toFloat()
+            }
+            animation = TranslateAnimation(0f, 0f, valueFrom, valueTo)
         } else if (style.tabAnimation == AnimatedBottomBar.TabAnimation.FADE) {
-            val alphaFrom =
+            valueFrom =
                 transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
-            val alphaTo = if (direction == AnimationDirection.IN) 1f else 0f
-            animation = AlphaAnimation(alphaFrom, alphaTo)
+            valueTo = if (direction == AnimationDirection.IN) 1f else 0f
+            animation = AlphaAnimation(valueFrom, valueTo)
         }
 
         animation?.apply {
@@ -303,5 +266,11 @@ internal class TabView @JvmOverloads constructor(
     private enum class AnimationDirection {
         IN,
         OUT
+    }
+
+    private interface AnimationListener : Animation.AnimationListener {
+        override fun onAnimationRepeat(animation: Animation?) {}
+        override fun onAnimationEnd(animation: Animation?) {}
+        override fun onAnimationStart(animation: Animation?) {}
     }
 }
