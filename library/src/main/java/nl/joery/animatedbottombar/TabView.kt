@@ -221,7 +221,8 @@ internal class TabView @JvmOverloads constructor(
 
         val valueFrom: Float
         val valueTo: Float
-        if (style.tabAnimation == AnimatedBottomBar.TabAnimation.SLIDE) {
+        val animationType = if (selected) style.tabAnimationSelected else style.tabAnimation
+        if (animationType == AnimatedBottomBar.TabAnimation.SLIDE) {
             if (selected) {
                 valueFrom =
                     if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) height.toFloat() else 0f)
@@ -231,20 +232,20 @@ internal class TabView @JvmOverloads constructor(
                     if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) -height.toFloat() else 0f)
                 valueTo = if (direction == AnimationDirection.IN) 0f else -height.toFloat()
             }
+
             animation = TranslateAnimation(0f, 0f, valueFrom, valueTo)
-        } else if (style.tabAnimation == AnimatedBottomBar.TabAnimation.FADE) {
+        } else if (animationType == AnimatedBottomBar.TabAnimation.FADE) {
             valueFrom =
                 transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
             valueTo = if (direction == AnimationDirection.IN) 1f else 0f
+
             animation = AlphaAnimation(valueFrom, valueTo)
         }
 
-        animation?.apply {
+        return animation?.apply {
             duration = style.animationDuration.toLong()
             interpolator = style.animationInterpolator
         }
-
-        return animation
     }
 
     private fun getTransformation(view: View): Transformation? {

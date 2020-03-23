@@ -30,7 +30,7 @@ object XmlGenerator {
 
             val defaultValue = getDefaultValue(defaultProviders, property.name)
             val actualValue = ReflectionUtils.getPropertyValue(instance, property.name)
-            if ((defaultValue == null && actualValue != null) || defaultValue != actualValue) {
+            if ((defaultValue == null && actualValue != null) || defaultValue != actualValue || property is ColorProperty) {
                 sb.append(
                     getXmlProperty(
                         if (property.name == "backgroundColor") "android:background" else "app:${prefix}_${property.name}",
@@ -74,7 +74,9 @@ object XmlGenerator {
                 else -> value.toString()
             }
             is EnumProperty -> value.toString().toLowerCase()
-            is InterpolatorProperty -> "@android:anim/" + ReflectionUtils.pascalCaseToSnakeCase(value::class.java.simpleName)
+            is InterpolatorProperty -> "@android:anim/" + ReflectionUtils.pascalCaseToSnakeCase(
+                value::class.java.simpleName
+            )
             else -> value.toString()
         }
     }
