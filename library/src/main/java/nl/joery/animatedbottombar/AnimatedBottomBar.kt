@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.annotation.*
@@ -18,7 +19,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import kotlin.math.max
 
 
 class AnimatedBottomBar @JvmOverloads constructor(
@@ -40,8 +40,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private var viewPager2: ViewPager2? = null
 
     init {
-        minimumHeight = 64.dpPx
-
         initRecyclerView()
         initAdapter()
         initTabIndicator()
@@ -240,17 +238,17 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val desiredHeight = minimumHeight + paddingTop + paddingBottom
-
         super.onMeasure(
             widthMeasureSpec,
-            max(MeasureSpec.makeMeasureSpec(desiredHeight, MeasureSpec.EXACTLY), heightMeasureSpec)
+            if (layoutParams.height == WRAP_CONTENT) MeasureSpec.makeMeasureSpec(
+                64.dpPx,
+                MeasureSpec.EXACTLY
+            ) else heightMeasureSpec
         )
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        // Draws the tab indicator again
         recycler.postInvalidate()
     }
 
