@@ -21,6 +21,7 @@ object BottomBarStyle {
 
         // Colors
         @ColorInt var tabColorSelected: Int = Color.BLACK,
+        @ColorInt var tabColorDisabled: Int = Color.BLACK,
         @ColorInt var tabColor: Int = Color.BLACK,
 
         // Ripple

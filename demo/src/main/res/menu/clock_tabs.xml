@@ -10,6 +10,7 @@
         android:title="@string/tab_bedtime" />
     <item
         android:id="@+id/test3"
+        android:enabled="false"
         android:icon="@drawable/stopwatch"
         android:title="@string/tab_stopwatch" />
     <item

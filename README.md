@@ -136,6 +136,19 @@ AnimatedBottomBar.selectTabAt(1)
 AnimatedBottomBar.selectTabById(R.id.tab_home)
 ```
 
+### Enabling / disabling tabs
+```kotlin
+// Disabling a tab by object reference
+val tabToDisable = AnimatedBottomBar.tabs[1]
+AnimatedBottomBar.setTabEnabled(tabToDisable, false) // Use true for re-enabling the tab
+
+// Disabling a tab at a specific position
+AnimatedBottomBar.setTabEnabledAt(1, false)
+
+// Disabling a tab by the given ID resource
+AnimatedBottomBar.setTabEnabledById(R.id.tab_home, false)
+```
+
 ### Intercepting tabs
 Could be useful for example restricting access to a premium area.
 
@@ -180,13 +193,14 @@ An overview of all configuration options. All options can also be accessed and s
     </tr>
     <tr>
         <td><b>abb_tabs</b></td>
-        <td>Tabs can be defined in a menu file (<a href="https://developer.android.com/guide/topics/resources/menu-resource">Menu resource</a>), in the <i>res/menu/</i> resource folder.<br><br>The <b>icon</b> and <b>title</b> attribute are required. 
+        <td>Tabs can be defined in a menu file (<a href="https://developer.android.com/guide/topics/resources/menu-resource">Menu resource</a>), in the <i>res/menu/</i> resource folder.<br><br>The <b>icon</b> and <b>title</b> attribute are required. By default all tabs are enabled, set <b>android:enabled</b> to <i>false</i> to disable a tab.
 <pre lang="xml">
 &#x3C;menu xmlns:android=&#x22;http://schemas.android.com/apk/res/android&#x22;&#x3E;
     &#x3C;item
         android:id=&#x22;@+id/tab_example&#x22;
         android:icon=&#x22;@drawable/ic_example&#x22;
-        android:title=&#x22;@string/tab_example&#x22; /&#x3E;
+        android:title=&#x22;@string/tab_example&#x22;
+        android:enabled=&#x22;true|false&#x22; /&#x3E;
     ...etc
 &#x3C;/menu&#x3E;
 </pre></td>
@@ -231,6 +245,11 @@ An overview of all configuration options. All options can also be accessed and s
         <td><b>abb_tabColorSelected</b></td>
         <td>The color of the icon or text when the tab is selected.</td>
         <td>@color/colorPrimary</td>
+    </tr>
+    <tr>
+        <td><b>abb_tabColorDisabled</b></td>
+        <td>The color of the icon or text whenever the tab has been disabled.</td>
+        <td>@color/textColorSecondary</td>
     </tr>
     <tr>
         <td><b>abb_textAppearance</b></td>

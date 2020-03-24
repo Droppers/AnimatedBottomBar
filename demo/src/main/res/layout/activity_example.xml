@@ -57,6 +57,7 @@
         app:abb_tabAnimation="slide"
         app:abb_tabColor="#CCFFFFFF"
         app:abb_tabColorSelected="#4189FC"
+        app:abb_tabColorDisabled="#CCFFA7A7"
         app:abb_tabs="@menu/clock_tabs" />
 
     <Space
@@ -98,6 +99,7 @@
         app:abb_tabAnimationSelected="fade"
         app:abb_tabColor="#CCFFFFFF"
         app:abb_tabColorSelected="#FFF"
+        app:abb_tabColorDisabled="#80FFFFFF"
         app:abb_tabs="@menu/clock_tabs"
         app:abb_textAppearance="@style/CustomText" />
 

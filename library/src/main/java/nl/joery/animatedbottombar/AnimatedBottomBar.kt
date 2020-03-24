@@ -49,6 +49,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private fun initAttributes(
         attributeSet: AttributeSet?
     ) {
+        tabColorDisabled = context.getTextColor(android.R.attr.textColorSecondary)
         tabColor = context.getTextColor(android.R.attr.textColorPrimary)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -109,6 +110,10 @@ class AnimatedBottomBar @JvmOverloads constructor(
             tabColorSelected = attr.getColor(
                 R.styleable.AnimatedBottomBar_abb_tabColorSelected,
                 tabStyle.tabColorSelected
+            )
+            tabColorDisabled = attr.getColor(
+                R.styleable.AnimatedBottomBar_abb_tabColorDisabled,
+                tabStyle.tabColorDisabled
             )
             tabColor =
                 attr.getColor(R.styleable.AnimatedBottomBar_abb_tabColor, tabStyle.tabColor)
@@ -393,6 +398,44 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.selectTab(tab, animate)
     }
 
+    /**
+     * Enable/disabled a tab on the BottomBar by the specified [tabIndex] index.
+     *
+     * @param tabIndex The index of the tab to be enabled or disabled.
+     * @param enabled Whether the tab state should be enabled or disabled.
+     */
+    fun setTabEnabledAt(tabIndex: Int, enabled: Boolean) {
+        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+            throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
+        }
+
+        val tab = adapter.tabs[tabIndex]
+        setTabEnabled(tab, enabled)
+    }
+
+    /**
+     * Enable/disable a tab on the BottomBar by the specified tab [id].
+     *
+     * @param id The id of the tab to be enabled or disabled.
+     * @param enabled Whether the tab state should be enabled or disabled.
+     */
+    fun setTabEnabledById(@IdRes id: Int, enabled: Boolean) {
+        val tab =
+            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
+        setTabEnabled(tab, enabled)
+    }
+
+    /**
+     * Enable/disable a tab on the BottomBar by [Tab] instance, use [tabs] to retrieve a list of tabs.
+     *
+     * @param tab The [Tab] instance to be enabled or disabled.
+     * @param enabled Whether the tab state should be enabled or disabled.
+     */
+    fun setTabEnabled(tab: Tab, enabled: Boolean) {
+        tab.enabled = enabled
+        adapter.notifyTabChanged(tab)
+    }
+
     private fun findTabWithId(@IdRes id: Int): Tab? {
         for (tab in tabs) {
             if (tab.id == id) {
@@ -565,6 +608,21 @@ class AnimatedBottomBar @JvmOverloads constructor(
             tabColorSelected = ContextCompat.getColor(context, value)
         }
 
+    var tabColorDisabled
+        @ColorInt
+        get() = tabStyle.tabColorDisabled
+        set(@ColorInt value) {
+            tabStyle.tabColorDisabled = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.COLORS)
+        }
+
+    var tabColorDisabledRes
+        @Deprecated("", level = DeprecationLevel.HIDDEN)
+        get() = Int.MIN_VALUE
+        set(@ColorRes value) {
+            tabColorDisabled = ContextCompat.getColor(context, value)
+        }
+
     var tabColor
         @ColorInt
         get() = tabStyle.tabColor
@@ -664,7 +722,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyIndicatorStyle()
         }
 
-    class Tab internal constructor(val icon: Drawable, val title: String, @IdRes val id: Int = -1)
+    class Tab internal constructor(
+        val icon: Drawable,
+        val title: String, @IdRes val id: Int = -1,
+        var enabled: Boolean = true
+    )
 
     enum class TabType(val id: Int) {
         TEXT(0),

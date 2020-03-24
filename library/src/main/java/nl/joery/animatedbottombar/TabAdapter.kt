@@ -48,10 +48,6 @@ internal class TabAdapter(
                         holder.applyStyle(
                             payload.value as BottomBarStyle.StyleUpdateType
                         )
-                    PayloadType.SelectTab ->
-                        holder.select(payload.value as Boolean)
-                    PayloadType.DeselectTab ->
-                        holder.deselect(payload.value as Boolean)
                 }
             }
         }
@@ -84,7 +80,6 @@ internal class TabAdapter(
 
     fun selectTab(tab: AnimatedBottomBar.Tab, animate: Boolean) {
         val newIndex = tabs.indexOf(tab)
-
         if (tab == selectedTab) {
             bottomBar.onTabSelectListener?.onTabReselected(newIndex, tab)
             return
@@ -116,6 +111,13 @@ internal class TabAdapter(
             0, tabs.size,
             Payload(PayloadType.ApplyStyle, type)
         )
+    }
+
+    fun notifyTabChanged(tab: AnimatedBottomBar.Tab) {
+        val index = tabs.indexOf(tab)
+        if (index >= 0) {
+            notifyItemChanged(index)
+        }
     }
 
     private fun canSelectTab(
@@ -168,13 +170,12 @@ internal class TabAdapter(
 
             view.title = tab.title
             view.icon = tab.icon
+            view.isEnabled = tab.enabled
         }
     }
 
     private data class Payload(val type: PayloadType, val value: Any)
     private enum class PayloadType {
-        ApplyStyle,
-        SelectTab,
-        DeselectTab
+        ApplyStyle
     }
 }

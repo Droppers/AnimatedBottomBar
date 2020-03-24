@@ -27,7 +27,8 @@ internal object MenuParser {
                 AnimatedBottomBar.Tab(
                     title = item.title.toString(),
                     icon = item.icon,
-                    id = item.itemId
+                    id = item.itemId,
+                    enabled = item.isEnabled
                 )
             )
         }

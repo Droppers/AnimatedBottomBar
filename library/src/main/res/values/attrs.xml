@@ -20,6 +20,7 @@
         <attr name="abb_animationInterpolator" format="reference" />
 
         <attr name="abb_tabColorSelected" format="color" />
+        <attr name="abb_tabColorDisabled" format="color" />
         <attr name="abb_tabColor" format="color" />
 
         <!-- Indicator -->

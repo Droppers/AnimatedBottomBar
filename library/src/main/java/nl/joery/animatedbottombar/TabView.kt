@@ -52,6 +52,12 @@ internal class TabView @JvmOverloads constructor(
             }
         }
 
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+
+        updateColors()
+    }
+
     init {
         View.inflate(context, R.layout.view_tab, this)
     }
@@ -97,15 +103,17 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun updateColors() {
+        val tabColor = if (isEnabled) style.tabColor else style.tabColorDisabled
+        val tabColorSelected = if (isEnabled) style.tabColorSelected else style.tabColorDisabled
         if (style.selectedTabType == AnimatedBottomBar.TabType.ICON) {
             ImageViewCompat.setImageTintList(
                 icon_view,
-                ColorStateList.valueOf(style.tabColorSelected)
+                ColorStateList.valueOf(tabColorSelected)
             )
-            text_view.setTextColor(style.tabColor)
+            text_view.setTextColor(tabColor)
         } else if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
-            ImageViewCompat.setImageTintList(icon_view, ColorStateList.valueOf(style.tabColor))
-            text_view.setTextColor(style.tabColorSelected)
+            ImageViewCompat.setImageTintList(icon_view, ColorStateList.valueOf(tabColor))
+            text_view.setTextColor(tabColorSelected)
         }
     }
 
