@@ -78,6 +78,11 @@ class PlaygroundActivity : AppCompatActivity() {
             )
         )
         properties.add(
+            ColorProperty(
+                "tabColorDisabled"
+            )
+        )
+        properties.add(
             IntegerProperty(
                 "textSize",
                 TypedValue.COMPLEX_UNIT_SP

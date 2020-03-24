@@ -26,8 +26,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
-    internal var onTabSelectListener: OnTabSelectListener? = null
-    internal var onTabInterceptListener: OnTabInterceptListener? = null
+    private var onTabSelectListener: OnTabSelectListener? = null
+    private var onTabInterceptListener: OnTabInterceptListener? = null
+
+    var onTabSelected: (Tab) -> Unit = {}
+    var onTabReselected: (Tab) -> Unit = {}
+    var onTabIntercepted: (Tab) -> Boolean = { true }
 
     internal val tabStyle: BottomBarStyle.Tab by lazy { BottomBarStyle.Tab() }
     internal val indicatorStyle: BottomBarStyle.Indicator by lazy { BottomBarStyle.Indicator() }
@@ -204,11 +208,22 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.onTabSelected =
             { lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab, animated: Boolean ->
                 tabIndicator.setSelectedIndex(lastIndex, newIndex, animated)
-                onTabSelectListener?.onTabSelected(lastIndex, lastTab, newIndex, newTab)
 
                 viewPager?.currentItem = newIndex
                 viewPager2?.currentItem = newIndex
+
+                onTabSelectListener?.onTabSelected(lastIndex, lastTab, newIndex, newTab)
+                onTabSelected.invoke(newTab)
             }
+        adapter.onTabReselected =
+            { newIndex: Int, newTab: Tab ->
+                onTabSelectListener?.onTabReselected(newIndex, newTab)
+                onTabReselected.invoke(newTab)
+            }
+        adapter.onTabIntercepted = { lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab ->
+            onTabInterceptListener?.onTabIntercepted(lastIndex, lastTab, newIndex, newTab)
+                ?: onTabIntercepted.invoke(newTab)
+        }
         recycler.adapter = adapter
     }
 

@@ -71,7 +71,17 @@ Create a file named `tabs.xml` in the `res/menu/` resources folder:
 </menu>
 ```
 
-Get notified when the selected tab changes:
+Get notified when the selected tab changes by setting callbacks:
+```kotlin
+bottom_bar.onTabSelected = {
+    Log.d("bottom_bar", "Selected tab: " + it.title)
+}
+bottom_bar.onTabReselected = {
+    Log.d("bottom_bar", "Reselected tab: " + it.title)
+}
+```
+
+Or set a listener if you need more detailed information:
 ```kotlin
 bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
     override fun onTabSelected(
@@ -80,12 +90,12 @@ bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener
         newIndex: Int,
         newTab: AnimatedBottomBar.Tab
     ) {
-        Log.d("TAB_SELECTED", "Selected index: $newIndex, title: ${newTab.title}")
+        Log.d("bottom_bar", "Selected index: $newIndex, title: ${newTab.title}")
     }
 
     // An optional method that will be fired whenever an already selected tab has been selected again.
     override fun onTabReselected(index: Int, tab: AnimatedBottomBar.Tab) {
-        Log.d("TAB_RESELECTED", "Reselected index: $index, title: ${tab.title}")
+        Log.d("bottom_bar", "Reselected index: $index, title: ${tab.title}")
     }
 })
 ```
@@ -150,8 +160,18 @@ AnimatedBottomBar.setTabEnabledById(R.id.tab_home, false)
 ```
 
 ### Intercepting tabs
-Could be useful for example restricting access to a premium area.
+Could be useful for example restricting access to a premium area. You can use a callback or a more detailed listener:
+```kotlin
+bottom_bar.onTabIntercepted = {
+    if (newTab.id == R.id.tab_pro_feature && !hasProVersion) {
+        // e.g. show a dialog
+        false
+    }
+    true
+}
+```
 
+Detailed listener:
 ```kotlin
 bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptListener {
     override fun onTabIntercepted(
@@ -162,9 +182,9 @@ bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptLi
     ): Boolean {
         if (newTab.id == R.id.tab_pro_feature && !hasProVersion) {
             // e.g. show a dialog
-            return true
+            return false
         }
-        return false
+        return true
     }
 })
 ```

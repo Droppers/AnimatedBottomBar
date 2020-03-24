@@ -13,6 +13,9 @@ internal class TabAdapter(
     RecyclerView.Adapter<TabAdapter.TabHolder>() {
     var onTabSelected: ((lastIndex: Int, lastTab: AnimatedBottomBar.Tab?, newIndex: Int, newTab: AnimatedBottomBar.Tab, animated: Boolean) -> Unit)? =
         null
+    var onTabReselected: ((newIndex: Int, newTab: AnimatedBottomBar.Tab) -> Unit)? = null
+    var onTabIntercepted: ((lastIndex: Int, lastTab: AnimatedBottomBar.Tab?, newIndex: Int, newTab: AnimatedBottomBar.Tab) -> Boolean)? =
+        null
 
     val tabs = ArrayList<AnimatedBottomBar.Tab>()
     var selectedTab: AnimatedBottomBar.Tab? = null
@@ -81,7 +84,7 @@ internal class TabAdapter(
     fun selectTab(tab: AnimatedBottomBar.Tab, animate: Boolean) {
         val newIndex = tabs.indexOf(tab)
         if (tab == selectedTab) {
-            bottomBar.onTabSelectListener?.onTabReselected(newIndex, tab)
+            onTabReselected?.invoke(newIndex, tab)
             return
         }
 
@@ -126,7 +129,7 @@ internal class TabAdapter(
         newIndex: Int,
         newTab: AnimatedBottomBar.Tab
     ): Boolean {
-        return bottomBar.onTabInterceptListener?.onTabIntercepted(
+        return onTabIntercepted?.invoke(
             lastIndex,
             lastTab,
             newIndex,
