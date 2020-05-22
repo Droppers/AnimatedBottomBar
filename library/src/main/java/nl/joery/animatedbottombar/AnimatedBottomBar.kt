@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -472,7 +473,19 @@ class AnimatedBottomBar @JvmOverloads constructor(
         if (viewPager != null) {
             selectTabAt(viewPager.currentItem, false)
             viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                private var previousState:Int = ViewPager.SCROLL_STATE_IDLE
+                private var userScrollChange = false
                 override fun onPageScrollStateChanged(state: Int) {
+                    // Use Scroll state to detect whether the user is sliding
+                    if (previousState == ViewPager.SCROLL_STATE_DRAGGING
+                        && state == ViewPager.SCROLL_STATE_SETTLING)
+                        userScrollChange = true
+
+                    else if (previousState == ViewPager.SCROLL_STATE_SETTLING
+                        && state == ViewPager.SCROLL_STATE_IDLE)
+                        userScrollChange = false
+
+                    previousState = state
                 }
 
                 override fun onPageScrolled(
@@ -483,7 +496,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 }
 
                 override fun onPageSelected(position: Int) {
-                    selectTabAt(position)
+                    if (userScrollChange){
+                        // Swap by user touch, change adapter to new tab.
+                        selectTabAt(position)
+                        return
+                    }
+                    // Programmatically setting should't call selectTabAt again
                 }
             })
         }
@@ -500,8 +518,29 @@ class AnimatedBottomBar @JvmOverloads constructor(
         if (viewPager2 != null) {
             selectTabAt(viewPager2.currentItem, false)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                private var previousState:Int = SCROLL_STATE_IDLE
+                private var userScrollChange = false
+                override fun onPageScrollStateChanged(state: Int) {
+                    super.onPageScrollStateChanged(state)
+                    // Use Scroll state to detect whether the user is sliding
+                    if (previousState == ViewPager.SCROLL_STATE_DRAGGING
+                        && state == ViewPager.SCROLL_STATE_SETTLING)
+                        userScrollChange = true
+
+                    else if (previousState == ViewPager.SCROLL_STATE_SETTLING
+                        && state == ViewPager.SCROLL_STATE_IDLE)
+                        userScrollChange = false
+
+                    previousState = state
+                }
+
                 override fun onPageSelected(position: Int) {
-                    selectTabAt(position)
+                    if (userScrollChange){
+                        // Swap by user touch, change adapter to new tab.
+                        selectTabAt(position)
+                        return
+                    }
+                    // Programmatically setting should't call selectTabAt again
                 }
             })
         }
