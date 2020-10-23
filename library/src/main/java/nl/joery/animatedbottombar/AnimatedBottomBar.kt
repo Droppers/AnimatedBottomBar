@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -224,6 +225,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         recycler = RecyclerView(context)
         recycler.itemAnimator = null
         recycler.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        recycler.overScrollMode = View.OVER_SCROLL_NEVER
 
         val flexLayoutManager = FlexboxLayoutManager(context, FlexDirection.ROW, FlexWrap.NOWRAP)
         recycler.layoutManager = flexLayoutManager
@@ -562,7 +564,20 @@ class AnimatedBottomBar @JvmOverloads constructor(
         if (viewPager != null) {
             selectTabAt(viewPager.currentItem, false)
             viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                private var previousState: Int = ViewPager.SCROLL_STATE_IDLE
+                private var userScrollChange = false
                 override fun onPageScrollStateChanged(state: Int) {
+                    // Use Scroll state to detect whether the user is sliding
+                    if (previousState == ViewPager.SCROLL_STATE_DRAGGING
+                        && state == ViewPager.SCROLL_STATE_SETTLING
+                    ) {
+                        userScrollChange = true
+                    } else if (previousState == ViewPager.SCROLL_STATE_SETTLING
+                        && state == ViewPager.SCROLL_STATE_IDLE
+                    ) {
+                        userScrollChange = false
+                    }
+                    previousState = state
                 }
 
                 override fun onPageScrolled(
@@ -573,7 +588,10 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 }
 
                 override fun onPageSelected(position: Int) {
-                    selectTabAt(position)
+                    if (userScrollChange) {
+                        // Swap by user's touch, change adapter to new tab.
+                        selectTabAt(position)
+                    }
                 }
             })
         }
@@ -590,8 +608,28 @@ class AnimatedBottomBar @JvmOverloads constructor(
         if (viewPager2 != null) {
             selectTabAt(viewPager2.currentItem, false)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                private var previousState: Int = ViewPager2.SCROLL_STATE_IDLE
+                private var userScrollChange = false
+                override fun onPageScrollStateChanged(state: Int) {
+                    super.onPageScrollStateChanged(state)
+                    // Use Scroll state to detect whether the user is sliding
+                    if (previousState == ViewPager2.SCROLL_STATE_DRAGGING
+                        && state == ViewPager2.SCROLL_STATE_SETTLING
+                    ) {
+                        userScrollChange = true
+                    } else if (previousState == ViewPager2.SCROLL_STATE_SETTLING
+                        && state == ViewPager2.SCROLL_STATE_IDLE
+                    ) {
+                        userScrollChange = false
+                    }
+                    previousState = state
+                }
+
                 override fun onPageSelected(position: Int) {
-                    selectTabAt(position)
+                    if (userScrollChange) {
+                        // Swap by user's touch, change adapter to new tab.
+                        selectTabAt(position)
+                    }
                 }
             })
         }
