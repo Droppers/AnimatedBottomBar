@@ -29,6 +29,9 @@ internal class TabView @JvmOverloads constructor(
     private lateinit var animatedView: View
     private lateinit var selectedAnimatedView: View
 
+    private val badgeViews: List<BadgeView> by lazy { arrayListOf(text_badge, icon_badge) }
+    private var _badge: AnimatedBottomBar.Badge? = null
+
     private var selectedOutAnimation: Animation? = null
     private var selectedInAnimation: Animation? = null
     private var outAnimation: Animation? = null
@@ -52,6 +55,13 @@ internal class TabView @JvmOverloads constructor(
             }
         }
 
+    var badge: AnimatedBottomBar.Badge?
+        get() = _badge
+        set(value) {
+            _badge = value
+            updateBadge()
+        }
+
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
 
@@ -60,6 +70,9 @@ internal class TabView @JvmOverloads constructor(
 
     init {
         View.inflate(context, R.layout.view_tab, this)
+
+        icon_badge.scaleLayout = false
+        text_badge.scaleLayout = true
     }
 
     fun applyStyle(style: BottomBarStyle.Tab) {
@@ -78,20 +91,20 @@ internal class TabView @JvmOverloads constructor(
             BottomBarStyle.StyleUpdateType.RIPPLE -> updateRipple()
             BottomBarStyle.StyleUpdateType.TEXT -> updateText()
             BottomBarStyle.StyleUpdateType.ICON -> updateIcon()
+            BottomBarStyle.StyleUpdateType.BADGE -> updateBadge()
         }
     }
 
     private fun updateTabType() {
         animatedView = when (style.selectedTabType) {
-            AnimatedBottomBar.TabType.TEXT -> icon_view
-            AnimatedBottomBar.TabType.ICON -> text_view
+            AnimatedBottomBar.TabType.TEXT -> icon_layout
+            AnimatedBottomBar.TabType.ICON -> text_layout
         }
 
         selectedAnimatedView = when (style.selectedTabType) {
-            AnimatedBottomBar.TabType.TEXT -> text_view
-            AnimatedBottomBar.TabType.ICON -> icon_view
+            AnimatedBottomBar.TabType.TEXT -> text_layout
+            AnimatedBottomBar.TabType.ICON -> icon_layout
         }
-        selectedAnimatedView.bringToFront()
 
         if (selectedAnimatedView.visibility == View.VISIBLE) {
             animatedView.visibility = View.VISIBLE
@@ -100,6 +113,8 @@ internal class TabView @JvmOverloads constructor(
             animatedView.visibility = View.INVISIBLE
             selectedAnimatedView.visibility = View.VISIBLE
         }
+
+        bringViewsToFront()
     }
 
     private fun updateColors() {
@@ -146,6 +161,32 @@ internal class TabView @JvmOverloads constructor(
     private fun updateIcon() {
         icon_view.layoutParams.width = style.iconSize
         icon_view.layoutParams.height = style.iconSize
+    }
+
+    private fun updateBadge() {
+        if (_badge == null) {
+            badgeViews.forEach { it.isEnabled = false }
+        } else {
+            badgeViews.forEach {
+                it.text = _badge!!.text
+
+                it.animationType = style.badge.animation
+                it.animationDuration = style.badge.animationDuration
+                it.setBackgroundColor(_badge?.backgroundColor ?: style.badge.backgroundColor)
+                it.textColor = _badge?.textColor ?: style.badge.textColor
+                it.textSize = _badge?.textSize ?: style.badge.textSize
+
+                it.isEnabled = true
+            }
+        }
+    }
+
+    private fun bringViewsToFront() {
+        selectedAnimatedView.bringToFront()
+
+        badgeViews.forEach {
+            it.bringToFront()
+        }
     }
 
     fun select(animate: Boolean = true) {
@@ -223,9 +264,12 @@ internal class TabView @JvmOverloads constructor(
         }
     }
 
-    private fun getAnimation(selected: Boolean, direction: AnimationDirection): Animation? {
+    private fun getAnimation(
+        selected: Boolean,
+        direction: AnimationDirection
+    ): Animation? {
         var animation: Animation? = null
-        val transformation = getTransformation(animatedView)
+        val transformation = getTransformation(if (selected) selectedAnimatedView else animatedView)
 
         val valueFrom: Float
         val valueTo: Float

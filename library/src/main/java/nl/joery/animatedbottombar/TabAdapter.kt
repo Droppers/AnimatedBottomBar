@@ -51,6 +51,8 @@ internal class TabAdapter(
                         holder.applyStyle(
                             payload.value as BottomBarStyle.StyleUpdateType
                         )
+                    PayloadType.UpdateBadge ->
+                        holder.applyBadge(payload.value as AnimatedBottomBar.Badge?)
                 }
             }
         }
@@ -116,6 +118,10 @@ internal class TabAdapter(
         )
     }
 
+    fun applyTabBadge(tab: AnimatedBottomBar.Tab, badge: AnimatedBottomBar.Badge?) {
+        notifyItemChanged(tabs.indexOf(tab), Payload(PayloadType.UpdateBadge, badge))
+    }
+
     fun notifyTabChanged(tab: AnimatedBottomBar.Tab) {
         val index = tabs.indexOf(tab)
         if (index >= 0) {
@@ -134,8 +140,7 @@ internal class TabAdapter(
             lastTab,
             newIndex,
             newTab
-        )
-            ?: true
+        ) ?: true
     }
 
     private fun findViewHolder(position: Int): TabHolder? {
@@ -156,6 +161,10 @@ internal class TabAdapter(
             view.applyStyle(type, bottomBar.tabStyle)
         }
 
+        fun applyBadge(badge: AnimatedBottomBar.Badge?) {
+            view.badge = badge
+        }
+
         fun select(animate: Boolean) {
             view.select(animate)
         }
@@ -173,12 +182,14 @@ internal class TabAdapter(
 
             view.title = tab.title
             view.icon = tab.icon
+            view.badge = tab.badge
             view.isEnabled = tab.enabled
         }
     }
 
-    private data class Payload(val type: PayloadType, val value: Any)
+    private data class Payload(val type: PayloadType, val value: Any?)
     private enum class PayloadType {
-        ApplyStyle
+        ApplyStyle,
+        UpdateBadge
     }
 }

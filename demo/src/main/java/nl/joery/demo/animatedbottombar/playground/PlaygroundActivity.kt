@@ -22,7 +22,6 @@ import nl.joery.animatedbottombar.BottomBarStyle
 import nl.joery.demo.animatedbottombar.ExampleActivity
 import nl.joery.demo.animatedbottombar.R
 import nl.joery.demo.animatedbottombar.playground.properties.*
-import nl.joery.demo.animatedbottombar.dpPx
 
 
 class PlaygroundActivity : AppCompatActivity() {
@@ -31,6 +30,8 @@ class PlaygroundActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playground)
+
+        bottom_bar.setBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
 
         initProperties()
         initRecyclerView()
@@ -173,15 +174,45 @@ class PlaygroundActivity : AppCompatActivity() {
                 AnimatedBottomBar.IndicatorAnimation::class.java
             )
         )
+
+        properties.add(
+            CategoryProperty(
+                getString(R.string.category_animations)
+            )
+        )
+        properties.add(
+            EnumProperty(
+                "badgeAnimation",
+                AnimatedBottomBar.BadgeAnimation::class.java
+            )
+        )
+        properties.add(
+            IntegerProperty(
+                "badgeAnimationDuration"
+            )
+        )
+        properties.add(
+            ColorProperty(
+                "badgeBackgroundColor"
+            )
+        )
+        properties.add(
+            ColorProperty(
+                "badgeTextColor"
+            )
+        )
+        properties.add(
+            IntegerProperty(
+                "badgeTextSize",
+                TypedValue.COMPLEX_UNIT_SP
+            )
+        )
     }
 
     private fun initRecyclerView() {
         recycler.layoutManager =
             LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
         recycler.adapter = PropertyAdapter(bottom_bar, properties)
-
-//        bottom_bar.typeface = Typeface.DEFAULT_BOLD
-        bottom_bar.textSize = 14.dpPx
     }
 
     private fun showXmlDialog() {

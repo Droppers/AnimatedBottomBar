@@ -56,7 +56,17 @@
             <flag name="normal" value="0" />
         </attr>
         <attr name="abb_textSize" format="dimension" />
-
         <attr name="abb_iconSize" format="dimension" />
+
+        <!-- Badge -->
+        <attr name="abb_badgeAnimation" format="enum">
+            <enum name="none" value="0" />
+            <enum name="scale" value="1" />
+            <enum name="fade" value="2" />
+        </attr>
+        <attr name="abb_badgeAnimationDuration" format="integer" />
+        <attr name="abb_badgeBackgroundColor" format="color" />
+        <attr name="abb_badgeTextColor" format="color" />
+        <attr name="abb_badgeTextSize" format="dimension" />
     </declare-styleable>
 </resources>

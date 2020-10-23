@@ -11,6 +11,7 @@
     <string name="category_tab">Tab appearance</string>
     <string name="category_indicator">Indicator appearance</string>
     <string name="category_animations">Animations</string>
+    <string name="category_badge">Tab badge</string>
 
     <string name="tab_actions_title">Example tab actions</string>
     <string name="add_start">Add to start</string>

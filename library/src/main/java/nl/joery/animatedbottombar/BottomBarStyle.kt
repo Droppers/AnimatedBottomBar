@@ -34,7 +34,18 @@ object BottomBarStyle {
         var textSize: Int = 14.spPx,
 
         // Icon
-        var iconSize: Int = 24.dpPx
+        var iconSize: Int = 24.dpPx,
+
+        // Badge
+        var badge: Badge = Badge()
+    )
+
+    data class Badge(
+        var animation: AnimatedBottomBar.BadgeAnimation = AnimatedBottomBar.BadgeAnimation.SCALE,
+        var animationDuration: Int = 150,
+        @ColorInt var backgroundColor: Int = Color.rgb(255, 12, 16),
+        @ColorInt var textColor: Int = Color.WHITE,
+        @Dimension var textSize: Int = 9.spPx
     )
 
     data class Indicator(
@@ -52,6 +63,7 @@ object BottomBarStyle {
         ANIMATIONS,
         RIPPLE,
         TEXT,
-        ICON
+        ICON,
+        BADGE
     }
 }

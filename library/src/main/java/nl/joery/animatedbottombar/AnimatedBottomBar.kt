@@ -182,6 +182,33 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 )
             ) ?: indicatorStyle.indicatorAnimation
 
+            // Badge
+            badgeAnimation = BadgeAnimation.fromId(
+                attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_badgeAnimation,
+                    tabStyle.badge.animation.id
+                )
+            ) ?: tabStyle.badge.animation
+            badgeAnimationDuration = attr.getInt(
+                R.styleable.AnimatedBottomBar_abb_badgeAnimationDuration,
+                tabStyle.badge.animationDuration
+            )
+            badgeBackgroundColor =
+                attr.getColor(
+                    R.styleable.AnimatedBottomBar_abb_badgeBackgroundColor,
+                    tabStyle.badge.backgroundColor
+                )
+            badgeTextColor =
+                attr.getColor(
+                    R.styleable.AnimatedBottomBar_abb_badgeTextColor,
+                    tabStyle.badge.textColor
+                )
+            badgeTextSize =
+                attr.getDimensionPixelSize(
+                    R.styleable.AnimatedBottomBar_abb_badgeTextSize,
+                    tabStyle.badge.textSize
+                )
+
             // Initials tabs
             val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1)
             val initialIndex = attr.getInt(R.styleable.AnimatedBottomBar_abb_selectedIndex, -1)
@@ -451,14 +478,77 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.notifyTabChanged(tab)
     }
 
-    private fun findTabWithId(@IdRes id: Int): Tab? {
-        for (tab in tabs) {
-            if (tab.id == id) {
-                return tab
-            }
+    /**
+     * Add a badge to a tab on the BottomBar by the specified [tabIndex] index.
+     *
+     * @param tabIndex The index of the tab which the given [Badge] should be added to.
+     * @param badge The badge you want to add to the tab.
+     */
+    fun setBadgeAtTabIndex(tabIndex: Int, badge: Badge? = null) {
+        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+            throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
-        return null
+        val tab = adapter.tabs[tabIndex]
+        setBadgeAtTab(tab, badge)
+    }
+
+    /**
+     * Add a badge to a tab on the BottomBar by the specified tab [id].
+     *
+     * @param id The id of the tab which the given [Badge] should be added to.
+     * @param badge The badge you want to add to the tab.
+     */
+    fun setBadgeAtTabId(@IdRes id: Int, badge: Badge? = null) {
+        val tab =
+            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
+        setBadgeAtTab(tab, badge)
+    }
+
+    /**
+     * Add a badge to a BottomBar tab by [Tab] instance, use [tabs] to retrieve a list of tabs.
+     *
+     * @param tab The [Tab] instance which the given [Badge] should be added to.
+     * @param badge The badge you want to add to the tab.
+     */
+    fun setBadgeAtTab(tab: Tab, badge: Badge? = null) {
+        tab.badge = badge
+        adapter.applyTabBadge(tab, badge ?: Badge())
+    }
+
+    /**
+     * Remove a badge from a tab by the specified [tabIndex] index.
+     *
+     * @param tabIndex The index of the tab which the badge should be removed of.
+     */
+    fun clearBadgeAtTabIndex(tabIndex: Int) {
+        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+            throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
+        }
+
+        val tab = adapter.tabs[tabIndex]
+        clearBadgeAtTab(tab)
+    }
+
+    /**
+     * Remove a badge from a tab by the specified tab [id].
+     *
+     * @param id The id of the tab which the badge should be removed of.
+     */
+    fun clearBadgeAtTabId(@IdRes id: Int) {
+        val tab =
+            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
+        clearBadgeAtTab(tab)
+    }
+
+    /**
+     * Remove a badge from a tab.
+     *
+     * @param tab The [Tab] instance which the badge should be removed of.
+     */
+    fun clearBadgeAtTab(tab: Tab) {
+        tab.badge = null
+        adapter.applyTabBadge(tab, null)
     }
 
     /**
@@ -505,6 +595,16 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 }
             })
         }
+    }
+
+    private fun findTabWithId(@IdRes id: Int): Tab? {
+        for (tab in tabs) {
+            if (tab.id == id) {
+                return tab
+            }
+        }
+
+        return null
     }
 
     /**
@@ -737,10 +837,71 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyIndicatorStyle()
         }
 
+    // Badge
+    var badgeAnimation
+        get() = tabStyle.badge.animation
+        set(value) {
+            tabStyle.badge.animation = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.BADGE)
+        }
+
+    var badgeAnimationDuration
+        get() = tabStyle.badge.animationDuration
+        set(value) {
+            tabStyle.badge.animationDuration = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.BADGE)
+        }
+
+    var badgeBackgroundColor
+        @ColorInt
+        get() = tabStyle.badge.backgroundColor
+        set(@ColorInt value) {
+            tabStyle.badge.backgroundColor = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.BADGE)
+        }
+
+    var badgeBackgroundColorRes
+        @Deprecated("", level = DeprecationLevel.HIDDEN)
+        get() = Int.MIN_VALUE
+        set(@ColorRes value) {
+            badgeBackgroundColor = ContextCompat.getColor(context, value)
+        }
+
+    var badgeTextColor
+        @ColorInt
+        get() = tabStyle.badge.textColor
+        set(@ColorInt value) {
+            tabStyle.badge.textColor = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.BADGE)
+        }
+
+    var badgeTextColorRes
+        @Deprecated("", level = DeprecationLevel.HIDDEN)
+        get() = Int.MIN_VALUE
+        set(@ColorRes value) {
+            badgeTextColor = ContextCompat.getColor(context, value)
+        }
+
+    var badgeTextSize
+        get() = tabStyle.badge.textSize
+        set(@Dimension value) {
+            tabStyle.badge.textSize = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.BADGE)
+        }
+
     class Tab internal constructor(
         val icon: Drawable,
-        val title: String, @IdRes val id: Int = -1,
+        val title: String,
+        @IdRes val id: Int = -1,
+        var badge: Badge? = null,
         var enabled: Boolean = true
+    )
+
+    class Badge(
+        val text: String? = null,
+        @ColorInt val backgroundColor: Int? = null,
+        @ColorInt val textColor: Int? = null,
+        @Dimension val textSize: Int? = null
     )
 
     enum class TabType(val id: Int) {
@@ -808,6 +969,21 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
         companion object {
             fun fromId(id: Int): IndicatorAnimation? {
+                for (f in values()) {
+                    if (f.id == id) return f
+                }
+                throw IllegalArgumentException()
+            }
+        }
+    }
+
+    enum class BadgeAnimation(val id: Int) {
+        NONE(0),
+        SCALE(1),
+        FADE(2);
+
+        companion object {
+            fun fromId(id: Int): BadgeAnimation? {
                 for (f in values()) {
                     if (f.id == id) return f
                 }

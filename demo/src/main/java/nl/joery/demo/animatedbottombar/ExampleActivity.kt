@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_example.*
+import kotlinx.android.synthetic.main.activity_example.bottom_bar
 import nl.joery.animatedbottombar.AnimatedBottomBar
 import nl.joery.demo.animatedbottombar.viewpager.ViewPagerActivity
 
@@ -71,6 +72,10 @@ class ExampleActivity : AppCompatActivity() {
 
     private fun initBottomBars() {
         bottomBars = arrayOf(bottom_bar, bottom_bar2, bottom_bar3, bottom_bar4, bottom_bar5)
+
+        bottomBars.forEach {
+            it.setBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
+        }
 
         bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
             override fun onTabSelected(
