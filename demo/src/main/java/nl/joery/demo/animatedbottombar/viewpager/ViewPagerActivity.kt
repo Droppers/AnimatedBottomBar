@@ -1,6 +1,7 @@
 package nl.joery.demo.animatedbottombar.viewpager
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -23,6 +24,14 @@ class ViewPagerActivity : FragmentActivity() {
                 lifecycle
             )
         bottom_bar.setupWithViewPager2(view_pager)
+        bottom_bar.apply {
+            onTabSelected = {
+                Log.i("ViewPagerActivity", "onTabSelected: ${it.title}")
+            }
+            onTabReselected = {
+                Log.i("ViewPagerActivity", "onTabReselected: ${it.title}")
+            }
+        }
     }
 
     private fun initToolbar() {
