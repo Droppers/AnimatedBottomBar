@@ -160,7 +160,7 @@ AnimatedBottomBar.setTabEnabledById(R.id.tab_home, false)
 ```
 
 ### Intercepting tabs
-Could be useful for example restricting access to a premium area. You can use a callback or a more detailed listener:
+This could be useful for example restricting access to a premium area. You can use a callback or a more detailed listener:
 ```kotlin
 bottom_bar.onTabIntercepted = {
     if (newTab.id == R.id.tab_pro_feature && !hasProVersion) {
@@ -187,6 +187,46 @@ bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptLi
         return true
     }
 })
+```
+
+## Tab badges
+Instructions on how to set badges for tabs, a `AnimatedBottomBar.Badge` object should be supplied to the BottomBar, note that it is also possible to add badges without text.
+
+### Adding badges
+```kotlin
+// Adding a badge by tab reference
+val tabToAddBadgeAt = AnimatedBottomBar.tabs[1]
+AnimatedBottomBar.addBadgeAtTab(tabToAddBadgeAt, AnimatedBottomBar.Badge("99"))
+
+// Adding a badge at a specific position
+AnimatedBottomBar.addBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
+
+// Adding a badge at the given ID resource
+AnimatedBottomBar.addBadgeAtTabId(R.id.tab_home, AnimatedBottomBar.Badge("99"))
+```
+
+### Removing badges
+```kotlin
+// Removing a badge by tab reference
+val tabToRemoveBadgeFrom = AnimatedBottomBar.tabs[1]
+AnimatedBottomBar.clearBadgeAtTab(tabToRemoveBadgeFrom)
+
+// Removing a badge at a specific position
+AnimatedBottomBar.clearBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
+
+// removing a badge at the given ID resource
+AnimatedBottomBar.clearBadgeAtTabId(R.id.tab_home, AnimatedBottomBar.Badge("99"))
+```
+
+### Styling individual badges
+Additionally there is also the possibility to individually style badges.
+```kotlin
+AnimatedBottomBar.Badge(
+    text = "99",
+    backgroundColor = Color.RED,
+    textColor = Color.GREEN,
+    textSize =  12.spPx // in pixels
+)
 ```
 
 ## Usage with ViewPager
