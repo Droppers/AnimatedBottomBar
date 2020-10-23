@@ -335,7 +335,7 @@ An overview of all configuration options. All options can also be accessed and s
     </tr>
     <tr>
         <td><b>abb_textSize</b></td>
-        <td>Size of the text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).</td>
+        <td>Size of the text. Recommended dimension type for text is "sp" (scaled-pixels), for example: 14sp.</td>
         <td>14sp</td>
     </tr>
     <tr>
@@ -353,6 +353,53 @@ An overview of all configuration options. All options can also be accessed and s
         <td><b>abb_rippleColor</b></td>
         <td>Change the color of the aforementioned ripple effect.</td>
         <td>Default theme color</td>
+    </tr>
+</table>
+
+### Badges
+<table>
+    <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+        <th>Default</th>
+    </tr>
+    <tr>
+        <td><b>abb_badgeBackgroundColor</b></td>
+        <td>
+            The background color of the badges.
+        </td>
+        <td>#ff0c10 (red)</td>
+    </tr>
+    <tr>
+        <td><b>abb_badgeTextColor</b></td>
+        <td>
+            The text color of the text inside the badges.
+        </td>
+        <td>#FFFFFF</td>
+    </tr>
+    <tr>
+        <td><b>abb_badgeTextSize</b></td>
+        <td>
+            The text size of the text inside the badges. Recommended dimension type for text is "sp" (scaled-pixels), for example: 14sp.
+        </td>
+        <td>10sp</td>
+    </tr>
+    <tr>
+        <td><b>abb_badgeAnimation</b></td>
+        <td>
+            The enter and exit animation type for badges.<br><br>
+            <b>none</b><br>
+            <b>scale</b><br>
+            <b>fade</b><br>
+        </td>
+        <td>scale</td>
+    </tr>
+    <tr>
+        <td><b>abb_badgeAnimationDuration</b></td>
+        <td>
+            The duration of the entry and exit animation of a badge.
+        </td>
+        <td>150</td>
     </tr>
 </table>
 
