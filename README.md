@@ -18,7 +18,9 @@ A customizable and easy to use bottom bar view with sleek animations.
 ### Playground app
 <img src="./media/static/playground-demo.png"  width="500" />
 
-Download the playground app: <a href="./media/demo.apk">demo.apk</a>. In this app you can try out all features and even generate XML layouts.
+Download the playground app from Google Play, with this app you can try out all features and even generate XML with your selected configuration.
+
+<a href="https://play.google.com/store/apps/details?id=nl.joery.demo.animatedbottombar"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="200" /></a>
 
 ## Contents
 - [Getting started](#getting-started)
@@ -160,7 +162,7 @@ AnimatedBottomBar.setTabEnabledById(R.id.tab_home, false)
 ```
 
 ### Intercepting tabs
-Could be useful for example restricting access to a premium area. You can use a callback or a more detailed listener:
+This could be useful for example restricting access to a premium area. You can use a callback or a more detailed listener:
 ```kotlin
 bottom_bar.onTabIntercepted = {
     if (newTab.id == R.id.tab_pro_feature && !hasProVersion) {
@@ -187,6 +189,46 @@ bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptLi
         return true
     }
 })
+```
+
+## Tab badges
+Instructions on how to set badges for tabs, a `AnimatedBottomBar.Badge` object should be supplied to the BottomBar, note that it is also possible to add badges without text.
+
+### Adding badges
+```kotlin
+// Adding a badge by tab reference
+val tabToAddBadgeAt = AnimatedBottomBar.tabs[1]
+AnimatedBottomBar.addBadgeAtTab(tabToAddBadgeAt, AnimatedBottomBar.Badge("99"))
+
+// Adding a badge at a specific position
+AnimatedBottomBar.addBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
+
+// Adding a badge at the given ID resource
+AnimatedBottomBar.addBadgeAtTabId(R.id.tab_home, AnimatedBottomBar.Badge("99"))
+```
+
+### Removing badges
+```kotlin
+// Removing a badge by tab reference
+val tabToRemoveBadgeFrom = AnimatedBottomBar.tabs[1]
+AnimatedBottomBar.clearBadgeAtTab(tabToRemoveBadgeFrom)
+
+// Removing a badge at a specific position
+AnimatedBottomBar.clearBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
+
+// removing a badge at the given ID resource
+AnimatedBottomBar.clearBadgeAtTabId(R.id.tab_home, AnimatedBottomBar.Badge("99"))
+```
+
+### Styling individual badges
+Additionally there is also the possibility to individually style badges.
+```kotlin
+AnimatedBottomBar.Badge(
+    text = "99",
+    backgroundColor = Color.RED,
+    textColor = Color.GREEN,
+    textSize =  12.spPx // in pixels
+)
 ```
 
 ## Usage with ViewPager
@@ -295,7 +337,7 @@ An overview of all configuration options. All options can also be accessed and s
     </tr>
     <tr>
         <td><b>abb_textSize</b></td>
-        <td>Size of the text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).</td>
+        <td>Size of the text. Recommended dimension type for text is "sp" (scaled-pixels), for example: 14sp.</td>
         <td>14sp</td>
     </tr>
     <tr>
@@ -313,6 +355,53 @@ An overview of all configuration options. All options can also be accessed and s
         <td><b>abb_rippleColor</b></td>
         <td>Change the color of the aforementioned ripple effect.</td>
         <td>Default theme color</td>
+    </tr>
+</table>
+
+### Badges
+<table>
+    <tr>
+        <th>Attribute</th>
+        <th>Description</th>
+        <th>Default</th>
+    </tr>
+    <tr>
+        <td><b>abb_badgeBackgroundColor</b></td>
+        <td>
+            The background color of the badges.
+        </td>
+        <td>#ff0c10 (red)</td>
+    </tr>
+    <tr>
+        <td><b>abb_badgeTextColor</b></td>
+        <td>
+            The text color of the text inside the badges.
+        </td>
+        <td>#FFFFFF</td>
+    </tr>
+    <tr>
+        <td><b>abb_badgeTextSize</b></td>
+        <td>
+            The text size of the text inside the badges. Recommended dimension type for text is "sp" (scaled-pixels), for example: 14sp.
+        </td>
+        <td>10sp</td>
+    </tr>
+    <tr>
+        <td><b>abb_badgeAnimation</b></td>
+        <td>
+            The enter and exit animation type for badges.<br><br>
+            <b>none</b><br>
+            <b>scale</b><br>
+            <b>fade</b><br>
+        </td>
+        <td>scale</td>
+    </tr>
+    <tr>
+        <td><b>abb_badgeAnimationDuration</b></td>
+        <td>
+            The duration of the entry and exit animation of a badge.
+        </td>
+        <td>150</td>
     </tr>
 </table>
 
