@@ -18,7 +18,9 @@ A customizable and easy to use bottom bar view with sleek animations.
 ### Playground app
 <img src="./media/static/playground-demo.png"  width="500" />
 
-Download the playground app: <a href="./media/demo.apk">demo.apk</a>. In this app you can try out all features and even generate XML layouts.
+Download the playground app from Google Play, with this app you can try out all features and even generate XML with your selected configuration.
+
+<a href="https://play.google.com/store/apps/details?id=nl.joery.demo.animatedbottombar"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="200" /></a>
 
 ## Contents
 - [Getting started](#getting-started)
