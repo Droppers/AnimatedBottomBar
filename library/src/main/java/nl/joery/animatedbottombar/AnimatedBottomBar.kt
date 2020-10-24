@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -14,12 +15,14 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
+import nl.joery.animatedbottombar.utils.*
 
 
 class AnimatedBottomBar @JvmOverloads constructor(
@@ -566,6 +569,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 private var previousState: Int = ViewPager.SCROLL_STATE_IDLE
                 private var userScrollChange = false
+
                 override fun onPageScrollStateChanged(state: Int) {
                     // Use Scroll state to detect whether the user is sliding
                     if (previousState == ViewPager.SCROLL_STATE_DRAGGING
@@ -610,6 +614,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 private var previousState: Int = ViewPager2.SCROLL_STATE_IDLE
                 private var userScrollChange = false
+
                 override fun onPageScrollStateChanged(state: Int) {
                     super.onPageScrollStateChanged(state)
                     // Use Scroll state to detect whether the user is sliding
@@ -633,6 +638,16 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 }
             })
         }
+    }
+
+    /**
+     * This method will link the given NavController to the AnimatedBottomBar together so that changes in one are automatically reflected in the other.
+     *
+     * @param menu The menu used in combination with the NavController and AnimatedBottomBar.
+     * @param navController NavController The NavController the AnimatedBottomBar should be linked to.
+     */
+    fun setupWithNavController(menu: Menu, navController: NavController) {
+        NavigationComponentHelper.setupWithNavController(this, menu, navController)
     }
 
     private fun findTabWithId(@IdRes id: Int): Tab? {

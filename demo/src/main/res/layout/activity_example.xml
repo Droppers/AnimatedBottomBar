@@ -56,8 +56,8 @@
         app:abb_selectedTabType="text"
         app:abb_tabAnimation="slide"
         app:abb_tabColor="#CCFFFFFF"
-        app:abb_tabColorSelected="#4189FC"
         app:abb_tabColorDisabled="#CCFFA7A7"
+        app:abb_tabColorSelected="#4189FC"
         app:abb_tabs="@menu/clock_tabs" />
 
     <Space
@@ -98,8 +98,8 @@
         app:abb_tabAnimation="slide"
         app:abb_tabAnimationSelected="fade"
         app:abb_tabColor="#CCFFFFFF"
-        app:abb_tabColorSelected="#FFF"
         app:abb_tabColorDisabled="#80FFFFFF"
+        app:abb_tabColorSelected="#FFF"
         app:abb_tabs="@menu/clock_tabs"
         app:abb_textAppearance="@style/CustomText" />
 
@@ -158,9 +158,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
             android:text="@string/add_start"
-            app:layout_constraintBottom_toTopOf="@+id/open_view_pager"
+            app:layout_constraintBottom_toTopOf="@+id/open_nav_controller"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/deselect"
             app:layout_constraintTop_toBottomOf="@+id/select_last" />
@@ -172,9 +171,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:text="@string/remove_last"
-            app:layout_constraintBottom_toTopOf="@+id/open_view_pager"
+            app:layout_constraintBottom_toTopOf="@+id/open_nav_controller"
             app:layout_constraintEnd_toStartOf="@+id/select"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/select_first" />
@@ -206,6 +204,19 @@
             app:layout_constraintTop_toBottomOf="@+id/actions_title" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/open_nav_controller"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/open_navcontroller_example"
+            app:layout_constraintBottom_toTopOf="@+id/open_view_pager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/open_view_pager"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
@@ -217,6 +228,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/select" />
+            app:layout_constraintTop_toBottomOf="@+id/open_nav_controller" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

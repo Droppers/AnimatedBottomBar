@@ -4,6 +4,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
@@ -22,6 +23,7 @@ import nl.joery.animatedbottombar.BottomBarStyle
 import nl.joery.demo.animatedbottombar.ExampleActivity
 import nl.joery.demo.animatedbottombar.R
 import nl.joery.demo.animatedbottombar.playground.properties.*
+import nl.joery.demo.animatedbottombar.spPx
 
 
 class PlaygroundActivity : AppCompatActivity() {
@@ -31,7 +33,14 @@ class PlaygroundActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playground)
 
-        bottom_bar.setBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
+        bottom_bar.setBadgeAtTabIndex(
+            1, AnimatedBottomBar.Badge(
+                text = "99",
+                backgroundColor = Color.RED,
+                textColor = Color.GREEN,
+                textSize = 12.spPx
+            )
+        )
 
         initProperties()
         initRecyclerView()

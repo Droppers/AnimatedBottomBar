@@ -7,6 +7,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.StyleRes
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import nl.joery.animatedbottombar.utils.dpPx
+import nl.joery.animatedbottombar.utils.spPx
 
 object BottomBarStyle {
     data class Tab(

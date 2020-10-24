@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_example.*
-import kotlinx.android.synthetic.main.activity_example.bottom_bar
 import nl.joery.animatedbottombar.AnimatedBottomBar
+import nl.joery.demo.animatedbottombar.navcontroller.NavControllerActivity
 import nl.joery.demo.animatedbottombar.viewpager.ViewPagerActivity
 
 
@@ -48,6 +48,10 @@ class ExampleActivity : AppCompatActivity() {
             for (bottomBar in bottomBars) {
                 bottomBar.selectTabAt(bottom_bar.tabCount - 1)
             }
+        }
+
+        open_nav_controller.setOnClickListener {
+            startActivity(Intent(this, NavControllerActivity::class.java))
         }
 
         open_view_pager.setOnClickListener {

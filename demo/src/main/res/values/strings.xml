@@ -19,6 +19,7 @@
     <string name="select_first">Select first</string>
     <string name="select_last">Select last</string>
     <string name="open_viewpager_example">Open ViewPager example</string>
+    <string name="open_navcontroller_example">Open NavController example</string>
 
     <string name="generate_xml">Generate XML</string>
     <string name="show_examples">Show examples</string>

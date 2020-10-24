@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import androidx.recyclerview.widget.RecyclerView
+import nl.joery.animatedbottombar.utils.fixDurationScale
 import kotlin.math.abs
 
 

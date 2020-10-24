@@ -1,9 +1,10 @@
-package nl.joery.animatedbottombar
+package nl.joery.animatedbottombar.utils
 
 import android.content.Context
 import android.view.MenuInflater
 import android.widget.PopupMenu
 import androidx.core.view.iterator
+import nl.joery.animatedbottombar.AnimatedBottomBar
 
 
 internal object MenuParser {

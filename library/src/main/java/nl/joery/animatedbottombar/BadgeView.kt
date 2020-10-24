@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
+import nl.joery.animatedbottombar.utils.dpPx
 import kotlin.math.max
 
 
@@ -85,7 +86,7 @@ class BadgeView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
-        val c = canvas!!;
+        val c = canvas!!
         drawBackground(c)
         drawText(c)
     }
@@ -157,7 +158,7 @@ class BadgeView @JvmOverloads constructor(
         val x = middleX - rect.width() / 2f - rect.left
         val y = middleY + rect.height() / 2f - rect.bottom
 
-        canvas.drawText(_text!!, x, y, textPaint);
+        canvas.drawText(_text!!, x, y, textPaint)
 
         if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
             canvas.scale(1f, 1f)

@@ -18,6 +18,7 @@ import android.widget.FrameLayout
 import androidx.core.widget.ImageViewCompat
 import androidx.core.widget.TextViewCompat
 import kotlinx.android.synthetic.main.view_tab.view.*
+import nl.joery.animatedbottombar.utils.getResourceId
 
 
 internal class TabView @JvmOverloads constructor(
