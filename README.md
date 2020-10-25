@@ -33,7 +33,7 @@ Download the playground app from Google Play, with this app you can try out all 
 
 Add the following dependency to your <b>build.gradle</b>:
 ```gradle
-implementation 'nl.joery.animatedbottombar:library:1.0.8'
+implementation 'nl.joery.animatedbottombar:library:1.0.9'
 ```
 
 Define `AnimatedBottomBar` in your XML layout with custom attributes.
