@@ -517,8 +517,16 @@ An overview of all configuration options. All options can also be accessed and s
     </tr>
 </table>
 
+## Used by
+- [Pixiv Shaft](https://github.com/CeuiLiSA/Pixiv-Shaft) 10,000+ installs [(Play Store)](https://play.google.com/store/apps/details?id=ceui.lisa.pixiv)
+
+## Featured in
+- [Android Weekly: Issue 404](https://androidweekly.net/issues/issue-404)
+- [Medium: The 25 Best Android Libraries and Projects of 2020](https://medium.com/better-programming/25-best-android-libraries-projects-of-2020-summer-edition-dfb030a7fb0a)
+- [Medium: The Top 5 Trending Android Libraries From Q1 2020](https://medium.com/better-programming/the-top-5-trending-android-libraries-from-q1-2020-45deda73af0f)
+
 ## Credits
-- https://dribbble.com/shots/6130593-Readable-Tab-Bar<br>Inspiration for creating this library.
+- [Dribble: Readable Tab Bar](https://dribbble.com/shots/6130593-Readable-Tab-Bar)
 
 ## License
 ```
