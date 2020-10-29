@@ -5,7 +5,6 @@
 ![androidweekly.net](https://androidweekly.net/issues/issue-404/badge)
 
 A customizable and easy to use bottom bar view with sleek animations.
-
 ## Examples
 <img src="./media/example/example-3.gif" width="550" />
 <br>
@@ -114,7 +113,7 @@ val bottomBarTab1 = AnimatedBottomBar.createTab(drawable, "Tab 1")
 val bottomBarTab2 = AnimatedBottomBar.createTab(R.drawable.ic_home, R.string.tab_2, R.id.tab_home)
 ```
 ### Adding new tabs
-```kotlin 
+```kotlin
 // Adding a tab at the end
 AnimatedBottomBar.addTab(bottomBarTab1)
 
@@ -295,8 +294,15 @@ An overview of all configuration options. All options can also be accessed and s
             <img src="./media/static/type-icon.png" width="240" /><br>
             <b>text</b><br>
             <img src="./media/static/type-text.png" width="240" /><br>
+            <b>textOnly</b><br>
+            <img src="./media/static/type-textonly.png" width="240" /><br>
         </td>
         <td>icon</td>
+    </tr>
+    <tr>
+        <td><b>abb_textFont</b></td>
+        <td>tabs font for text. ("fonts/aria.ttf") <== assets </td>
+        <td>none</td>
     </tr>
     <tr>
         <td><b>abb_tabColor</b></td>
@@ -469,6 +475,11 @@ An overview of all configuration options. All options can also be accessed and s
         <td>@android/colorPrimary</td>
     </tr>
     <tr>
+        <td><b>abb_tabIndicatorWidth</b></td>
+        <td>The width of the indicator.</td>
+        <td>15dp</td>
+    </tr>
+     <tr>
         <td><b>abb_indicatorHeight</b></td>
         <td>The height of the indicator.</td>
         <td>3dp</td>
@@ -488,6 +499,8 @@ An overview of all configuration options. All options can also be accessed and s
             <img src="./media/static/shape-square.png" width="140" /><br>
             <b>round</b><br>
             <img src="./media/static/shape-round.png" width="140" /><br>
+             <b>dot</b><br>
+            <img src="./media/static/shape-dot.png" width="140" /><br>
         </td>
         <td>square</td>
     </tr>

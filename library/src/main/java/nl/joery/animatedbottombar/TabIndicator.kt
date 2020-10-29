@@ -11,11 +11,11 @@ import kotlin.math.abs
 
 
 internal class TabIndicator(
-    private val bottomBar: AnimatedBottomBar,
-    private val parent: RecyclerView,
-    private val adapter: TabAdapter
+        private val bottomBar: AnimatedBottomBar,
+        private val parent: RecyclerView,
+        private val adapter: TabAdapter
 ) :
-    RecyclerView.ItemDecoration() {
+        RecyclerView.ItemDecoration() {
     private lateinit var paint: Paint
     private var corners: FloatArray? = null
     private var animator: ValueAnimator? = null
@@ -60,10 +60,10 @@ internal class TabIndicator(
                 val lastAlpha = alpha - alpha * animatedFraction
                 val newAlpha = alpha * animatedFraction
                 drawIndicator(
-                    c,
-                    lastView.left.toFloat(),
-                    lastView.width.toFloat(),
-                    lastAlpha.toInt()
+                        c,
+                        lastView.left.toFloat(),
+                        lastView.width.toFloat(),
+                        lastAlpha.toInt()
                 )
                 drawIndicator(c, newView.left.toFloat(), newView.width.toFloat(), newAlpha.toInt())
             } else {
@@ -76,10 +76,10 @@ internal class TabIndicator(
 
     private fun drawIndicator(c: Canvas, viewLeft: Float, viewWidth: Float, alpha: Int = 255) {
         indicatorRect.set(
-            viewLeft + bottomBar.indicatorStyle.indicatorMargin,
-            getTop(),
-            viewLeft + viewWidth - bottomBar.indicatorStyle.indicatorMargin,
-            getBottom()
+                getLeft(viewLeft, viewWidth),
+                getTop(),
+                getRight(viewLeft, viewWidth),
+                getBottom()
         )
 
         paint.alpha = when {
@@ -88,19 +88,47 @@ internal class TabIndicator(
             else -> alpha
         }
 
-        if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.SQUARE) {
-            c.drawRect(
-                indicatorRect, paint
-            )
+        when (bottomBar.indicatorStyle.indicatorAppearance) {
+            AnimatedBottomBar.IndicatorAppearance.SQUARE -> {
+                c.drawRect(
+                        indicatorRect, paint
+                )
 
-        } else if (bottomBar.indicatorStyle.indicatorAppearance == AnimatedBottomBar.IndicatorAppearance.ROUND) {
-            val path = Path()
-            path.addRoundRect(
-                indicatorRect,
-                corners!!,
-                Path.Direction.CW
-            )
-            c.drawPath(path, paint)
+            }
+            AnimatedBottomBar.IndicatorAppearance.ROUND -> {
+                val path = Path()
+                path.addRoundRect(
+                        indicatorRect,
+                        corners!!,
+                        Path.Direction.CW
+                )
+                c.drawPath(path, paint)
+            }
+            AnimatedBottomBar.IndicatorAppearance.DOT -> {
+                val size = abs(indicatorRect.right - indicatorRect.left)
+                val offsetPadding = parent.bottom/10
+                val yAnchor = if (indicatorRect.top ==0f) indicatorRect.bottom + offsetPadding else indicatorRect.top - offsetPadding
+                val rad = abs(indicatorRect.top - indicatorRect.bottom)
+                c.drawCircle(indicatorRect.left + (size / 2), yAnchor, rad, paint)
+            }
+        }
+    }
+
+    private fun getLeft(viewLeft: Float, viewWidth: Float): Float {
+        val indicatorWidth = bottomBar.indicatorStyle.indicatorWidth
+        return if (indicatorWidth > 0) {
+            viewLeft + viewWidth / 2 - (indicatorWidth / 2)
+        } else {
+            viewLeft + bottomBar.indicatorStyle.indicatorMargin
+        }
+    }
+
+    private fun getRight(viewLeft: Float, viewWidth: Float): Float {
+        val indicatorWidth = bottomBar.indicatorStyle.indicatorWidth
+        return if (indicatorWidth > 0) {
+            viewLeft + viewWidth / 2 + (indicatorWidth / 2)
+        } else {
+            viewLeft + viewWidth - bottomBar.indicatorStyle.indicatorMargin
         }
     }
 
@@ -118,17 +146,17 @@ internal class TabIndicator(
         return when (bottomBar.indicatorStyle.indicatorLocation) {
             AnimatedBottomBar.IndicatorLocation.TOP ->
                 floatArrayOf(
-                    0f, 0f,
-                    0f, 0f,
-                    radius, radius,
-                    radius, radius
+                        0f, 0f,
+                        0f, 0f,
+                        radius, radius,
+                        radius, radius
                 )
             AnimatedBottomBar.IndicatorLocation.BOTTOM ->
                 floatArrayOf(
-                    radius, radius,
-                    radius, radius,
-                    0f, 0f,
-                    0f, 0f
+                        radius, radius,
+                        radius, radius,
+                        0f, 0f,
+                        0f, 0f
                 )
         }
     }

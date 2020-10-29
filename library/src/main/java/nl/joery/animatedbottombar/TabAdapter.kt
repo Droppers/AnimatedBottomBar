@@ -53,6 +53,7 @@ internal class TabAdapter(
                         )
                     PayloadType.UpdateBadge ->
                         holder.applyBadge(payload.value as AnimatedBottomBar.Badge?)
+
                 }
             }
         }
@@ -140,7 +141,8 @@ internal class TabAdapter(
             lastTab,
             newIndex,
             newTab
-        ) ?: true
+        )
+            ?: true
     }
 
     private fun findViewHolder(position: Int): TabHolder? {

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AnimatedBottomBar">
+        <attr name="abb_disableIconColor" format="boolean" />
         <attr name="abb_selectedTabType" format="enum">
             <enum name="text" value="0" />
             <enum name="icon" value="1" />
+            <enum name="textOnly" value="2" />
         </attr>
 
         <attr name="abb_tabAnimationSelected" format="enum">
@@ -23,14 +25,17 @@
         <attr name="abb_tabColorDisabled" format="color" />
         <attr name="abb_tabColor" format="color" />
 
+
         <!-- Indicator -->
         <attr name="abb_indicatorColor" format="color" />
         <attr name="abb_indicatorHeight" format="dimension" />
+        <attr name="abb_tabIndicatorWidth" format="dimension" />
         <attr name="abb_indicatorMargin" format="dimension" />
         <attr name="abb_indicatorAppearance" format="enum">
             <enum name="invisible" value="0" />
             <enum name="square" value="1" />
             <enum name="round" value="2" />
+            <enum name="dot" value="3" />
         </attr>
         <attr name="abb_indicatorLocation" format="enum">
             <enum name="top" value="0" />
@@ -56,6 +61,7 @@
             <flag name="normal" value="0" />
         </attr>
         <attr name="abb_textSize" format="dimension" />
+        <attr name="abb_textFont" format="string" />
         <attr name="abb_iconSize" format="dimension" />
 
         <!-- Badge -->

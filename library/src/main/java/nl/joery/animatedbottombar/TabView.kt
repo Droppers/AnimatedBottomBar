@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.os.Build
@@ -22,9 +23,9 @@ import nl.joery.animatedbottombar.utils.getResourceId
 
 
 internal class TabView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+        context: Context,
+        attrs: AttributeSet? = null,
+        defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private lateinit var animatedView: View
@@ -39,6 +40,8 @@ internal class TabView @JvmOverloads constructor(
     private var inAnimation: Animation? = null
 
     private lateinit var style: BottomBarStyle.Tab
+
+    private var isSelectedItem = false
 
     var title
         get() = text_view.text.toString()
@@ -94,18 +97,30 @@ internal class TabView @JvmOverloads constructor(
             BottomBarStyle.StyleUpdateType.ICON -> updateIcon()
             BottomBarStyle.StyleUpdateType.BADGE -> updateBadge()
         }
+
+
     }
+
 
     private fun updateTabType() {
         animatedView = when (style.selectedTabType) {
             AnimatedBottomBar.TabType.TEXT -> icon_layout
             AnimatedBottomBar.TabType.ICON -> text_layout
+            else -> text_layout
         }
 
         selectedAnimatedView = when (style.selectedTabType) {
             AnimatedBottomBar.TabType.TEXT -> text_layout
             AnimatedBottomBar.TabType.ICON -> icon_layout
+            else -> text_layout
         }
+
+        if (style.selectedTabType == AnimatedBottomBar.TabType.TEXTONLY) {
+            animatedView.visibility = View.INVISIBLE
+            icon_view.visibility = View.INVISIBLE
+        }
+
+        selectedAnimatedView.bringToFront()
 
         if (selectedAnimatedView.visibility == View.VISIBLE) {
             animatedView.visibility = View.VISIBLE
@@ -114,21 +129,24 @@ internal class TabView @JvmOverloads constructor(
             animatedView.visibility = View.INVISIBLE
             selectedAnimatedView.visibility = View.VISIBLE
         }
-
         bringViewsToFront()
     }
 
     private fun updateColors() {
         val tabColor = if (isEnabled) style.tabColor else style.tabColorDisabled
-        val tabColorSelected = if (isEnabled) style.tabColorSelected else style.tabColorDisabled
+        val tabColorSelected = if (isEnabled) if (isSelectedItem) style.tabColorSelected else tabColor else style.tabColorDisabled
         if (style.selectedTabType == AnimatedBottomBar.TabType.ICON) {
-            ImageViewCompat.setImageTintList(
-                icon_view,
-                ColorStateList.valueOf(tabColorSelected)
-            )
+            if (!style.tabIconColorDisable)
+                ImageViewCompat.setImageTintList(
+                        icon_view,
+                        ColorStateList.valueOf(tabColorSelected)
+                )
             text_view.setTextColor(tabColor)
         } else if (style.selectedTabType == AnimatedBottomBar.TabType.TEXT) {
-            ImageViewCompat.setImageTintList(icon_view, ColorStateList.valueOf(tabColor))
+            if (!style.tabIconColorDisable)
+                ImageViewCompat.setImageTintList(icon_view, ColorStateList.valueOf(tabColor))
+            text_view.setTextColor(tabColorSelected)
+        } else if (style.selectedTabType == AnimatedBottomBar.TabType.TEXTONLY) {
             text_view.setTextColor(tabColorSelected)
         }
     }
@@ -153,10 +171,16 @@ internal class TabView @JvmOverloads constructor(
     private fun updateText() {
         text_view.typeface = style.typeface
         text_view.setTextSize(TypedValue.COMPLEX_UNIT_PX, style.textSize.toFloat())
-
+        setFont(style.textfont)
         if (style.textAppearance != -1) {
             TextViewCompat.setTextAppearance(text_view, style.textAppearance)
         }
+    }
+
+    private fun setFont(fontPath: String?) {
+        if (fontPath == "" || fontPath == null) return
+        val typeface = Typeface.createFromAsset(text_view.context.assets, fontPath);
+        text_view.typeface = typeface;
     }
 
     private fun updateIcon() {
@@ -191,6 +215,13 @@ internal class TabView @JvmOverloads constructor(
     }
 
     fun select(animate: Boolean = true) {
+
+        if (style.selectedTabType == AnimatedBottomBar.TabType.TEXTONLY) {
+            isSelectedItem = true
+            updateColors()
+            return
+        }
+
         updateAnimations()
 
         if (animate && style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
@@ -207,6 +238,15 @@ internal class TabView @JvmOverloads constructor(
     }
 
     fun deselect(animate: Boolean = true) {
+
+        if (style.selectedTabType == AnimatedBottomBar.TabType.TEXTONLY) {
+            isSelectedItem = false
+            updateColors()
+            return
+        }
+
+
+
         updateAnimations()
 
         if (animate && style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
@@ -228,6 +268,7 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun updateAnimations() {
+
         if (style.tabAnimationSelected != AnimatedBottomBar.TabAnimation.NONE) {
             selectedInAnimation = getAnimation(true, AnimationDirection.IN)?.apply {
                 setAnimationListener(object : AnimationListener {
@@ -265,10 +306,7 @@ internal class TabView @JvmOverloads constructor(
         }
     }
 
-    private fun getAnimation(
-        selected: Boolean,
-        direction: AnimationDirection
-    ): Animation? {
+    private fun getAnimation(selected: Boolean, direction: AnimationDirection): Animation? {
         var animation: Animation? = null
         val transformation = getTransformation(if (selected) selectedAnimatedView else animatedView)
 
@@ -278,18 +316,18 @@ internal class TabView @JvmOverloads constructor(
         if (animationType == AnimatedBottomBar.TabAnimation.SLIDE) {
             if (selected) {
                 valueFrom =
-                    if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) height.toFloat() else 0f)
+                        if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) height.toFloat() else 0f)
                 valueTo = if (direction == AnimationDirection.IN) 0f else height.toFloat()
             } else {
                 valueFrom =
-                    if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) -height.toFloat() else 0f)
+                        if (transformation != null) getTranslateY(transformation) else (if (direction == AnimationDirection.IN) -height.toFloat() else 0f)
                 valueTo = if (direction == AnimationDirection.IN) 0f else -height.toFloat()
             }
 
             animation = TranslateAnimation(0f, 0f, valueFrom, valueTo)
         } else if (animationType == AnimatedBottomBar.TabAnimation.FADE) {
             valueFrom =
-                transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
+                    transformation?.alpha ?: if (direction == AnimationDirection.IN) 0f else 1f
             valueTo = if (direction == AnimationDirection.IN) 1f else 0f
 
             animation = AlphaAnimation(valueFrom, valueTo)

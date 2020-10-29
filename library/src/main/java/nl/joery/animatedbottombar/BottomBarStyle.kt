@@ -26,6 +26,8 @@ object BottomBarStyle {
         @ColorInt var tabColorDisabled: Int = Color.BLACK,
         @ColorInt var tabColor: Int = Color.BLACK,
 
+        var tabIconColorDisable: Boolean = false,
+
         // Ripple
         var rippleEnabled: Boolean = false,
         @ColorInt var rippleColor: Int = Color.BLACK,
@@ -34,6 +36,7 @@ object BottomBarStyle {
         @StyleRes var textAppearance: Int = -1,
         var typeface: Typeface = Typeface.DEFAULT,
         var textSize: Int = 14.spPx,
+        var textfont: String? = null,
 
         // Icon
         var iconSize: Int = 24.dpPx,
@@ -41,6 +44,7 @@ object BottomBarStyle {
         // Badge
         var badge: Badge = Badge()
     )
+
 
     data class Badge(
         var animation: AnimatedBottomBar.BadgeAnimation = AnimatedBottomBar.BadgeAnimation.SCALE,
@@ -52,6 +56,7 @@ object BottomBarStyle {
 
     data class Indicator(
         @Dimension var indicatorHeight: Int = 3.dpPx,
+        @Dimension var indicatorWidth: Int = -1,
         @Dimension var indicatorMargin: Int = 0,
         @ColorInt var indicatorColor: Int = Color.BLACK,
         var indicatorAppearance: AnimatedBottomBar.IndicatorAppearance = AnimatedBottomBar.IndicatorAppearance.SQUARE,

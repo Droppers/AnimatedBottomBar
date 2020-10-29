@@ -46,6 +46,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     private var viewPager: ViewPager? = null
     private var viewPager2: ViewPager2? = null
+    private var animatePageChange = true
 
     init {
         initRecyclerView()
@@ -123,8 +124,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 R.styleable.AnimatedBottomBar_abb_tabColorDisabled,
                 tabStyle.tabColorDisabled
             )
+
             tabColor =
                 attr.getColor(R.styleable.AnimatedBottomBar_abb_tabColor, tabStyle.tabColor)
+
+            tabIconColorDisable =
+                attr.getBoolean(R.styleable.AnimatedBottomBar_abb_disableIconColor, false)
 
             // Text
             textAppearance =
@@ -138,10 +143,16 @@ class AnimatedBottomBar @JvmOverloads constructor(
                     typeface.style
                 )
             typeface = Typeface.create(typeface, textStyle)
+
             textSize =
                 attr.getDimensionPixelSize(
                     R.styleable.AnimatedBottomBar_abb_textSize,
                     tabStyle.textSize
+                )
+
+            textfont =
+                attr.getString(
+                    R.styleable.AnimatedBottomBar_abb_textFont
                 )
 
             // Icon
@@ -156,6 +167,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 attr.getDimension(
                     R.styleable.AnimatedBottomBar_abb_indicatorHeight,
                     indicatorStyle.indicatorHeight.toFloat()
+                ).toInt()
+            indicatorWidth =
+                attr.getDimension(
+                    R.styleable.AnimatedBottomBar_abb_tabIndicatorWidth,
+                    indicatorStyle.indicatorWidth.toFloat()
                 ).toInt()
             indicatorMargin =
                 attr.getDimension(
@@ -197,6 +213,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 R.styleable.AnimatedBottomBar_abb_badgeAnimationDuration,
                 tabStyle.badge.animationDuration
             )
+
             badgeBackgroundColor =
                 attr.getColor(
                     R.styleable.AnimatedBottomBar_abb_badgeBackgroundColor,
@@ -606,9 +623,9 @@ class AnimatedBottomBar @JvmOverloads constructor(
      *
      * @param viewPager2 The ViewPager2 to link to, or null to clear any previous link
      */
-    fun setupWithViewPager2(viewPager2: ViewPager2?) {
+    fun setupWithViewPager2(viewPager2: ViewPager2?, animate: Boolean = true) {
         this.viewPager2 = viewPager2
-
+        this.animatePageChange = animate
         if (viewPager2 != null) {
             selectTabAt(viewPager2.currentItem, false)
             viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -640,6 +657,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
     }
 
+
+
     /**
      * This method will link the given NavController to the AnimatedBottomBar together so that changes in one are automatically reflected in the other.
      *
@@ -649,6 +668,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
     fun setupWithNavController(menu: Menu, navController: NavController) {
         NavigationComponentHelper.setupWithNavController(this, menu, navController)
     }
+
 
     private fun findTabWithId(@IdRes id: Int): Tab? {
         for (tab in tabs) {
@@ -784,6 +804,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyTabStyle(BottomBarStyle.StyleUpdateType.COLORS)
         }
 
+    var tabIconColorDisable
+        get() = tabStyle.tabIconColorDisable
+        set(value) {
+            tabStyle.tabIconColorDisable = value
+        }
+
     var tabColorDisabledRes
         @Deprecated("", level = DeprecationLevel.HIDDEN)
         get() = Int.MIN_VALUE
@@ -814,12 +840,21 @@ class AnimatedBottomBar @JvmOverloads constructor(
             tabStyle.textAppearance = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
         }
+
     var typeface
         get() = tabStyle.typeface
         set(value) {
             tabStyle.typeface = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
         }
+
+    var textfont
+        get() = tabStyle.textfont
+        set(value) {
+            tabStyle.textfont = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
+        }
+
     var textSize
         @Dimension
         get() = tabStyle.textSize
@@ -843,6 +878,14 @@ class AnimatedBottomBar @JvmOverloads constructor(
         get() = indicatorStyle.indicatorHeight
         set(@Dimension value) {
             indicatorStyle.indicatorHeight = value
+            applyIndicatorStyle()
+        }
+
+    var indicatorWidth
+        @Dimension
+        get() = indicatorStyle.indicatorWidth
+        set(@Dimension value) {
+            indicatorStyle.indicatorWidth = value
             applyIndicatorStyle()
         }
 
@@ -942,13 +985,14 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyTabStyle(BottomBarStyle.StyleUpdateType.BADGE)
         }
 
-    class Tab internal constructor(
+    class Tab constructor(
         val icon: Drawable,
         val title: String,
         @IdRes val id: Int = -1,
         var badge: Badge? = null,
         var enabled: Boolean = true
     )
+
 
     class Badge(
         val text: String? = null,
@@ -959,7 +1003,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     enum class TabType(val id: Int) {
         TEXT(0),
-        ICON(1);
+        ICON(1),
+        TEXTONLY(2);
 
         companion object {
             fun fromId(id: Int): TabType? {
@@ -1003,7 +1048,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     enum class IndicatorAppearance(val id: Int) {
         INVISIBLE(0),
         SQUARE(1),
-        ROUND(2);
+        ROUND(2),
+        DOT(3);
 
         companion object {
             fun fromId(id: Int): IndicatorAppearance? {
