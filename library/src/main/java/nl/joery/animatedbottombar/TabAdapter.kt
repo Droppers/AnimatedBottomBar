@@ -1,5 +1,6 @@
 package nl.joery.animatedbottombar
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,13 +19,17 @@ internal class TabAdapter(
         null
 
     val tabs = ArrayList<AnimatedBottomBar.Tab>()
+
     var selectedTab: AnimatedBottomBar.Tab? = null
         private set
-    val selectedIndex: Int
+
+    var selectedIndex: Int = RecyclerView.NO_POSITION
         get() {
             val tabIndex = tabs.indexOf(selectedTab)
             return if (tabIndex >= 0) tabIndex else RecyclerView.NO_POSITION
         }
+
+    private var clearSelection = false
 
     override fun getItemCount(): Int {
         return tabs.size
@@ -111,6 +116,11 @@ internal class TabAdapter(
         )
     }
 
+    fun clearCurrentSelection() {
+        clearSelection = true
+        notifyDataSetChanged()
+    }
+
     fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {
         notifyItemRangeChanged(
             0, tabs.size,
@@ -174,12 +184,19 @@ internal class TabAdapter(
         }
 
         fun bind(tab: AnimatedBottomBar.Tab) {
-            if (tab == selectedTab) {
-                select(false)
+            if (clearSelection) {
+                if (selectedTab == tab) {
+                    selectedTab = null
+                    selectedIndex = RecyclerView.NO_POSITION
+                    deselect(true)
+                }
             } else {
-                deselect(false)
+                if (tab == selectedTab) {
+                    select(false)
+                } else {
+                    deselect(false)
+                }
             }
-
             view.title = tab.title
             view.icon = tab.icon
             view.badge = tab.badge

@@ -140,16 +140,33 @@
 
         <TextView
             android:id="@+id/actions_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:gravity="start|center_vertical"
             android:text="@string/tab_actions_title"
             android:textColor="?android:textColorPrimary"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/clearSelection"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/clearSelection" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clearSelection"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginVertical="5dp"
+            android:layout_marginEnd="16dp"
+            android:text="Clear Selection"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="12sp"
+            app:backgroundTint="@android:color/white"
+            app:layout_constraintBottom_toTopOf="@id/select_last"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/select_last"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@android:color/holo_red_light"
+            app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/select"
@@ -223,7 +240,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/open_viewpager_example"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

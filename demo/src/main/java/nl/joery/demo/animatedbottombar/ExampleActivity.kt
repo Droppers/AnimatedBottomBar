@@ -20,6 +20,12 @@ class ExampleActivity : AppCompatActivity() {
         initToolbar()
         initBottomBars()
 
+        clearSelection.setOnClickListener {
+            for (bottomBar in bottomBars) {
+                bottomBar.clearSelection()
+            }
+        }
+
         select.setOnClickListener {
             for (bottomBar in bottomBars) {
                 bottomBar.addTabAt(

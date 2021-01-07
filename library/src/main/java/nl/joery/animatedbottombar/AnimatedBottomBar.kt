@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
@@ -240,10 +241,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.onTabSelected =
             { lastIndex: Int, lastTab: Tab?, newIndex: Int, newTab: Tab, animated: Boolean ->
                 tabIndicator.setSelectedIndex(lastIndex, newIndex, animated)
-
                 viewPager?.currentItem = newIndex
                 viewPager2?.currentItem = newIndex
-
                 onTabSelectListener?.onTabSelected(lastIndex, lastTab, newIndex, newTab)
                 onTabSelected.invoke(newTab)
             }
@@ -648,6 +647,14 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun setupWithNavController(menu: Menu, navController: NavController) {
         NavigationComponentHelper.setupWithNavController(this, menu, navController)
+    }
+
+    /**
+     * This method will deselect the currently selected tab; the selected tab will become null and the selected index will become -1.
+     */
+    fun clearSelection() {
+        if (selectedIndex == -1) return
+        adapter.clearCurrentSelection()
     }
 
     private fun findTabWithId(@IdRes id: Int): Tab? {
