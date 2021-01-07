@@ -189,6 +189,7 @@ internal class TabAdapter(
                     selectedTab = null
                     selectedIndex = RecyclerView.NO_POSITION
                     deselect(true)
+                    clearSelection = false
                 }
             } else {
                 if (tab == selectedTab) {
