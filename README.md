@@ -101,6 +101,19 @@ bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener
     }
 })
 ```
+```java
+bottom_bar.setOnTabSelectListener(new AnimatedBottomBar.OnTabSelectListener() {
+    @Override
+    public void onTabReselected(int i, @NotNull AnimatedBottomBar.Tab tab) {
+        Log.d("bottom_bar", "Reselected index: " + i + ", title: " + tab.getTitle());
+    }
+
+    @Override
+    public void onTabSelected(int i, @Nullable AnimatedBottomBar.Tab tab, int i1, @NotNull AnimatedBottomBar.Tab tab1) {
+        Log.d("bottom_bar", "New index: " + i1 + ", title: " + tab1.getTitle());
+    }
+})
+```
 
 ## Managing tabs
 Short overview on how to manage tabs using code.
