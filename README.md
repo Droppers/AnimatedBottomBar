@@ -31,10 +31,12 @@ Download the playground app from Google Play, with this app you can try out all 
 ## Getting started
 <img src="./media/getting-started-demo.gif" width="400" />
 
-Add the following dependency to your <b>build.gradle</b>:
+This library is available on Maven Central, install it by adding the following dependency to your <b>build.gradle</b>:
 ```gradle
-implementation 'nl.joery.animatedbottombar:library:1.0.9'
+implementation 'nl.joery.animatedbottombar:library:1.1.0'
 ```
+
+*Versions 1.0.x can only be used with jCenter, versions 1.1.x and up can be used with Maven Central.*
 
 Define `AnimatedBottomBar` in your XML layout with custom attributes.
 ```xml
