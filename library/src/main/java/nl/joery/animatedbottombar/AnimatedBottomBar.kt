@@ -962,7 +962,10 @@ class AnimatedBottomBar @JvmOverloads constructor(
         @ColorInt val backgroundColor: Int? = null,
         @ColorInt val textColor: Int? = null,
         @Dimension val textSize: Int? = null
-    )
+    ) {
+        constructor() : this(null, null, null, null)
+        constructor(text: String?) : this(text, null, null, null)
+    }
 
     enum class TabType(val id: Int) {
         TEXT(0),
