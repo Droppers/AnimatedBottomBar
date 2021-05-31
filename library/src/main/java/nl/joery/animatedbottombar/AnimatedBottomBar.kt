@@ -446,6 +446,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     /**
+     * Deselect the selected tab.
+     */
+    fun clearSelection(animate: Boolean = true) {
+        adapter.clearSelection(animate)
+    }
+
+    /**
      * Enable/disabled a tab on the BottomBar by the specified [tabIndex] index.
      *
      * @param tabIndex The index of the tab to be enabled or disabled.
