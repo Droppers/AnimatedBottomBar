@@ -1,7 +1,6 @@
 # AnimatedBottomBar
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library/badge.svg)](https://maven-badges.herokuapp.com/maven-central/l.joery.animatedbottombar/library)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![API](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16) 
-[![Download](https://api.bintray.com/packages/droppers/AnimatedBottomBar/nl.joery.animatedbottombar/images/download.svg) ](https://bintray.com/droppers/AnimatedBottomBar/nl.joery.animatedbottombar/_latestVersion)
 ![androidweekly.net](https://androidweekly.net/issues/issue-404/badge)
 
 A customizable and easy to use bottom bar view with sleek animations.
