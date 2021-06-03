@@ -1,5 +1,5 @@
 # AnimatedBottomBar
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library/badge.svg)](https://maven-badges.herokuapp.com/maven-central/l.joery.animatedbottombar/library)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library/badge.svg)](https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ![androidweekly.net](https://androidweekly.net/issues/issue-404/badge)
 
