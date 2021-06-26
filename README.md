@@ -5,7 +5,7 @@
 <br>
 <img src="./media/example/example-1.gif" width="350" />
   <br><br>
-  A customizable and easy to use bottom bar view with sleek animations.
+  A customizable and easy to use BottomBar navigation view with sleek animations, with support for ViewPager, ViewPager2, NavController, and badges.
 </p>
 <h6 align="center">
 
