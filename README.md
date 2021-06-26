@@ -1,21 +1,28 @@
-# AnimatedBottomBar
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library/badge.svg)](https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![androidweekly.net](https://androidweekly.net/issues/issue-404/badge)
 
-A customizable and easy to use bottom bar view with sleek animations.
+<h1 align="center">AnimatedBottomBar</h1></br>
+<p align="center">
+<img src="./media/example/example-3.gif" width="350" />
+<br>
+<img src="./media/example/example-1.gif" width="350" />
+  <br><br>
+  A customizable and easy to use bottom bar view with sleek animations.
+</p>
+<h6 align="center">
 
-## Examples
-<img src="./media/example/example-3.gif" width="550" />
-<br>
-<img src="./media/example/example-1.gif" width="550" />
-<br>
-<img src="./media/example/example-2.gif" width="550" />
-<br>
-<img src="./media/example/example-4.gif" width="550" />
+  <img src="https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library/badge.svg" height="22" valign="middle">&nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat" height="22" valign="middle">&nbsp;&nbsp;
+  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" height="22" valign="middle">&nbsp;&nbsp;
+  <img src= "https://joery.nl/static/vector/logo.svg" height="22" valign="middle">&nbsp;&nbsp;By <a href="https://joery.nl">Joery Droppers</a>
+</h6>
 
-### Playground app
-<img src="./media/static/playground-demo.png"  width="500" />
+
+
+## Screenshots
+<img src="./media/example/example-2.gif" width="350" />
+<img src="./media/example/example-4.gif" width="350" />
+
+## Playground app
+<img src="./media/static/playground-demo.png"  width="400" />
 
 Download the playground app from Google Play, with this app you can try out all features and even generate XML with your selected configuration.
 
@@ -28,7 +35,6 @@ Download the playground app from Google Play, with this app you can try out all 
 - [Configuration](#configuration)
 
 ## Getting started
-<img src="./media/getting-started-demo.gif" width="400" />
 
 This library is available on Maven Central, install it by adding the following dependency to your <b>build.gradle</b>:
 ```gradle
@@ -518,9 +524,6 @@ An overview of all configuration options. All options can also be accessed and s
     </tr>
 </table>
 
-## Used by
-- [Pixiv Shaft](https://github.com/CeuiLiSA/Pixiv-Shaft) 10,000+ installs [(Play Store)](https://play.google.com/store/apps/details?id=ceui.lisa.pixiv)
-
 ## Featured in
 - [Android Weekly: Issue 404](https://androidweekly.net/issues/issue-404)
 - [Medium: The 25 Best Android Libraries and Projects of 2020](https://medium.com/better-programming/25-best-android-libraries-projects-of-2020-summer-edition-dfb030a7fb0a)
@@ -533,7 +536,7 @@ An overview of all configuration options. All options can also be accessed and s
 ```
 MIT License
 
-Copyright (c) 2020 Joery Droppers (https://github.com/Droppers)
+Copyright (c) 2021 Joery Droppers (https://github.com/Droppers)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
