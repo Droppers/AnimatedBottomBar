@@ -270,9 +270,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
         val tabs = MenuParser.parse(context, tabsResId, !isInEditMode)
-        for (tab in tabs) {
-            addTab(tab)
-        }
+        addTabs(tabs)
 
         if (initialIndex != -1) {
             if (initialIndex < 0 || initialIndex > adapter.tabs.size - 1) {
@@ -365,6 +363,14 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun addTab(tab: Tab) {
         adapter.addTab(tab)
+    }
+
+    fun addTabs(tabs: Array<out Tab>) {
+        adapter.addTabs(tabs)
+    }
+
+    fun addTabs(tabs: Collection<Tab>) {
+        adapter.addTabs(tabs)
     }
 
     /**

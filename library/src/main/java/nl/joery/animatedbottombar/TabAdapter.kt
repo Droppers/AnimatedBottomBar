@@ -63,7 +63,7 @@ internal class TabAdapter(
     }
 
     fun addTab(tab: AnimatedBottomBar.Tab, tabIndex: Int = -1) {
-        val addedIndex: Int?
+        val addedIndex: Int
         if (tabIndex == -1) {
             addedIndex = tabs.size
             tabs.add(tab)
@@ -73,6 +73,23 @@ internal class TabAdapter(
         }
 
         notifyItemInserted(addedIndex)
+    }
+
+    fun addTabs(values: Array<out AnimatedBottomBar.Tab>, tabIndex: Int = 0) {
+        addTabs(NoCopyArrayList(values), tabIndex)
+    }
+
+    fun addTabs(values: Collection<AnimatedBottomBar.Tab>, tabIndex: Int = -1) {
+        val startIndex: Int
+        if(tabIndex == -1) {
+            startIndex = tabs.size
+            tabs.addAll(tabIndex, values)
+        } else {
+            startIndex = tabIndex
+            tabs.addAll(values)
+        }
+
+        notifyItemRangeChanged(startIndex, values.size)
     }
 
     fun removeTab(tab: AnimatedBottomBar.Tab) {
