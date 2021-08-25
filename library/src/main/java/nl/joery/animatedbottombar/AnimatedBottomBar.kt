@@ -281,9 +281,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
         if (initialTabId != -1) {
-            val tab = findTabWithId(initialTabId)
-                ?: throw IllegalArgumentException("Attribute 'selectedTabId', tab with this id does not exist.")
-            selectTab(tab, false)
+            val tabIndex = indexOfTabWithId(initialTabId)
+            if(tabIndex < 0) {
+                throw IllegalArgumentException("Attribute 'selectedTabId', tab with this id does not exist.")
+            }
+
+            selectTabAt(tabIndex, false)
         }
     }
 
@@ -393,8 +396,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
-        val tab = adapter.tabs[tabIndex]
-        removeTab(tab)
+        adapter.removeTabAt(tabIndex)
     }
 
     /**
@@ -403,9 +405,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param id The id of the tab to be removed.
      */
     fun removeTabById(@IdRes id: Int) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        removeTab(tab)
+        val tabIndex = indexOfTabWithId(id)
+        if(tabIndex < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+
+        adapter.removeTabAt(tabIndex)
     }
 
     /**
@@ -427,8 +432,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
-        val tab = adapter.tabs[tabIndex]
-        selectTab(tab, animate)
+        adapter.selectTabAt(tabIndex, animate)
     }
 
     /**
@@ -437,9 +441,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param id The id of the tab to be selected.
      */
     fun selectTabById(@IdRes id: Int, animate: Boolean = true) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        selectTab(tab, animate)
+        val tabIndex = indexOfTabWithId(id)
+        if(tabIndex < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+        adapter.selectTabAt(tabIndex, animate)
     }
 
     /**
@@ -469,8 +475,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
-        val tab = adapter.tabs[tabIndex]
-        setTabEnabled(tab, enabled)
+        adapter.selectTabAt(tabIndex, enabled)
     }
 
     /**
@@ -480,9 +485,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param enabled Whether the tab state should be enabled or disabled.
      */
     fun setTabEnabledById(@IdRes id: Int, enabled: Boolean) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        setTabEnabled(tab, enabled)
+        val index = indexOfTabWithId(id)
+        if(index < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+
+        adapter.selectTabAt(index, enabled)
     }
 
     /**
@@ -508,7 +516,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
         val tab = adapter.tabs[tabIndex]
-        setBadgeAtTab(tab, badge)
+        tab.badge = badge
+        adapter.applyTabBadgeAt(tabIndex, badge ?: Badge())
     }
 
     /**
@@ -518,9 +527,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param badge The badge you want to add to the tab.
      */
     fun setBadgeAtTabId(@IdRes id: Int, badge: Badge? = null) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        setBadgeAtTab(tab, badge)
+        val index = indexOfTabWithId(id)
+        if(index >= 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+        setBadgeAtTabIndex(index, badge)
     }
 
     /**
@@ -545,7 +556,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
         val tab = adapter.tabs[tabIndex]
-        clearBadgeAtTab(tab)
+        tab.badge = null
+        adapter.applyTabBadgeAt(tabIndex, null)
     }
 
     /**
@@ -554,9 +566,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param id The id of the tab which the badge should be removed of.
      */
     fun clearBadgeAtTabId(@IdRes id: Int) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        clearBadgeAtTab(tab)
+        val index = indexOfTabWithId(id)
+        if(index < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+        clearBadgeAtTabIndex(index)
     }
 
     /**
@@ -663,14 +677,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
         NavigationComponentHelper.setupWithNavController(this, menu, navController)
     }
 
-    private fun findTabWithId(@IdRes id: Int): Tab? {
-        for (tab in tabs) {
-            if (tab.id == id) {
-                return tab
+    private fun indexOfTabWithId(@IdRes id: Int): Int {
+        for(i in tabs.indices) {
+            if(tabs[i].id == id) {
+                return i
             }
         }
-
-        return null
+        return -1
     }
 
     /**
