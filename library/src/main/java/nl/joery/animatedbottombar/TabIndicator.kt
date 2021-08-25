@@ -3,7 +3,6 @@ package nl.joery.animatedbottombar
 import android.animation.ObjectAnimator
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Path
 import android.graphics.RectF
 import android.os.Build
 import android.util.FloatProperty
@@ -20,7 +19,6 @@ internal class TabIndicator(
         style = Paint.Style.FILL
     }
 
-    private val corners = FloatArray(8)
     private val animator = ObjectAnimator().apply {
         target = this@TabIndicator
         setProperty(CURRENT_LEFT_PROPERTY)
@@ -31,7 +29,6 @@ internal class TabIndicator(
     private var currentLeft: Float = 0f
 
     private val indicatorRect = RectF()
-    private val roundRectPath = Path()
 
     private val shouldRender: Boolean
         get() = bottomBar.indicatorStyle.indicatorAppearance != AnimatedBottomBar.IndicatorAppearance.INVISIBLE
@@ -96,83 +93,61 @@ internal class TabIndicator(
 
     private fun drawIndicator(c: Canvas, viewLeft: Float, viewWidth: Float, alpha: Int = 255) {
         val indicatorMargin = bottomBar.indicatorStyle.indicatorMargin
-        indicatorRect.set(
-            viewLeft + indicatorMargin,
-            getTop(),
-            viewLeft + viewWidth - indicatorMargin,
-            getBottom()
-        )
-
         paint.alpha = alpha
+
+        val indicatorLeft = viewLeft + indicatorMargin
+        val indicatorRight = viewLeft + viewWidth - indicatorMargin
+        val indicatorHeight =  bottomBar.indicatorStyle.indicatorHeight.toFloat()
 
         when(bottomBar.indicatorStyle.indicatorAppearance) {
             AnimatedBottomBar.IndicatorAppearance.SQUARE -> {
-                c.drawRect(indicatorRect, paint)
+                val top: Float
+                val bottom: Float
+
+                when(bottomBar.indicatorStyle.indicatorLocation) {
+                    AnimatedBottomBar.IndicatorLocation.TOP -> {
+                        top = 0f
+                        bottom = indicatorHeight
+                    }
+                    AnimatedBottomBar.IndicatorLocation.BOTTOM -> {
+                        val parentHeight = parent.height.toFloat()
+                        top = parentHeight - indicatorHeight
+                        bottom = parentHeight
+                    }
+                }
+
+                c.drawRect(indicatorLeft, top, indicatorRight, bottom, paint)
             }
             AnimatedBottomBar.IndicatorAppearance.ROUND -> {
-                val path = roundRectPath
-                path.rewind()
-                path.addRoundRect(
-                    indicatorRect,
-                    corners,
-                    Path.Direction.CW
-                )
-                c.drawPath(path, paint)
+                // Canvas.drawRoundRect draws rectangle with all round corners.
+                // To make bottom corners round, we can draw rectangle still with all round corners,
+                // but hide top round corners by translating the rectangle to top for radius
+                // (rx, ry arguments in Canvas.drawRoundRect).
+                // In the same way, we can make top corners round, but we have to translate to bottom
+
+                val top: Float
+                val bottom: Float
+
+                when(bottomBar.indicatorStyle.indicatorLocation) {
+                    AnimatedBottomBar.IndicatorLocation.TOP -> {
+                        top = -indicatorHeight
+                        bottom = indicatorHeight
+                    }
+                    AnimatedBottomBar.IndicatorLocation.BOTTOM -> {
+                        val parentHeight = parent.height.toFloat()
+                        top = parentHeight - indicatorHeight
+                        bottom = parentHeight + indicatorHeight
+                    }
+                }
+
+                // The reason of using RectF is that Canvas.drawRoundRect(RectF, float, float) is available
+                // only since API 21
+                indicatorRect.set(indicatorLeft, top, indicatorRight, bottom)
+
+                c.drawRoundRect(indicatorRect, indicatorHeight, indicatorHeight, paint)
             }
             else -> {
             }
-        }
-    }
-
-    private fun getTop(): Float {
-        return when (bottomBar.indicatorStyle.indicatorLocation) {
-            AnimatedBottomBar.IndicatorLocation.TOP ->
-                0f
-            AnimatedBottomBar.IndicatorLocation.BOTTOM ->
-                (parent.height - bottomBar.indicatorStyle.indicatorHeight).toFloat()
-        }
-    }
-
-    private fun updateCorners() {
-        val indicatorStyle = bottomBar.indicatorStyle
-        val radius = indicatorStyle.indicatorHeight.toFloat()
-
-        when (indicatorStyle.indicatorLocation) {
-            AnimatedBottomBar.IndicatorLocation.TOP -> {
-                corners.run {
-                    this[0] = 0f
-                    this[1] = 0f
-                    this[2] = 0f
-                    this[3] = 0f
-
-                    this[4] = radius
-                    this[5] = radius
-                    this[6] = radius
-                    this[7] = radius
-                }
-            }
-            AnimatedBottomBar.IndicatorLocation.BOTTOM -> {
-                corners.run {
-                    this[0] = radius
-                    this[1] = radius
-                    this[2] = radius
-                    this[3] = radius
-
-                    this[4] = 0f
-                    this[5] = 0f
-                    this[6] = 0f
-                    this[7] = 0f
-                }
-            }
-        }
-    }
-
-    private fun getBottom(): Float {
-        return when (bottomBar.indicatorStyle.indicatorLocation) {
-            AnimatedBottomBar.IndicatorLocation.TOP ->
-                bottomBar.indicatorStyle.indicatorHeight.toFloat()
-            AnimatedBottomBar.IndicatorLocation.BOTTOM ->
-                parent.height.toFloat()
         }
     }
 
@@ -204,7 +179,6 @@ internal class TabIndicator(
 
     fun applyStyle() {
         paint.color = bottomBar.indicatorStyle.indicatorColor
-        updateCorners()
 
         if (shouldRender) {
             parent.invalidate()
