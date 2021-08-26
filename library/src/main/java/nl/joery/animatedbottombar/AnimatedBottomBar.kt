@@ -368,10 +368,20 @@ class AnimatedBottomBar @JvmOverloads constructor(
         adapter.addTab(tab)
     }
 
+    /**
+     * Appends given array of tabs to the end of the BottomBar
+     *
+     * @param tabs array of tabs to be appended
+     */
     fun addTabs(tabs: Array<out Tab>) {
         adapter.addTabs(tabs)
     }
 
+    /**
+     * Appends given collection of tabs to the end of the BottomBar
+     *
+     * @param tabs collection of tabs to be appended
+     */
     fun addTabs(tabs: Collection<Tab>) {
         adapter.addTabs(tabs)
     }
