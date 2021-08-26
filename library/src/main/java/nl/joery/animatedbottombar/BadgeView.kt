@@ -22,6 +22,7 @@ class BadgeView @JvmOverloads constructor(
         typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
     }
     private val textBounds = Rect()
+    private val backgroundRoundRectBounds = RectF()
     private val horizontalPadding: Int = 6.dpPx
 
     private val animator = ValueAnimator.ofFloat(0f, 1f).apply {
@@ -182,24 +183,14 @@ class BadgeView @JvmOverloads constructor(
         } else {
             val radius = 8.dpPx.toFloat()
 
-            val rectLeft = paddingLeft.toFloat()
-            val rectTop = paddingTop.toFloat()
-            val rectRight = (measuredWidth - paddingRight).toFloat()
-            val rectBottom = (measuredHeight - paddingBottom).toFloat()
+            backgroundRoundRectBounds.set(
+                paddingLeft.toFloat(),
+                paddingTop.toFloat(),
+                (measuredWidth - paddingRight).toFloat(),
+                (measuredHeight - paddingBottom).toFloat()
+            )
 
-            if(Build.VERSION.SDK_INT >= 21) {
-                canvas.drawRoundRect(
-                        rectLeft, rectTop, rectRight, rectBottom,
-                        radius, radius,
-                        backgroundPaint
-                )
-            } else {
-                canvas.drawRoundRect(
-                        RectF(rectLeft, rectTop, rectRight, rectBottom),
-                        radius, radius,
-                        backgroundPaint
-                )
-            }
+            canvas.drawRoundRect(backgroundRoundRectBounds, radius, radius, backgroundPaint)
         }
     }
 
