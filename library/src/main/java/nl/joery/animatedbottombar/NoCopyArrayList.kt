@@ -1,6 +1,6 @@
 package nl.joery.animatedbottombar
 
-class NoCopyArrayList<T>(private val data: Array<out T>): AbstractList<T>() {
+internal class NoCopyArrayList<T>(private val data: Array<out T>): AbstractList<T>() {
     override val size: Int
         get() = data.size
 
