@@ -37,8 +37,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     var onTabReselected: (Tab) -> Unit = {}
     var onTabIntercepted: (Tab) -> Boolean = { true }
 
-    internal val tabStyle: BottomBarStyle.Tab by lazy { BottomBarStyle.Tab() }
-    internal val indicatorStyle: BottomBarStyle.Indicator by lazy { BottomBarStyle.Indicator() }
+    internal val tabStyle = BottomBarStyle.Tab()
+    internal val indicatorStyle = BottomBarStyle.Indicator()
 
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: TabAdapter
