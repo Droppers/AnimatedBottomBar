@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.Menu
 import android.view.View
@@ -302,6 +303,26 @@ class AnimatedBottomBar @JvmOverloads constructor(
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         recycler.postInvalidate()
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        return SavedState(super.onSaveInstanceState()).apply {
+            selectedIndex = adapter.selectedIndex
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable) {
+        if(state is SavedState) {
+            super.onRestoreInstanceState(state.superState)
+
+            val index = state.selectedIndex
+
+            if(index >= 0 && index < adapter.tabs.size) {
+                selectTabAt(index, false)
+            }
+        } else {
+            super.onRestoreInstanceState(state)
+        }
     }
 
     fun setOnTabSelectListener(onTabSelectListener: OnTabSelectListener) {
