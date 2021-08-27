@@ -315,7 +315,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
         if(state is SavedState) {
             super.onRestoreInstanceState(state.superState)
 
-            selectTabAt(state.selectedIndex, false)
+            val index = state.selectedIndex
+
+            if(index >= 0 && index < adapter.tabs.size) {
+                selectTabAt(index, false)
+            }
         } else {
             super.onRestoreInstanceState(state)
         }
