@@ -57,16 +57,21 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private fun initAttributes(
         attributeSet: AttributeSet?
     ) {
+        val textColorPrimary = context.getTextColor(android.R.attr.textColorPrimary)
+
         tabColorDisabled = context.getTextColor(android.R.attr.textColorSecondary)
-        tabColor = context.getTextColor(android.R.attr.textColorPrimary)
+        tabColor = textColorPrimary
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rippleColor = android.R.attr.selectableItemBackgroundBorderless
-            tabColorSelected = context.getColorResCompat(android.R.attr.colorPrimary)
-            indicatorColor = context.getColorResCompat(android.R.attr.colorPrimary)
+
+            val colorPrimary = context.getColorResCompat(android.R.attr.colorPrimary)
+
+            tabColorSelected = colorPrimary
+            indicatorColor = colorPrimary
         } else {
-            tabColorSelected = context.getTextColor(android.R.attr.textColorPrimary)
-            indicatorColor = context.getTextColor(android.R.attr.textColorPrimary)
+            tabColorSelected = textColorPrimary
+            indicatorColor = textColorPrimary
         }
 
         val attr: TypedArray =
