@@ -332,12 +332,21 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param icon A drawable of the tab icon.
      * @param title The title of the tab.
      * @param id A unique identifier of a tab.
+     * @param iconSize Size of icon.
+     * Unlike [AnimatedBottomBar.iconSize], sets size of icon only for this tab.
+     * Should be either -1 to use [AnimatedBottomBar.iconSize] or positive value
      */
-    fun createTab(icon: Drawable?, title: String, @IdRes id: Int = -1): Tab {
+    fun createTab(icon: Drawable?, title: String, @IdRes id: Int = -1, iconSize: Int = -1): Tab {
         if (icon == null) {
             throw IllegalArgumentException("Icon drawable cannot be null.")
         }
-        return Tab(icon, title, id)
+
+        if(iconSize < -1 || iconSize == 0) {
+            throw IllegalArgumentException("iconSize should be either -1 or positive value")
+        }
+
+
+        return Tab(icon, iconSize, title, id)
     }
 
     /**
@@ -345,11 +354,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
      *
      * @param iconRes A drawable resource of the tab icon.
      * @param title The title of the tab.
-     * @param id A unique identifier of a tab.
+     * @param iconSize Size of icon.
+     * Unlike [AnimatedBottomBar.iconSize], sets size of icon only for this tab.
+     * Should be either -1 to use [AnimatedBottomBar.iconSize] or positive value
      */
-    fun createTab(@DrawableRes iconRes: Int, title: String, @IdRes id: Int = -1): Tab {
+    fun createTab(@DrawableRes iconRes: Int, title: String, @IdRes id: Int = -1, iconSize: Int = -1): Tab {
         val icon = ContextCompat.getDrawable(context, iconRes)
-        return createTab(icon, title, id)
+        return createTab(icon, title, id, iconSize)
     }
 
     /**
@@ -358,10 +369,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param iconRes A drawable resource of the tab icon.
      * @param titleRes A string resourceRes of the tab title.
      * @param id A unique identifier of a tab.
+     * @param iconSize Size of icon.
+     * Unlike [AnimatedBottomBar.iconSize], sets size of icon only for this tab.
+     * Should be either -1 to use [AnimatedBottomBar.iconSize] or positive value
      */
-    fun createTab(@DrawableRes iconRes: Int, @StringRes titleRes: Int, @IdRes id: Int = -1): Tab {
+    fun createTab(@DrawableRes iconRes: Int, @StringRes titleRes: Int, @IdRes id: Int = -1, iconSize: Int = -1): Tab {
         val title = context.getString(titleRes)
-        return createTab(iconRes, title, id)
+        return createTab(iconRes, title, id, iconSize)
     }
 
     /**
@@ -597,6 +611,56 @@ class AnimatedBottomBar @JvmOverloads constructor(
         tab.badge = null
         adapter.applyTabBadge(tab, null)
     }
+
+    /**
+     * Sets custom size of icon at tab.
+     *
+     * @param tab The [Tab] which icon size should be changed.
+     * @param iconSize Should be either -1 (to use [AnimatedBottomBar.iconSize] value) or positive value.
+     */
+    fun setIconSizeAtTab(tab: Tab, iconSize: Int) {
+        if(iconSize < -1 || iconSize == 0) {
+            throw IllegalArgumentException("iconSize should be either -1 or positive value.")
+        }
+
+        tab.iconSize = iconSize
+        adapter.applyIconSize(tab, iconSize)
+    }
+
+    /**
+     * Sets custom size of icon at tab.
+     *
+     * @param tabIndex Index of [Tab] which icon size should be changed.
+     * @param iconSize Should be either -1 (to use [AnimatedBottomBar.iconSize] value) or positive value.
+     */
+    fun setIconSizeAtTabIndex(tabIndex: Int, iconSize: Int) {
+        if(tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+            throw IllegalArgumentException("Tab index is out of bounds.")
+        }
+
+        if(iconSize < -1 || iconSize == 0) {
+            throw IllegalArgumentException("iconSize should be either -1 or positive value.")
+        }
+
+        adapter.tabs[tabIndex].iconSize = iconSize
+        adapter.applyIconSize(tabIndex, iconSize)
+    }
+
+    /**
+     * Sets custom size of icon at tab.
+     *
+     * @param id Id of [Tab] which icon size should be changed.
+     * @param iconSize Should be either -1 (to use [AnimatedBottomBar.iconSize] value) or positive value.
+     */
+    fun setIconSizeAtTabId(@IdRes id: Int, iconSize: Int) {
+        val index = indexOfTabWithId(id)
+        if(index < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+
+        setIconSizeAtTabIndex(index, iconSize)
+    }
+
 
     /**
      * This method will link the given ViewPager and this AnimatedBottomBar together so that changes in one are automatically reflected in the other. This includes scroll state changes and clicks.
@@ -985,6 +1049,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
     class Tab internal constructor(
         val icon: Drawable,
+        var iconSize: Int = -1,
         val title: String,
         @IdRes val id: Int = -1,
         var badge: Badge? = null,

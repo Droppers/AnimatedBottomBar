@@ -60,6 +60,8 @@ internal class TabAdapter(
                         holder.select(payload.value as Boolean)
                     PAYLOAD_DESELECT ->
                         holder.deselect(payload.value as Boolean)
+                    PAYLOAD_APPLY_ICON_SIZE ->
+                        holder.applyIconSize(payload.value as Int)
                 }
             }
         }
@@ -189,6 +191,17 @@ internal class TabAdapter(
         notifyItemChanged(index)
     }
 
+    fun applyIconSize(tabIndex: Int, iconSize: Int) {
+        notifyItemChanged(tabIndex, Payload(PAYLOAD_APPLY_ICON_SIZE, iconSize))
+    }
+
+    fun applyIconSize(tab: AnimatedBottomBar.Tab, iconSize: Int) {
+        val index = tabs.indexOf(tab)
+        if(index >= 0) {
+            applyIconSize(index, iconSize)
+        }
+    }
+
     private fun canSelectTab(
         lastIndex: Int,
         lastTab: AnimatedBottomBar.Tab?,
@@ -226,6 +239,10 @@ internal class TabAdapter(
             view.deselect(animate)
         }
 
+        fun applyIconSize(iconSize: Int) {
+            view.iconSize = iconSize
+        }
+
         fun bind(tab: AnimatedBottomBar.Tab) {
             if (tab == selectedTab) {
                 select(false)
@@ -235,6 +252,7 @@ internal class TabAdapter(
 
             view.title = tab.title
             view.icon = tab.icon
+            view.iconSize = tab.iconSize
             view.badge = tab.badge
             view.isEnabled = tab.enabled
         }
@@ -247,5 +265,6 @@ internal class TabAdapter(
         private const val PAYLOAD_UPDATE_BADGE = 1
         private const val PAYLOAD_SELECT = 2
         private const val PAYLOAD_DESELECT = 3
+        private const val PAYLOAD_APPLY_ICON_SIZE = 4
     }
 }
