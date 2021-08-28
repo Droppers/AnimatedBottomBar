@@ -78,7 +78,7 @@ internal class TabAdapter(
         notifyItemInserted(addedIndex)
     }
 
-    fun addTabs(values: Array<out AnimatedBottomBar.Tab>, tabIndex: Int = 0) {
+    fun addTabs(values: Array<out AnimatedBottomBar.Tab>, tabIndex: Int = -1) {
         addTabs(NoCopyArrayList(values), tabIndex)
     }
 
@@ -86,10 +86,10 @@ internal class TabAdapter(
         val startIndex: Int
         if(tabIndex == -1) {
             startIndex = tabs.size
-            tabs.addAll(tabIndex, values)
+            tabs.addAll(values)
         } else {
             startIndex = tabIndex
-            tabs.addAll(values)
+            tabs.addAll(startIndex, values)
         }
 
         notifyItemRangeChanged(startIndex, values.size)

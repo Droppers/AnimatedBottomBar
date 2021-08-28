@@ -439,7 +439,7 @@ internal class TabView @JvmOverloads constructor(
             return false
         }
 
-        view.animation.getTransformation(view.drawingTime, outTransformation)
+        viewAnimation.getTransformation(view.drawingTime, outTransformation)
         return true
     }
 
