@@ -77,7 +77,7 @@ class AnimatedBottomBarTest {
             val bottomBar = setupEmptyBottomBar()
             bottomBar.removeTabAt(0)
         } catch (e: Exception) {
-            assertEquals("Tab index is out of bounds.", e.message)
+            assertEquals("Tab index 0 is out of bounds.", e.message)
         }
     }
 
@@ -99,14 +99,14 @@ class AnimatedBottomBarTest {
         bottomBar.selectTabAt(1, false)
         assertEquals(1, bottomBar.selectedIndex)
         bottomBar.selectTabAt(3, false)
-        assertEquals(4, bottomBar.selectedTab?.id)
+        assertEquals(R.id.tab_with_id, bottomBar.selectedTab?.id)
     }
 
     @Test
     fun selectTabById() {
         val bottomBar = setupBottomBar()
         bottomBar.selectTabById(1, false)
-        assertEquals(1, bottomBar.selectedIndex)
+        assertEquals(0, bottomBar.selectedIndex)
         bottomBar.selectTabById(R.id.tab_with_id, false)
         assertEquals(R.id.tab_with_id, bottomBar.selectedTab?.id)
     }
@@ -117,7 +117,7 @@ class AnimatedBottomBarTest {
             val bottomBar = setupBottomBar()
             bottomBar.selectTabAt(100)
         } catch (e: Exception) {
-            assertEquals("Tab index is out of bounds.", e.message)
+            assertEquals("Tab index 100 is out of bounds.", e.message)
         }
     }
 
@@ -127,6 +127,6 @@ class AnimatedBottomBarTest {
         bottomBar.selectTab(bottomBar.tabs[1], false)
         assertEquals(1, bottomBar.selectedIndex)
         bottomBar.selectTab(bottomBar.tabs[3], false)
-        assertEquals(4, bottomBar.selectedTab?.id)
+        assertEquals(R.id.tab_with_id, bottomBar.selectedTab?.id)
     }
 }

@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
+import android.os.Build
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
@@ -12,185 +13,31 @@ import androidx.annotation.Dimension
 import nl.joery.animatedbottombar.utils.dpPx
 import kotlin.math.max
 
-
 class BadgeView @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private val backgroundPaint: Paint = Paint()
-    private val textPaint: TextPaint = TextPaint()
+    private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
+    private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG).apply {
+        textAlign = Paint.Align.LEFT
+        typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+    }
+    private val textBounds = Rect()
+    private val backgroundRoundRectBounds = RectF()
     private val horizontalPadding: Int = 6.dpPx
 
-    private var animator: ValueAnimator? = null
-
-    var animationType: AnimatedBottomBar.BadgeAnimation = AnimatedBottomBar.BadgeAnimation.SCALE
-
-    var scaleLayout: Boolean = false
-
-    private var _text: String? = null
-    var text: String?
-        get() = _text
-        set(value) {
-            _text = value
-            postInvalidate()
-        }
-
-    private var _animationDuration: Int = 0
-    var animationDuration: Int
-        get() = _animationDuration
-        set(value) {
-            _animationDuration = value
-            postInvalidate()
-        }
-
-    private var _backgroundColor: Int = Color.WHITE
-    var backgroundColor: Int = 0
-        @ColorInt get() = _backgroundColor
-        private set
-
-    private var _textColor: Int = Color.WHITE
-    var textColor: Int
-        @ColorInt get() = _textColor
-        set(@ColorInt value) {
-            _textColor = value
-            updatePaint()
-        }
-
-    private var _textSize: Int = Color.WHITE
-    var textSize: Int
-        @Dimension get() = _textSize
-        set(@ColorInt value) {
-            _textSize = value
-            updatePaint()
-        }
-
-    init {
-        isEnabled = false
-    }
-
-    private fun updatePaint() {
-        textPaint.apply {
-            textSize = _textSize.toFloat()
-            color = _textColor
-            textAlign = Paint.Align.LEFT
-            isAntiAlias = true
-            isDither = true
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
-        }
-
-        backgroundPaint.apply {
-            isAntiAlias = true
-            isDither = true
-            color = _backgroundColor
-        }
-        postInvalidate()
-    }
-
-    override fun onDraw(canvas: Canvas?) {
-        val c = canvas!!
-        drawBackground(c)
-        drawText(c)
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val textWidth = if (text == null) 0f else textPaint.measureText(text)
-        val newWidth =
-            max(textWidth.toInt() + horizontalPadding, 16.dpPx) + paddingLeft + paddingRight
-        val newHeight = 16.dpPx + paddingTop + paddingBottom
-
-        if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
-            super.onMeasure(
-                MeasureSpec.makeMeasureSpec((newWidth * fraction).toInt(), MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec((newHeight * fraction).toInt(), MeasureSpec.EXACTLY)
-            )
-        } else {
-            super.onMeasure(
-                MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY)
-            )
-        }
-    }
-
-    private fun drawBackground(canvas: Canvas) {
-        if (text == null) {
-            val middleX = (measuredWidth + paddingLeft) / 2f
-            val middleY = (measuredHeight + paddingTop) / 2f
-
-            if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
-                canvas.scale(fraction, fraction, middleX, middleY)
-            }
-            canvas.drawCircle(
-                middleX,
-                middleY,
-                4.dpPx.toFloat(),
-                backgroundPaint
-            )
-            if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
-                canvas.scale(1f, 1f)
-            }
-        } else {
-            val radius = 8.dpPx.toFloat()
-
-            val rect = RectF(
-                paddingLeft.toFloat(),
-                paddingTop.toFloat(),
-                measuredWidth.toFloat() - paddingRight.toFloat(),
-                measuredHeight.toFloat() - paddingBottom.toFloat()
-            )
-            canvas.drawRoundRect(rect, radius, radius, backgroundPaint)
-        }
-    }
-
-    private fun drawText(canvas: Canvas) {
-        if (_text == null) {
-            return
-        }
-
-        val middleX = (measuredWidth + paddingLeft) / 2f
-        val middleY = (measuredHeight + paddingTop) / 2f
-
-        if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
-            canvas.scale(fraction, fraction, middleX, middleY)
-        }
-
-        val rect = Rect()
-        textPaint.getTextBounds(_text, 0, _text!!.length, rect)
-
-        val x = middleX - rect.width() / 2f - rect.left
-        val y = middleY + rect.height() / 2f - rect.bottom
-
-        canvas.drawText(_text!!, x, y, textPaint)
-
-        if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
-            canvas.scale(1f, 1f)
-        }
-    }
-
-    override fun setEnabled(enabled: Boolean) {
-        val lastEnabled = isEnabled
-        super.setEnabled(enabled)
-
-        if (lastEnabled == enabled) {
-            return
-        }
-
-        if (animationType == AnimatedBottomBar.BadgeAnimation.NONE) {
-            visibility = if (enabled) VISIBLE else GONE
-            return
-        }
-
-        animator = if (enabled) ValueAnimator.ofFloat(0f, 1f) else ValueAnimator.ofFloat(1f, 0f)
-        animator?.duration = _animationDuration.toLong()
-        animator?.addUpdateListener {
+    private val animator = ValueAnimator.ofFloat(0f, 1f).apply {
+        addUpdateListener {
             if (!scaleLayout) {
                 when (animationType) {
                     AnimatedBottomBar.BadgeAnimation.NONE -> {
                     }
                     AnimatedBottomBar.BadgeAnimation.SCALE -> {
-                        scaleX = animator!!.animatedValue as Float
-                        scaleY = animator!!.animatedValue as Float
+                        val scale = it.animatedValue as Float
+                        scaleX = scale
+                        scaleY = scale
                     }
                     AnimatedBottomBar.BadgeAnimation.FADE -> {
-                        alpha = animator!!.animatedValue as Float
+                        alpha = it.animatedValue as Float
                     }
                 }
             }
@@ -198,7 +45,8 @@ class BadgeView @JvmOverloads constructor(
             requestLayout()
             postInvalidate()
         }
-        animator?.addListener(object : Animator.AnimatorListener {
+
+        addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator?) {
             }
 
@@ -227,12 +75,177 @@ class BadgeView @JvmOverloads constructor(
                 visibility = VISIBLE
             }
         })
-        animator?.start()
+    }
+
+    var animationType: AnimatedBottomBar.BadgeAnimation = AnimatedBottomBar.BadgeAnimation.SCALE
+
+    var scaleLayout: Boolean = false
+
+    private var _text: String? = null
+    var text: String?
+        get() = _text
+        set(value) {
+            _text = value
+
+            updateTextBounds()
+            invalidate()
+        }
+
+    private var _animationDuration: Int = 0
+    var animationDuration: Int
+        get() = _animationDuration
+        set(value) {
+            _animationDuration = value
+            invalidate()
+        }
+
+    private var _backgroundColor: Int = Color.WHITE
+    val backgroundColor: Int
+        @ColorInt get() = _backgroundColor
+
+    private var _textColor: Int = Color.WHITE
+    var textColor: Int
+        @ColorInt get() = _textColor
+        set(@ColorInt value) {
+            _textColor = value
+
+            textPaint.color = value
+            invalidate()
+        }
+
+    private var _textSize: Int = Color.WHITE
+    var textSize: Int
+        @Dimension get() = _textSize
+        set(@Dimension value) {
+            _textSize = value
+
+            textPaint.textSize = value.toFloat()
+            updateTextBounds()
+            invalidate()
+        }
+
+    init {
+        isEnabled = false
+    }
+
+    private fun updateTextBounds() {
+        val text = _text ?: return
+
+        textPaint.getTextBounds(text, 0, text.length, textBounds)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        drawBackground(canvas)
+        drawText(canvas)
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val textWidth = if (text == null) 0f else textPaint.measureText(text)
+        val newWidth =
+                max(textWidth.toInt() + horizontalPadding, 16.dpPx) + paddingLeft + paddingRight
+        val newHeight = 16.dpPx + paddingTop + paddingBottom
+
+        if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
+            super.onMeasure(
+                    MeasureSpec.makeMeasureSpec((newWidth * fraction).toInt(), MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec((newHeight * fraction).toInt(), MeasureSpec.EXACTLY)
+            )
+        } else {
+            super.onMeasure(
+                    MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY)
+            )
+        }
+    }
+
+    private fun drawBackground(canvas: Canvas) {
+        if (text == null) {
+            val middleX = ((measuredWidth + paddingLeft) / 2).toFloat()
+            val middleY = ((measuredHeight + paddingTop) / 2).toFloat()
+
+            var savepoint = 0
+            if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
+                savepoint = canvas.save()
+                val fr = fraction
+                canvas.scale(fr, fr, middleX, middleY)
+            }
+
+            canvas.drawCircle(
+                    middleX,
+                    middleY,
+                    4.dpPx.toFloat(),
+                    backgroundPaint
+            )
+
+            if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
+                canvas.restoreToCount(savepoint)
+            }
+        } else {
+            val radius = 8.dpPx.toFloat()
+
+            backgroundRoundRectBounds.set(
+                paddingLeft.toFloat(),
+                paddingTop.toFloat(),
+                (measuredWidth - paddingRight).toFloat(),
+                (measuredHeight - paddingBottom).toFloat()
+            )
+
+            canvas.drawRoundRect(backgroundRoundRectBounds, radius, radius, backgroundPaint)
+        }
+    }
+
+    private fun drawText(canvas: Canvas) {
+        val text = _text ?: return
+
+        val middleX = (measuredWidth + paddingLeft) / 2f
+        val middleY = (measuredHeight + paddingTop) / 2f
+
+        var savepoint = 0
+        if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
+            val fr = fraction
+            savepoint = canvas.save()
+            canvas.scale(fr, fr, middleX, middleY)
+        }
+
+        val rect = textBounds
+        val x = middleX - rect.width() / 2 - rect.left
+        val y = middleY + rect.height() / 2 - rect.bottom
+
+        canvas.drawText(text, x, y, textPaint)
+
+        if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
+            canvas.restoreToCount(savepoint)
+        }
+    }
+
+    override fun setEnabled(enabled: Boolean) {
+        val lastEnabled = isEnabled
+        super.setEnabled(enabled)
+
+        if (lastEnabled == enabled) {
+            return
+        }
+
+        if (animationType == AnimatedBottomBar.BadgeAnimation.NONE) {
+            visibility = if (enabled) VISIBLE else GONE
+            return
+        }
+
+        animator.run {
+            duration = _animationDuration.toLong()
+
+            if(isEnabled) {
+                start()
+            } else {
+                reverse()
+            }
+        }
     }
 
     override fun setBackgroundColor(@ColorInt color: Int) {
         _backgroundColor = color
-        updatePaint()
+        backgroundPaint.color = color
+        invalidate()
     }
 
     private val fraction: Float
@@ -240,8 +253,9 @@ class BadgeView @JvmOverloads constructor(
             var fraction = 1f
 
             if (scaleLayout) {
-                fraction = if (animator!!.isRunning) {
-                    animator!!.animatedValue as Float
+                val a = animator
+                fraction = if (a.isRunning) {
+                    a.animatedValue as Float
                 } else {
                     if (isEnabled) 1f else 0f
                 }

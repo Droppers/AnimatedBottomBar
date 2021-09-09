@@ -38,8 +38,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     var onTabReselected: (Tab) -> Unit = {}
     var onTabIntercepted: (Tab) -> Boolean = { true }
 
-    internal val tabStyle: BottomBarStyle.Tab by lazy { BottomBarStyle.Tab() }
-    internal val indicatorStyle: BottomBarStyle.Indicator by lazy { BottomBarStyle.Indicator() }
+    internal val tabStyle = BottomBarStyle.Tab()
+    internal val indicatorStyle = BottomBarStyle.Indicator()
 
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: TabAdapter
@@ -58,16 +58,21 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private fun initAttributes(
         attributeSet: AttributeSet?
     ) {
+        val textColorPrimary = context.getTextColor(android.R.attr.textColorPrimary)
+
         tabColorDisabled = context.getTextColor(android.R.attr.textColorSecondary)
-        tabColor = context.getTextColor(android.R.attr.textColorPrimary)
+        tabColor = textColorPrimary
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             rippleColor = android.R.attr.selectableItemBackgroundBorderless
-            tabColorSelected = context.getColorResCompat(android.R.attr.colorPrimary)
-            indicatorColor = context.getColorResCompat(android.R.attr.colorPrimary)
+
+            val colorPrimary = context.getColorResCompat(android.R.attr.colorPrimary)
+
+            tabColorSelected = colorPrimary
+            indicatorColor = colorPrimary
         } else {
-            tabColorSelected = context.getTextColor(android.R.attr.textColorPrimary)
-            indicatorColor = context.getTextColor(android.R.attr.textColorPrimary)
+            tabColorSelected = textColorPrimary
+            indicatorColor = textColorPrimary
         }
 
         val attr: TypedArray =
@@ -271,9 +276,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
         val tabs = MenuParser.parse(context, tabsResId, !isInEditMode)
-        for (tab in tabs) {
-            addTab(tab)
-        }
+        addTabs(tabs)
 
         if (initialIndex != -1) {
             if (initialIndex < 0 || initialIndex > adapter.tabs.size - 1) {
@@ -284,9 +287,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
         if (initialTabId != -1) {
-            val tab = findTabWithId(initialTabId)
-                ?: throw IllegalArgumentException("Attribute 'selectedTabId', tab with this id does not exist.")
-            selectTab(tab, false)
+            val tabIndex = indexOfTabWithId(initialTabId)
+            if(tabIndex < 0) {
+                throw IllegalArgumentException("Attribute 'selectedTabId', tab with this id does not exist.")
+            }
+
+            selectTabAt(tabIndex, false)
         }
     }
 
@@ -389,6 +395,24 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     /**
+     * Appends given array of tabs to the end of the BottomBar
+     *
+     * @param tabs array of tabs to be appended
+     */
+    fun addTabs(tabs: Array<out Tab>) {
+        adapter.addTabs(tabs)
+    }
+
+    /**
+     * Appends given collection of tabs to the end of the BottomBar
+     *
+     * @param tabs collection of tabs to be appended
+     */
+    fun addTabs(tabs: Collection<Tab>) {
+        adapter.addTabs(tabs)
+    }
+
+    /**
      * Adds the given tab to the specified [tabIndex].
      *
      * @param tabIndex The index the tab needs to be added at.
@@ -408,8 +432,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
-        val tab = adapter.tabs[tabIndex]
-        removeTab(tab)
+        adapter.removeTabAt(tabIndex)
     }
 
     /**
@@ -418,9 +441,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param id The id of the tab to be removed.
      */
     fun removeTabById(@IdRes id: Int) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        removeTab(tab)
+        val tabIndex = indexOfTabWithId(id)
+        if(tabIndex < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+
+        adapter.removeTabAt(tabIndex)
     }
 
     /**
@@ -442,8 +468,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
-        val tab = adapter.tabs[tabIndex]
-        selectTab(tab, animate)
+        adapter.selectTabAt(tabIndex, animate)
     }
 
     /**
@@ -452,9 +477,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param id The id of the tab to be selected.
      */
     fun selectTabById(@IdRes id: Int, animate: Boolean = true) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        selectTab(tab, animate)
+        val tabIndex = indexOfTabWithId(id)
+        if(tabIndex < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+        adapter.selectTabAt(tabIndex, animate)
     }
 
     /**
@@ -484,8 +511,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
             throw IndexOutOfBoundsException("Tab index $tabIndex is out of bounds.")
         }
 
-        val tab = adapter.tabs[tabIndex]
-        setTabEnabled(tab, enabled)
+        adapter.selectTabAt(tabIndex, enabled)
     }
 
     /**
@@ -495,9 +521,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param enabled Whether the tab state should be enabled or disabled.
      */
     fun setTabEnabledById(@IdRes id: Int, enabled: Boolean) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        setTabEnabled(tab, enabled)
+        val index = indexOfTabWithId(id)
+        if(index < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+
+        adapter.selectTabAt(index, enabled)
     }
 
     /**
@@ -523,7 +552,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
         val tab = adapter.tabs[tabIndex]
-        setBadgeAtTab(tab, badge)
+        tab.badge = badge
+        adapter.applyTabBadgeAt(tabIndex, badge ?: Badge())
     }
 
     /**
@@ -533,9 +563,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param badge The badge you want to add to the tab.
      */
     fun setBadgeAtTabId(@IdRes id: Int, badge: Badge? = null) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        setBadgeAtTab(tab, badge)
+        val index = indexOfTabWithId(id)
+        if(index >= 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+        setBadgeAtTabIndex(index, badge)
     }
 
     /**
@@ -560,7 +592,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
 
         val tab = adapter.tabs[tabIndex]
-        clearBadgeAtTab(tab)
+        tab.badge = null
+        adapter.applyTabBadgeAt(tabIndex, null)
     }
 
     /**
@@ -569,9 +602,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param id The id of the tab which the badge should be removed of.
      */
     fun clearBadgeAtTabId(@IdRes id: Int) {
-        val tab =
-            findTabWithId(id) ?: throw IllegalArgumentException("Tab with id $id does not exist.")
-        clearBadgeAtTab(tab)
+        val index = indexOfTabWithId(id)
+        if(index < 0) {
+            throw IllegalArgumentException("Tab with id $id does not exist.")
+        }
+        clearBadgeAtTabIndex(index)
     }
 
     /**
@@ -678,14 +713,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
         NavigationComponentHelper.setupWithNavController(this, menu, navController)
     }
 
-    private fun findTabWithId(@IdRes id: Int): Tab? {
-        for (tab in tabs) {
-            if (tab.id == id) {
-                return tab
+    private fun indexOfTabWithId(@IdRes id: Int): Int {
+        for(i in tabs.indices) {
+            if(tabs[i].id == id) {
+                return i
             }
         }
-
-        return null
+        return -1
     }
 
     /**

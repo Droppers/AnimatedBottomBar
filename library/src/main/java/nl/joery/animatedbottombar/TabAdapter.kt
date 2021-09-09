@@ -1,10 +1,8 @@
 package nl.joery.animatedbottombar
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-
+import com.google.android.flexbox.FlexboxLayoutManager
 
 internal class TabAdapter(
     private val bottomBar: AnimatedBottomBar,
@@ -20,19 +18,24 @@ internal class TabAdapter(
     val tabs = ArrayList<AnimatedBottomBar.Tab>()
     var selectedTab: AnimatedBottomBar.Tab? = null
         private set
-    val selectedIndex: Int
-        get() {
-            val tabIndex = tabs.indexOf(selectedTab)
-            return if (tabIndex >= 0) tabIndex else RecyclerView.NO_POSITION
-        }
+
+    var selectedIndex: Int = RecyclerView.NO_POSITION
+        private set
 
     override fun getItemCount(): Int {
         return tabs.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TabHolder {
-        val v: TabView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_tab, parent, false) as TabView
+        val v = TabView(parent.context).apply {
+            layoutParams = FlexboxLayoutManager.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            clipChildren = false
+            clipToPadding = false
+        }
         v.applyStyle(bottomBar.tabStyle)
         return TabHolder(v)
     }
@@ -47,15 +50,15 @@ internal class TabAdapter(
             else -> {
                 val payload = payloads[0] as Payload
                 when (payload.type) {
-                    PayloadType.APPLY_STYLE ->
+                    PAYLOAD_APPLY_STYLE ->
                         holder.applyStyle(
                             payload.value as BottomBarStyle.StyleUpdateType
                         )
-                    PayloadType.UPDATE_BADGE ->
+                    PAYLOAD_UPDATE_BADGE ->
                         holder.applyBadge(payload.value as AnimatedBottomBar.Badge?)
-                    PayloadType.SELECT ->
+                    PAYLOAD_SELECT ->
                         holder.select(payload.value as Boolean)
-                    PayloadType.DESELECT ->
+                    PAYLOAD_DESELECT ->
                         holder.deselect(payload.value as Boolean)
                 }
             }
@@ -63,7 +66,7 @@ internal class TabAdapter(
     }
 
     fun addTab(tab: AnimatedBottomBar.Tab, tabIndex: Int = -1) {
-        val addedIndex: Int?
+        val addedIndex: Int
         if (tabIndex == -1) {
             addedIndex = tabs.size
             tabs.add(tab)
@@ -75,42 +78,73 @@ internal class TabAdapter(
         notifyItemInserted(addedIndex)
     }
 
+    fun addTabs(values: Array<out AnimatedBottomBar.Tab>, tabIndex: Int = -1) {
+        addTabs(NoCopyArrayList(values), tabIndex)
+    }
+
+    fun addTabs(values: Collection<AnimatedBottomBar.Tab>, tabIndex: Int = -1) {
+        val startIndex: Int
+        if(tabIndex == -1) {
+            startIndex = tabs.size
+            tabs.addAll(values)
+        } else {
+            startIndex = tabIndex
+            tabs.addAll(startIndex, values)
+        }
+
+        notifyItemRangeChanged(startIndex, values.size)
+    }
+
     fun removeTab(tab: AnimatedBottomBar.Tab) {
         val index = tabs.indexOf(tab)
-        if (index >= 0) {
-            tabs.removeAt(index)
-            notifyItemRemoved(index)
+        if(index < 0) {
+            return
         }
+        removeTabAt(index)
+    }
+
+    fun removeTabAt(index: Int) {
+        tabs.removeAt(index)
+        notifyItemRemoved(index)
 
         if (tabs.size == 0) {
             selectedTab = null
+            selectedIndex = RecyclerView.NO_POSITION
         }
     }
 
     fun selectTab(tab: AnimatedBottomBar.Tab, animate: Boolean) {
-        val newIndex = tabs.indexOf(tab)
-        if (tab == selectedTab) {
-            onTabReselected?.invoke(newIndex, tab)
+        val index = tabs.indexOf(tab)
+        if(index >= 0) {
+            selectTabAt(index, animate)
+        }
+    }
+
+    fun selectTabAt(tabIndex: Int, animate: Boolean) {
+        val tab = tabs[tabIndex]
+        if (tabIndex == selectedIndex) {
+            onTabReselected?.invoke(tabIndex, tab)
             return
         }
 
-        val lastIndex = tabs.indexOf(selectedTab)
-        if (!canSelectTab(lastIndex, selectedTab, newIndex, tab)) {
+        val lastIndex = selectedIndex
+        val lastTab = selectedTab
+
+        if (!canSelectTab(lastIndex, lastTab, tabIndex, tab)) {
             return
         }
 
         if (lastIndex >= 0) {
-            notifyItemChanged(lastIndex, Payload(PayloadType.DESELECT, animate))
+            notifyItemChanged(lastIndex, Payload(PAYLOAD_DESELECT, animate))
         }
-        notifyItemChanged(newIndex, Payload(PayloadType.SELECT, animate))
+        notifyItemChanged(tabIndex, Payload(PAYLOAD_SELECT, animate))
 
         selectedTab = tab
+        selectedIndex = tabIndex
 
         onTabSelected?.invoke(
-            lastIndex,
-            if (lastIndex >= 0) tabs[lastIndex] else null,
-            newIndex,
-            tab,
+            lastIndex, lastTab,
+            tabIndex, tab,
             animate
         )
     }
@@ -120,21 +154,28 @@ internal class TabAdapter(
             return
         }
 
-        val lastIndex = tabs.indexOf(selectedTab)
-        notifyItemChanged(lastIndex, Payload(PayloadType.DESELECT, animate))
+        notifyItemChanged(selectedIndex, Payload(PAYLOAD_DESELECT, animate))
 
         selectedTab = null
+        selectedIndex = RecyclerView.NO_POSITION
     }
 
     fun applyTabStyle(type: BottomBarStyle.StyleUpdateType) {
         notifyItemRangeChanged(
             0, tabs.size,
-            Payload(PayloadType.APPLY_STYLE, type)
+            Payload(PAYLOAD_APPLY_STYLE, type)
         )
     }
 
     fun applyTabBadge(tab: AnimatedBottomBar.Tab, badge: AnimatedBottomBar.Badge?) {
-        notifyItemChanged(tabs.indexOf(tab), Payload(PayloadType.UPDATE_BADGE, badge))
+        val index = tabs.indexOf(tab)
+        if(index >= 0) {
+            applyTabBadgeAt(index, badge)
+        }
+    }
+
+    fun applyTabBadgeAt(tabIndex: Int, badge: AnimatedBottomBar.Badge?) {
+        notifyItemChanged(tabIndex, Payload(PAYLOAD_UPDATE_BADGE, badge))
     }
 
     fun notifyTabChanged(tab: AnimatedBottomBar.Tab) {
@@ -142,6 +183,10 @@ internal class TabAdapter(
         if (index >= 0) {
             notifyItemChanged(index)
         }
+    }
+
+    fun notifyTabChangedAt(index: Int) {
+        notifyItemChanged(index)
     }
 
     private fun canSelectTab(
@@ -158,12 +203,10 @@ internal class TabAdapter(
         ) ?: true
     }
 
-    inner class TabHolder(v: View) : RecyclerView.ViewHolder(v) {
-        private val view: TabView = v as TabView
-
+    inner class TabHolder(private val view: TabView) : RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener {
-                selectTab(tabs[adapterPosition], true)
+                selectTabAt(bindingAdapterPosition, true)
             }
         }
 
@@ -197,11 +240,12 @@ internal class TabAdapter(
         }
     }
 
-    private data class Payload(val type: PayloadType, val value: Any?)
-    private enum class PayloadType {
-        APPLY_STYLE,
-        UPDATE_BADGE,
-        SELECT,
-        DESELECT
+    private data class Payload(val type: Int, val value: Any?)
+
+    companion object {
+        private const val PAYLOAD_APPLY_STYLE = 0
+        private const val PAYLOAD_UPDATE_BADGE = 1
+        private const val PAYLOAD_SELECT = 2
+        private const val PAYLOAD_DESELECT = 3
     }
 }

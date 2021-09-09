@@ -9,6 +9,10 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import kotlin.math.roundToInt
 
+private val ValueAnimator_sDurationScale by lazy {
+    ValueAnimator::class.java.getField("sDurationScale")
+}
+
 @ColorInt
 internal fun Context.getColorResCompat(@AttrRes id: Int): Int {
     return ContextCompat.getColor(this, getResourceId(id))
@@ -36,10 +40,7 @@ internal fun Context.getResourceId(id: Int): Int {
 
 internal fun ValueAnimator.fixDurationScale() {
     try {
-        ValueAnimator::class.java.getMethod(
-            "setDurationScale",
-            Float::class.javaPrimitiveType
-        ).invoke(this, 1f)
+        ValueAnimator_sDurationScale.setFloat(this, 1f)
     } catch (t: Throwable) {
     }
 }
