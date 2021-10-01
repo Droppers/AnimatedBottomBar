@@ -89,6 +89,12 @@ internal class TabView @JvmOverloads constructor(
             }
         }
 
+    var iconSize: Int = -1
+        set(value) {
+            field = value
+            updateIcon()
+        }
+
     var badge: AnimatedBottomBar.Badge?
         get() = _badge
         set(value) {
@@ -290,11 +296,15 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun updateIcon() {
-        val size = style.iconSize
-        iconView.layoutParams.apply {
-            width = size
-            height = size
+        val size = if(iconSize > 0) iconSize else style.iconSize
+
+        iconView.run {
+            layoutParams = layoutParams.apply {
+                width = size
+                height = size
+            }
         }
+        invalidate()
     }
 
     private fun updateBadge() {
