@@ -714,6 +714,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     private fun indexOfTabWithId(@IdRes id: Int): Int {
+        val tabs = adapter.tabs
+
         for(i in tabs.indices) {
             if(tabs[i].id == id) {
                 return i
