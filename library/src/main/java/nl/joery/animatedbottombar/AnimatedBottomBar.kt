@@ -682,6 +682,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
         setIconSizeAtTabIndex(index, iconSize)
     }
 
+    override fun isNestedScrollingEnabled(): Boolean {
+        return recycler.isNestedScrollingEnabled
+    }
+
+    override fun setNestedScrollingEnabled(enabled: Boolean) {
+        recycler.isNestedScrollingEnabled = enabled
+    }
 
     /**
      * This method will link the given ViewPager and this AnimatedBottomBar together so that changes in one are automatically reflected in the other. This includes scroll state changes and clicks.
@@ -788,6 +795,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
         return -1
     }
 
+    var selectedTabType
+        get() = tabStyle.selectedTabType
+        set(value) {
+            tabStyle.selectedTabType = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TAB_TYPE)
+        }
+
     /**
      * Retrieve a list of all tabs.
      */
@@ -815,15 +829,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     val selectedIndex
         get() = adapter.selectedIndex
-
-
-    var selectedTabType
-        get() = tabStyle.selectedTabType
-        set(value) {
-            tabStyle.selectedTabType = value
-            applyTabStyle(BottomBarStyle.StyleUpdateType.TAB_TYPE)
-        }
-
 
     var tabAnimationSelected
         get() = tabStyle.tabAnimationSelected
