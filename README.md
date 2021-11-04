@@ -205,13 +205,13 @@ Instructions on how to set badges for tabs, a `AnimatedBottomBar.Badge` object s
 ```kotlin
 // Adding a badge by tab reference
 val tabToAddBadgeAt = AnimatedBottomBar.tabs[1]
-AnimatedBottomBar.addBadgeAtTab(tabToAddBadgeAt, AnimatedBottomBar.Badge("99"))
+AnimatedBottomBar.setBadgeAtTab(tabToAddBadgeAt, AnimatedBottomBar.Badge("99"))
 
 // Adding a badge at a specific position
-AnimatedBottomBar.addBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
+AnimatedBottomBar.setBadgeAtTabIndex(1, AnimatedBottomBar.Badge("99"))
 
 // Adding a badge at the given ID resource
-AnimatedBottomBar.addBadgeAtTabId(R.id.tab_home, AnimatedBottomBar.Badge("99"))
+AnimatedBottomBar.setBadgeAtTabId(R.id.tab_home, AnimatedBottomBar.Badge("99"))
 ```
 
 ### Removing badges
