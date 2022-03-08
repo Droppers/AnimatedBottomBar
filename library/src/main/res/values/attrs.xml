@@ -68,5 +68,6 @@
         <attr name="abb_badgeBackgroundColor" format="color" />
         <attr name="abb_badgeTextColor" format="color" />
         <attr name="abb_badgeTextSize" format="dimension" />
+        <attr name="abb_badgeTypeface" format="reference" />
     </declare-styleable>
 </resources>

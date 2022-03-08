@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.annotation.*
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -218,6 +219,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
                     R.styleable.AnimatedBottomBar_abb_badgeTextSize,
                     tabStyle.badge.textSize
                 )
+            badgeTypeface =
+                if (attr.hasValue(R.styleable.AnimatedBottomBar_abb_badgeTypeface))
+                    ResourcesCompat.getFont(
+                        context,
+                        attr.getResourceId(R.styleable.AnimatedBottomBar_abb_badgeTypeface, 0)
+                    ) ?: Typeface.DEFAULT
+                else Typeface.DEFAULT
 
             // Initials tabs
             val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1)
@@ -1075,6 +1083,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
             applyTabStyle(BottomBarStyle.StyleUpdateType.BADGE)
         }
 
+    var badgeTypeface
+        get() = tabStyle.badge.typeface
+        set(value) {
+            tabStyle.badge.typeface = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.BADGE)
+        }
+
     class Tab internal constructor(
         val icon: Drawable,
         var iconSize: Int = -1,
@@ -1088,10 +1103,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
         val text: String? = null,
         @ColorInt val backgroundColor: Int? = null,
         @ColorInt val textColor: Int? = null,
-        @Dimension val textSize: Int? = null
+        @Dimension val textSize: Int? = null,
+        val typeface: Typeface? = null
     ) {
-        constructor() : this(null, null, null, null)
-        constructor(text: String?) : this(text, null, null, null)
+        constructor() : this(null, null, null, null, null)
+        constructor(text: String?) : this(text, null, null, null, null)
     }
 
     enum class TabType(val id: Int) {

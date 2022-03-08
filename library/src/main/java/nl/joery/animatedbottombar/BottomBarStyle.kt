@@ -47,7 +47,8 @@ object BottomBarStyle {
         var animationDuration: Int = 150,
         @ColorInt var backgroundColor: Int = Color.rgb(255, 12, 16),
         @ColorInt var textColor: Int = Color.WHITE,
-        @Dimension var textSize: Int = 9.spPx
+        @Dimension var textSize: Int = 9.spPx,
+        var typeface: Typeface = Typeface.DEFAULT
     )
 
     data class Indicator(

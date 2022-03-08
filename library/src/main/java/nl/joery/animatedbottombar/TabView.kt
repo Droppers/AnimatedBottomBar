@@ -320,6 +320,7 @@ internal class TabView @JvmOverloads constructor(
                 it.setBackgroundColor(badge.backgroundColor ?: style.badge.backgroundColor)
                 it.textColor = badge.textColor ?: style.badge.textColor
                 it.textSize = badge.textSize ?: style.badge.textSize
+                it.typeface = badge.typeface ?: style.badge.typeface
 
                 it.isEnabled = true
             }
