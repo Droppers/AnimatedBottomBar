@@ -3,7 +3,6 @@ package nl.joery.demo.animatedbottombar.playground.properties
 import android.view.animation.*
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
-
 class InterpolatorProperty(name: String) : Property(name) {
     companion object {
         val interpolators: List<Interpolator> by lazy {

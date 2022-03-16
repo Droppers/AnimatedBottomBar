@@ -23,7 +23,8 @@ internal fun Context.getTextColor(@AttrRes id: Int): Int {
     val typedValue = TypedValue()
     theme.resolveAttribute(id, typedValue, true)
     val arr = obtainStyledAttributes(
-        typedValue.data, intArrayOf(
+        typedValue.data,
+        intArrayOf(
             id
         )
     )

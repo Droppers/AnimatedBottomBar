@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.activity_bottom_sheet.*
 import nl.joery.demo.animatedbottombar.R
 import nl.joery.demo.animatedbottombar.dpPx
 
-
 class BottomSheetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

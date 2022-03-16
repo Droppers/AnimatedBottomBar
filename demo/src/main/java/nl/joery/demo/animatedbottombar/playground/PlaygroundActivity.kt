@@ -25,7 +25,6 @@ import nl.joery.demo.animatedbottombar.R
 import nl.joery.demo.animatedbottombar.playground.properties.*
 import nl.joery.demo.animatedbottombar.spPx
 
-
 class PlaygroundActivity : AppCompatActivity() {
     private lateinit var properties: ArrayList<Property>
 
@@ -34,7 +33,8 @@ class PlaygroundActivity : AppCompatActivity() {
         setContentView(R.layout.activity_playground)
 
         bottom_bar.setBadgeAtTabIndex(
-            1, AnimatedBottomBar.Badge(
+            1,
+            AnimatedBottomBar.Badge(
                 text = "99",
                 backgroundColor = Color.RED,
                 textColor = Color.GREEN,

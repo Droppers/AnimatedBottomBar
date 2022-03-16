@@ -1,6 +1,6 @@
 package nl.joery.animatedbottombar
 
-internal class NoCopyArrayList<T>(private val data: Array<out T>): AbstractList<T>() {
+internal class NoCopyArrayList<T>(private val data: Array<out T>) : AbstractList<T>() {
     override val size: Int
         get() = data.size
 
@@ -25,8 +25,8 @@ internal class NoCopyArrayList<T>(private val data: Array<out T>): AbstractList<
     override fun toArray(): Array<Any?> = data as Array<Any?>
 
     override fun equals(other: Any?): Boolean {
-        if(other === this) return true
-        if(other == null || javaClass !== other.javaClass) return false
+        if (other === this) return true
+        if (other == null || javaClass !== other.javaClass) return false
 
         other as NoCopyArrayList<*>
 
@@ -41,7 +41,7 @@ internal class NoCopyArrayList<T>(private val data: Array<out T>): AbstractList<
         return data.contentToString()
     }
 
-    private class IteratorImpl<T>(private val data: Array<out T>): Iterator<T> {
+    private class IteratorImpl<T>(private val data: Array<out T>) : Iterator<T> {
         private var index = 0
 
         override fun hasNext(): Boolean = index < data.size

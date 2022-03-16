@@ -9,7 +9,6 @@ import nl.joery.animatedbottombar.AnimatedBottomBar
 import nl.joery.demo.animatedbottombar.navcontroller.NavControllerActivity
 import nl.joery.demo.animatedbottombar.viewpager.ViewPagerActivity
 
-
 class ExampleActivity : AppCompatActivity() {
     private lateinit var bottomBars: Array<AnimatedBottomBar>
 

@@ -35,29 +35,29 @@ internal object NavigationComponentHelper {
 
         val weakReference = WeakReference(bottomBar)
         navController.addOnDestinationChangedListener(object :
-            NavController.OnDestinationChangedListener {
+                NavController.OnDestinationChangedListener {
 
-            override fun onDestinationChanged(
-                controller: NavController,
-                destination: NavDestination,
-                arguments: Bundle?
-            ) {
-                val view = weakReference.get()
+                override fun onDestinationChanged(
+                    controller: NavController,
+                    destination: NavDestination,
+                    arguments: Bundle?
+                ) {
+                    val view = weakReference.get()
 
-                if (view == null) {
-                    navController.removeOnDestinationChangedListener(this)
-                    return
-                }
+                    if (view == null) {
+                        navController.removeOnDestinationChangedListener(this)
+                        return
+                    }
 
-                for (h in 0 until menu.size()) {
-                    val menuItem = menu.getItem(h)
-                    if (matchDestination(destination, menuItem.itemId)) {
-                        menuItem.isChecked = true
-                        bottomBar.selectTabAt(h)
+                    for (h in 0 until menu.size()) {
+                        val menuItem = menu.getItem(h)
+                        if (matchDestination(destination, menuItem.itemId)) {
+                            menuItem.isChecked = true
+                            bottomBar.selectTabAt(h)
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 
     private fun matchDestination(

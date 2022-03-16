@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="KtlintProjectConfiguration">
+    <disabledRules>
+      <list>
+        <option value="no-wildcard-imports" />
+        <option value="no-unused-imports" />
+      </list>
+    </disabledRules>
+  </component>
+</project>

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@android:color/holo_purple"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/bottom_sheet"
@@ -32,8 +32,8 @@
                 android:layout_height="64dp"
                 android:layout_margin="16dp"
                 android:background="#FFF"
-                app:abb_tabs="@menu/clock_tabs"
-                />
+                app:abb_tabs="@menu/clock_tabs" />
+
             <Space
                 android:id="@+id/dummy"
                 android:layout_width="match_parent"

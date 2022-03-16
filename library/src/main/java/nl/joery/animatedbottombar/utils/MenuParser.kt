@@ -4,13 +4,14 @@ import android.content.Context
 import android.view.MenuInflater
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
-import androidx.core.view.iterator
 import nl.joery.animatedbottombar.AnimatedBottomBar
-import nl.joery.animatedbottombar.NoCopyArrayList
-
 
 internal object MenuParser {
-    fun parse(context: Context, @MenuRes resId: Int, exception: Boolean): Array<out AnimatedBottomBar.Tab> {
+    fun parse(
+        context: Context,
+        @MenuRes resId: Int,
+        exception: Boolean
+    ): Array<out AnimatedBottomBar.Tab> {
         val p = PopupMenu(context, null)
         MenuInflater(context).inflate(resId, p.menu)
         val menu = p.menu
