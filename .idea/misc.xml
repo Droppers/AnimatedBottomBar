@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/amirh/StudioProjects/Am3n/AnimatedBottomBar/demo/src/main/res/layout/activity_bottom_sheet.xml" value="0.28125" />
+        <entry key="..\:/Users/amirh/StudioProjects/Am3n/AnimatedBottomBar/demo/src/main/res/layout/activity_example.xml" value="0.28125" />
+        <entry key="..\:/Users/amirh/StudioProjects/Am3n/AnimatedBottomBar/demo/src/main/res/layout/activity_nav_controller.xml" value="0.1" />
+        <entry key="..\:/Users/amirh/StudioProjects/Am3n/AnimatedBottomBar/demo/src/main/res/layout/activity_playground.xml" value="0.28125" />
+        <entry key="..\:/Users/amirh/StudioProjects/Am3n/AnimatedBottomBar/demo/src/main/res/menu/clock_tabs.xml" value="0.28125" />
+        <entry key="..\:/Users/amirh/StudioProjects/Am3n/AnimatedBottomBar/demo/src/main/res/menu/clock_tabs_persian.xml" value="0.28125" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FindBugsConfigurable">
     <option name="make" value="true" />
     <option name="effort" value="default" />
     <option name="priority" value="Medium" />
     <option name="excludeFilter" value="" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
