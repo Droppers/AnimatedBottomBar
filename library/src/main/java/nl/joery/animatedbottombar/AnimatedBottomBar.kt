@@ -235,7 +235,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         recycler.itemAnimator = null
         recycler.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         recycler.overScrollMode = View.OVER_SCROLL_NEVER
-        recycler.contentDescription = "Bottom-Bar"
+        recycler.contentDescription = contentDescription
 
         val flexLayoutManager = FlexboxLayoutManager(context, FlexDirection.ROW, FlexWrap.NOWRAP)
         recycler.layoutManager = flexLayoutManager
