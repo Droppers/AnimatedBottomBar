@@ -235,6 +235,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         recycler.itemAnimator = null
         recycler.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         recycler.overScrollMode = View.OVER_SCROLL_NEVER
+        recycler.contentDescription = contentDescription
 
         val flexLayoutManager = FlexboxLayoutManager(context, FlexDirection.ROW, FlexWrap.NOWRAP)
         recycler.layoutManager = flexLayoutManager
@@ -1081,7 +1082,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         val title: String,
         @IdRes val id: Int = -1,
         var badge: Badge? = null,
-        var enabled: Boolean = true
+        var enabled: Boolean = true,
+        var contentDescription: String? = null
     )
 
     class Badge(
