@@ -404,8 +404,9 @@ internal class TabView @JvmOverloads constructor(
 
         val valueFrom: Float
         val valueTo: Float
+        val animationType = if (selected) style.tabAnimationSelected else style.tabAnimation
 
-        when(if (selected) style.tabAnimationSelected else style.tabAnimation) {
+        when(animationType) {
             AnimatedBottomBar.TabAnimation.SLIDE -> {
                 if (selected) {
                     valueFrom = when {

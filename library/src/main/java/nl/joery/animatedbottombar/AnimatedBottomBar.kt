@@ -224,7 +224,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
                     ResourcesCompat.getFont(
                         context,
                         attr.getResourceId(R.styleable.AnimatedBottomBar_abb_badgeTypeface, 0)
-                    ) ?: Typeface.DEFAULT
+                    ) ?: tabStyle.badge.typeface
                 else Typeface.DEFAULT
 
             // Initials tabs
