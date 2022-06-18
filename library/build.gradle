@@ -4,11 +4,14 @@ apply plugin: "com.vanniktech.maven.publish"
 
 android {
 
-    compileSdkVersion 32
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 32
+        targetSdkVersion 29
+        versionCode 1
+        versionName VERSION_NAME
+
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         consumerProguardFiles 'consumer-rules.pro'
     }

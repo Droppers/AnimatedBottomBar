@@ -225,7 +225,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
                         context,
                         attr.getResourceId(R.styleable.AnimatedBottomBar_abb_badgeTypeface, 0)
                     ) ?: tabStyle.badge.typeface
-                else Typeface.DEFAULT
+                else tabStyle.badge.typeface
 
             // Initials tabs
             val tabsResId = attr.getResourceId(R.styleable.AnimatedBottomBar_abb_tabs, -1)
