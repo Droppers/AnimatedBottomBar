@@ -255,6 +255,7 @@ internal class TabAdapter(
             view.iconSize = tab.iconSize
             view.badge = tab.badge
             view.isEnabled = tab.enabled
+            view.contentDescription = tab.contentDescription ?: tab.title
         }
     }
 

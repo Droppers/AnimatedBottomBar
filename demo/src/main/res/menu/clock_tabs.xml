@@ -2,14 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/first_fragment"
+        android:contentDescription="alarm tab"
         android:icon="@drawable/alarm"
         android:title="@string/tab_alarm" />
     <item
         android:id="@+id/second_fragment"
+        android:contentDescription="bedtime tab"
         android:icon="@drawable/bed"
         android:title="@string/tab_bedtime" />
     <item
         android:id="@+id/third_fragment"
+        android:contentDescription="stopwatch tab"
         android:enabled="false"
         android:icon="@drawable/stopwatch"
         android:title="@string/tab_stopwatch" />
