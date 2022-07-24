@@ -10,7 +10,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import kotlinx.android.synthetic.main.activity_view_pager.*
 import nl.joery.demo.animatedbottombar.R
 
-
 class ViewPagerActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

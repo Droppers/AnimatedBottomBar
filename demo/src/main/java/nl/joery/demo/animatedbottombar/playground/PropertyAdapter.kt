@@ -23,7 +23,6 @@ import nl.joery.animatedbottombar.AnimatedBottomBar
 import nl.joery.demo.animatedbottombar.*
 import nl.joery.demo.animatedbottombar.playground.properties.*
 
-
 internal class PropertyAdapter(
     private val bottomBar: AnimatedBottomBar,
     private val properties: List<Property>
@@ -148,9 +147,11 @@ internal class PropertyAdapter(
                 .setSingleChoiceItems(
                     items, items.indexOf(getValue())
                 ) { dialog, item ->
-                    setValue(enumValues.first {
-                        it.name == items[item].toUpperCase()
-                    })
+                    setValue(
+                        enumValues.first {
+                            it.name == items[item].toUpperCase()
+                        }
+                    )
                     dialog.dismiss()
                 }
                 .show()
@@ -288,9 +289,11 @@ internal class PropertyAdapter(
                 .setSingleChoiceItems(
                     interpolatorNames, interpolatorNames.indexOf(getValue())
                 ) { dialog, item ->
-                    setValue(InterpolatorProperty.interpolators.first {
-                        it::class.java.simpleName == interpolatorNames[item]
-                    })
+                    setValue(
+                        InterpolatorProperty.interpolators.first {
+                            it::class.java.simpleName == interpolatorNames[item]
+                        }
+                    )
                     dialog.dismiss()
                 }
                 .show()

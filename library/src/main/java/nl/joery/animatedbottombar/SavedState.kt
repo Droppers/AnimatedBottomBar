@@ -4,14 +4,14 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
 
-internal class SavedState: View.BaseSavedState {
+internal class SavedState : View.BaseSavedState {
     var selectedIndex: Int = 0
 
-    constructor(source: Parcel): super(source) {
+    constructor(source: Parcel) : super(source) {
         selectedIndex = source.readInt()
     }
 
-    constructor(superState: Parcelable?): super(superState)
+    constructor(superState: Parcelable?) : super(superState)
 
     override fun writeToParcel(out: Parcel, flags: Int) {
         super.writeToParcel(out, flags)
@@ -20,7 +20,7 @@ internal class SavedState: View.BaseSavedState {
 
     companion object {
         @JvmField
-        val CREATOR = object: Parcelable.Creator<SavedState> {
+        val CREATOR = object : Parcelable.Creator<SavedState> {
             override fun createFromParcel(source: Parcel) = SavedState(source)
             override fun newArray(size: Int) = arrayOfNulls<SavedState>(size)
         }

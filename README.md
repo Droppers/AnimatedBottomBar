@@ -1,4 +1,3 @@
-
 <h1 align="center">AnimatedBottomBar</h1></br>
 <p align="center">
 <img src="./media/example/example-3.gif" width="350" />
@@ -9,26 +8,32 @@
 </p>
 <h6 align="center">
 
-  <img src="https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library/badge.svg" height="22" valign="middle">&nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat" height="22" valign="middle">&nbsp;&nbsp;
-  <img src="https://img.shields.io/badge/License-MIT-yellow.svg" height="22" valign="middle">&nbsp;&nbsp;
-  <img src= "https://joery.nl/static/vector/logo.svg" height="22" valign="middle">&nbsp;&nbsp;By <a href="https://joery.nl">Joery Droppers</a>
+<img src="https://maven-badges.herokuapp.com/maven-central/nl.joery.animatedbottombar/library/badge.svg" height="22" valign="middle">
+&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat" height="22" valign="middle">
+&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/License-MIT-yellow.svg" height="22" valign="middle">
+&nbsp;&nbsp;
+<img src= "https://joery.nl/static/vector/logo.svg" height="22" valign="middle">
+&nbsp;&nbsp;By <a href="https://joery.nl">Joery Droppers</a>
 </h6>
 
-
-
 ## Screenshots
+
 <img src="./media/example/example-2.gif" width="350" />
 <img src="./media/example/example-4.gif" width="350" />
 
 ## Playground app
+
 <img src="./media/static/playground-demo.png"  width="400" />
 
-Download the playground app from Google Play, with this app you can try out all features and even generate XML with your selected configuration.
+Download the playground app from Google Play, with this app you can try out all features and even
+generate XML with your selected configuration.
 
 <a href="https://play.google.com/store/apps/details?id=nl.joery.demo.animatedbottombar"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" width="200" /></a>
 
 ## Contents
+
 - [Getting started](#getting-started)
 - [Managing tabs](#managing-tabs)
 - [Usage with ViewPager](#usage-with-viewpager)
@@ -36,51 +41,43 @@ Download the playground app from Google Play, with this app you can try out all 
 
 ## Getting started
 
-This library is available on Maven Central, install it by adding the following dependency to your <b>build.gradle</b>:
+This library is available on Maven Central, install it by adding the following dependency to
+your <b>build.gradle</b>:
+
 ```gradle
 implementation 'nl.joery.animatedbottombar:library:1.1.0'
 ```
 
-*Versions 1.0.x can only be used with jCenter, versions 1.1.x and up can be used with Maven Central.*
+*Versions 1.0.x can only be used with jCenter, versions 1.1.x and up can be used with Maven
+Central.*
 
 Define `AnimatedBottomBar` in your XML layout with custom attributes.
+
 ```xml
-<nl.joery.animatedbottombar.AnimatedBottomBar
-    android:id="@+id/bottom_bar"
-    android:background="#FFF"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:abb_selectedTabType="text"
-    app:abb_indicatorAppearance="round"
-    app:abb_indicatorMargin="16dp"
-    app:abb_indicatorHeight="4dp"
-    app:abb_tabs="@menu/tabs"
+
+<nl.joery.animatedbottombar.AnimatedBottomBar android:id="@+id/bottom_bar" android:background="#FFF"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    app:abb_selectedTabType="text" app:abb_indicatorAppearance="round"
+    app:abb_indicatorMargin="16dp" app:abb_indicatorHeight="4dp" app:abb_tabs="@menu/tabs"
     app:abb_selectedIndex="1" />
 ```
 
 Create a file named `tabs.xml` in the `res/menu/` resources folder:
+
 ```xml
+
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/tab_home"
-        android:icon="@drawable/home"
-        android:title="@string/home" />
-    <item
-        android:id="@+id/tab_alarm"
-        android:icon="@drawable/alarm"
+    <item android:id="@+id/tab_home" android:icon="@drawable/home" android:title="@string/home" />
+    <item android:id="@+id/tab_alarm" android:icon="@drawable/alarm"
         android:title="@string/alarm" />
-    <item
-        android:id="@+id/tab_bread"
-        android:icon="@drawable/bread"
+    <item android:id="@+id/tab_bread" android:icon="@drawable/bread"
         android:title="@string/bread" />
-    <item
-        android:id="@+id/tab_cart"
-        android:icon="@drawable/cart"
-        android:title="@string/cart" />
+    <item android:id="@+id/tab_cart" android:icon="@drawable/cart" android:title="@string/cart" />
 </menu>
 ```
 
 Get notified when the selected tab changes by setting callbacks:
+
 ```kotlin
 bottom_bar.onTabSelected = {
     Log.d("bottom_bar", "Selected tab: " + it.title)
@@ -91,6 +88,7 @@ bottom_bar.onTabReselected = {
 ```
 
 Or set a listener if you need more detailed information:
+
 ```kotlin
 bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
     override fun onTabSelected(
@@ -110,9 +108,11 @@ bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener
 ```
 
 ## Managing tabs
+
 Short overview on how to manage tabs using code.
 
 ### Creating new tabs
+
 ```kotlin
 // Creating a tab by passing values
 val bottomBarTab1 = AnimatedBottomBar.createTab(drawable, "Tab 1")
@@ -120,7 +120,9 @@ val bottomBarTab1 = AnimatedBottomBar.createTab(drawable, "Tab 1")
 // Creating a tab by passing resources
 val bottomBarTab2 = AnimatedBottomBar.createTab(R.drawable.ic_home, R.string.tab_2, R.id.tab_home)
 ```
+
 ### Adding new tabs
+
 ```kotlin 
 // Adding a tab at the end
 AnimatedBottomBar.addTab(bottomBarTab1)
@@ -130,6 +132,7 @@ AnimatedBottomBar.addTabAt(1, bottomBarTab2)
 ```
 
 ### Removing tabs
+
 ```kotlin
 // Removing a tab by object reference
 val tabToRemove = AnimatedBottomBar.tabs[1]
@@ -143,6 +146,7 @@ AnimatedBottomBar.removeTabById(R.id.tab_home)
 ```
 
 ### Selecting tabs
+
 ```kotlin
 // Selecting a tab by object reference
 val tabToSelect = AnimatedBottomBar.tabs[1]
@@ -156,6 +160,7 @@ AnimatedBottomBar.selectTabById(R.id.tab_home)
 ```
 
 ### Enabling / disabling tabs
+
 ```kotlin
 // Disabling a tab by object reference
 val tabToDisable = AnimatedBottomBar.tabs[1]
@@ -169,7 +174,10 @@ AnimatedBottomBar.setTabEnabledById(R.id.tab_home, false)
 ```
 
 ### Intercepting tabs
-This could be useful for example restricting access to a premium area. You can use a callback or a more detailed listener:
+
+This could be useful for example restricting access to a premium area. You can use a callback or a
+more detailed listener:
+
 ```kotlin
 bottom_bar.onTabIntercepted = {
     if (newTab.id == R.id.tab_pro_feature && !hasProVersion) {
@@ -181,6 +189,7 @@ bottom_bar.onTabIntercepted = {
 ```
 
 Detailed listener:
+
 ```kotlin
 bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptListener {
     override fun onTabIntercepted(
@@ -199,9 +208,12 @@ bottom_bar.setOnTabInterceptListener(object : AnimatedBottomBar.OnTabInterceptLi
 ```
 
 ## Tab badges
-Instructions on how to set badges for tabs, a `AnimatedBottomBar.Badge` object should be supplied to the BottomBar, note that it is also possible to add badges without text.
+
+Instructions on how to set badges for tabs, a `AnimatedBottomBar.Badge` object should be supplied to
+the BottomBar, note that it is also possible to add badges without text.
 
 ### Adding badges
+
 ```kotlin
 // Adding a badge by tab reference
 val tabToAddBadgeAt = AnimatedBottomBar.tabs[1]
@@ -215,6 +227,7 @@ AnimatedBottomBar.setBadgeAtTabId(R.id.tab_home, AnimatedBottomBar.Badge("99"))
 ```
 
 ### Removing badges
+
 ```kotlin
 // Removing a badge by tab reference
 val tabToRemoveBadgeFrom = AnimatedBottomBar.tabs[1]
@@ -228,20 +241,45 @@ AnimatedBottomBar.clearBadgeAtTabId(R.id.tab_home, AnimatedBottomBar.Badge("99")
 ```
 
 ### Styling individual badges
+
 Additionally there is also the possibility to individually style badges.
+
 ```kotlin
 AnimatedBottomBar.Badge(
     text = "99",
     backgroundColor = Color.RED,
     textColor = Color.GREEN,
-    textSize =  12.spPx // in pixels
+    textSize = 12.spPx // in pixels
 )
 ```
 
-## Usage with ViewPager
-It is easy to use the BottomBar with a ViewPager or ViewPager2, you can simply use the `setupWithViewPager()` method. Please note that the number of tabs and ViewPager pages need to be identical in order for it to function properly.
+## Usage with Navigation Components
+
+It is easy to use BottomBar with Navigation Components, you can simply use
+the `setUpWithNavController()` method. Usually you don't need a menu object to connect bottom
+navigation bar with navController, but here you need it.
 
 <b>Usage</b>
+
+```kotlin
+//create a PopUp menu
+val popUpMenu = PopupMenu(this, null)
+
+//inflate the PopUp menu with the menu.xml you created
+popUpMenu.inflate(R.menu.clock_tabs)
+
+//connecting BottomBar with navController
+bottom_bar.setupWithNavController(popUpMenu.menu, navController)
+```
+
+## Usage with ViewPager
+
+It is easy to use the BottomBar with a ViewPager or ViewPager2, you can simply use
+the `setupWithViewPager()` method. Please note that the number of tabs and ViewPager pages need to
+be identical in order for it to function properly.
+
+<b>Usage</b>
+
 ```kotlin
 // For ViewPager use:
 bottom_bar.setupWithViewPager(yourViewPager)
@@ -251,9 +289,12 @@ bottom_bar.setupWithViewPager2(yourViewPager2)
 ```
 
 ## Configuration
-An overview of all configuration options. All options can also be accessed and set programmatically, by their equivalent name.
+
+An overview of all configuration options. All options can also be accessed and set programmatically,
+by their equivalent name.
 
 ### Tabs
+
 <table>
     <tr>
         <th>Attribute</th>
@@ -288,6 +329,7 @@ An overview of all configuration options. All options can also be accessed and s
 </table>
 
 ### Tab appearance
+
 <table>
     <tr>
         <th>Attribute</th>
@@ -366,6 +408,7 @@ An overview of all configuration options. All options can also be accessed and s
 </table>
 
 ### Badges
+
 <table>
     <tr>
         <th>Attribute</th>
@@ -413,6 +456,7 @@ An overview of all configuration options. All options can also be accessed and s
 </table>
 
 ### Animations
+
 <table>
     <tr>
         <th>Attribute</th>
@@ -464,6 +508,7 @@ An overview of all configuration options. All options can also be accessed and s
 </table>
 
 ### Indicator
+
 <table>
     <tr>
         <th>Attribute</th>
@@ -525,14 +570,17 @@ An overview of all configuration options. All options can also be accessed and s
 </table>
 
 ## Featured in
+
 - [Android Weekly: Issue 404](https://androidweekly.net/issues/issue-404)
 - [Medium: The 25 Best Android Libraries and Projects of 2020](https://medium.com/better-programming/25-best-android-libraries-projects-of-2020-summer-edition-dfb030a7fb0a)
 - [Medium: The Top 5 Trending Android Libraries From Q1 2020](https://medium.com/better-programming/the-top-5-trending-android-libraries-from-q1-2020-45deda73af0f)
 
 ## Credits
+
 - [Dribble: Readable Tab Bar](https://dribbble.com/shots/6130593-Readable-Tab-Bar)
 
 ## License
+
 ```
 MIT License
 

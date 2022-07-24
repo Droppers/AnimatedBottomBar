@@ -86,7 +86,7 @@ internal class TabAdapter(
 
     fun addTabs(values: Collection<AnimatedBottomBar.Tab>, tabIndex: Int = -1) {
         val startIndex: Int
-        if(tabIndex == -1) {
+        if (tabIndex == -1) {
             startIndex = tabs.size
             tabs.addAll(values)
         } else {
@@ -99,7 +99,7 @@ internal class TabAdapter(
 
     fun removeTab(tab: AnimatedBottomBar.Tab) {
         val index = tabs.indexOf(tab)
-        if(index < 0) {
+        if (index < 0) {
             return
         }
         removeTabAt(index)
@@ -117,7 +117,7 @@ internal class TabAdapter(
 
     fun selectTab(tab: AnimatedBottomBar.Tab, animate: Boolean) {
         val index = tabs.indexOf(tab)
-        if(index >= 0) {
+        if (index >= 0) {
             selectTabAt(index, animate)
         }
     }
@@ -171,7 +171,7 @@ internal class TabAdapter(
 
     fun applyTabBadge(tab: AnimatedBottomBar.Tab, badge: AnimatedBottomBar.Badge?) {
         val index = tabs.indexOf(tab)
-        if(index >= 0) {
+        if (index >= 0) {
             applyTabBadgeAt(index, badge)
         }
     }
@@ -197,7 +197,7 @@ internal class TabAdapter(
 
     fun applyIconSize(tab: AnimatedBottomBar.Tab, iconSize: Int) {
         val index = tabs.indexOf(tab)
-        if(index >= 0) {
+        if (index >= 0) {
             applyIconSize(index, iconSize)
         }
     }

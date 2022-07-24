@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_sample.*
 import nl.joery.demo.animatedbottombar.R
 
-
 class SampleFragment : Fragment() {
     companion object {
         fun newInstance(position: Int): SampleFragment {

@@ -4,7 +4,6 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
-import android.os.Build
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
@@ -14,7 +13,9 @@ import nl.joery.animatedbottombar.utils.dpPx
 import kotlin.math.max
 
 class BadgeView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
     private val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
     private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG).apply {
@@ -142,18 +143,18 @@ class BadgeView @JvmOverloads constructor(
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val textWidth = if (text == null) 0f else textPaint.measureText(text)
         val newWidth =
-                max(textWidth.toInt() + horizontalPadding, 16.dpPx) + paddingLeft + paddingRight
+            max(textWidth.toInt() + horizontalPadding, 16.dpPx) + paddingLeft + paddingRight
         val newHeight = 16.dpPx + paddingTop + paddingBottom
 
         if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
             super.onMeasure(
-                    MeasureSpec.makeMeasureSpec((newWidth * fraction).toInt(), MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec((newHeight * fraction).toInt(), MeasureSpec.EXACTLY)
+                MeasureSpec.makeMeasureSpec((newWidth * fraction).toInt(), MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec((newHeight * fraction).toInt(), MeasureSpec.EXACTLY)
             )
         } else {
             super.onMeasure(
-                    MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY)
+                MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY)
             )
         }
     }
@@ -171,10 +172,10 @@ class BadgeView @JvmOverloads constructor(
             }
 
             canvas.drawCircle(
-                    middleX,
-                    middleY,
-                    4.dpPx.toFloat(),
-                    backgroundPaint
+                middleX,
+                middleY,
+                4.dpPx.toFloat(),
+                backgroundPaint
             )
 
             if (animationType == AnimatedBottomBar.BadgeAnimation.SCALE) {
@@ -234,7 +235,7 @@ class BadgeView @JvmOverloads constructor(
         animator.run {
             duration = _animationDuration.toLong()
 
-            if(isEnabled) {
+            if (isEnabled) {
                 start()
             } else {
                 reverse()

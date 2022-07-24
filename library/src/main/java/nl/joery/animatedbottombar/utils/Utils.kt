@@ -9,7 +9,8 @@ import androidx.annotation.AnimRes
 internal object Utils {
     @SuppressLint("ResourceType")
     fun loadInterpolator(
-        context: Context, @AnimRes resId: Int,
+        context: Context,
+        @AnimRes resId: Int,
         defaultInterpolator: Interpolator
     ): Interpolator {
         if (resId > 0) {

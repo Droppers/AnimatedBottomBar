@@ -116,83 +116,95 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun initLayout() {
-        addView(LinearLayout(context).apply {
-            layoutParams = LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT
-            ).apply {
+        addView(
+            LinearLayout(context).apply {
+                layoutParams = LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT
+                ).apply {
+                    gravity = Gravity.CENTER
+                }
                 gravity = Gravity.CENTER
-            }
-            gravity = Gravity.CENTER
-            orientation = LinearLayout.HORIZONTAL
+                orientation = LinearLayout.HORIZONTAL
 
-            textLayout = this
+                textLayout = this
 
-            addView(AppCompatTextView(context).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+                addView(
+                    AppCompatTextView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
+
+                        textView = this
+                        ellipsize = TextUtils.TruncateAt.END
+                        isSingleLine = true
+                    }
                 )
 
-                textView = this
-                ellipsize = TextUtils.TruncateAt.END
-                isSingleLine = true
-            })
+                addView(
+                    BadgeView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
 
-            addView(BadgeView(context).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+                        textBadge = this
+                        val padding = 4.dpPx
+                        setPadding(padding, 0, 0, 0)
+                    }
                 )
-
-                textBadge = this
-                val padding = 4.dpPx
-                setPadding(padding, 0, 0, 0)
-            })
-        })
-
-        addView(LinearLayout(context).apply {
-            layoutParams = LayoutParams(
-                LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT
-            ).apply {
-                gravity = Gravity.CENTER
             }
+        )
 
-            iconLayout = this
-
-            val padding = 8.dpPx
-            setPadding(0, padding, 0, padding)
-
-            clipToPadding = false
-            visibility = View.GONE
-
-            addView(AppCompatImageView(context).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
+        addView(
+            LinearLayout(context).apply {
+                layoutParams = LayoutParams(
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT
                 ).apply {
                     gravity = Gravity.CENTER
                 }
 
-                orientation = LinearLayout.HORIZONTAL
-                iconView = this
-                scaleType = ImageView.ScaleType.FIT_CENTER
-            })
+                iconLayout = this
 
-            addView(BadgeView(context).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
+                val padding = 8.dpPx
+                setPadding(0, padding, 0, padding)
+
+                clipToPadding = false
+                visibility = View.GONE
+
+                addView(
+                    AppCompatImageView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                        ).apply {
+                            gravity = Gravity.CENTER
+                        }
+
+                        orientation = LinearLayout.HORIZONTAL
+                        iconView = this
+                        scaleType = ImageView.ScaleType.FIT_CENTER
+                    }
                 )
 
-                val translation = (-8).dpPx.toFloat()
-                translationX = translation
-                translationY = translation
+                addView(
+                    BadgeView(context).apply {
+                        layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
 
-                iconBadge = this
-            })
-        })
+                        val translation = (-8).dpPx.toFloat()
+                        translationX = translation
+                        translationY = translation
+
+                        iconBadge = this
+                    }
+                )
+            }
+        )
     }
 
     fun applyStyle(style: BottomBarStyle.Tab) {
@@ -241,7 +253,7 @@ internal class TabView @JvmOverloads constructor(
         val tabColor: Int
         val tabColorSelected: Int
 
-        if(isEnabled) {
+        if (isEnabled) {
             tabColor = style.tabColor
             tabColorSelected = style.tabColorSelected
         } else {
@@ -252,7 +264,7 @@ internal class TabView @JvmOverloads constructor(
         val iconTint: Int
         val textColor: Int
 
-        when(style.selectedTabType) {
+        when (style.selectedTabType) {
             AnimatedBottomBar.TabType.ICON -> {
                 iconTint = tabColorSelected
                 textColor = tabColor
@@ -296,7 +308,7 @@ internal class TabView @JvmOverloads constructor(
     }
 
     private fun updateIcon() {
-        val size = if(iconSize > 0) iconSize else style.iconSize
+        val size = if (iconSize > 0) iconSize else style.iconSize
 
         iconView.run {
             layoutParams = layoutParams.apply {
@@ -405,7 +417,7 @@ internal class TabView @JvmOverloads constructor(
         val valueTo: Float
         val animationType = if (selected) style.tabAnimationSelected else style.tabAnimation
 
-        when(animationType) {
+        when (animationType) {
             AnimatedBottomBar.TabAnimation.SLIDE -> {
                 if (selected) {
                     valueFrom = when {
@@ -466,7 +478,7 @@ internal class TabView @JvmOverloads constructor(
             crossinline onStart: () -> Unit = {},
             crossinline onEnd: () -> Unit = {}
         ): Animation.AnimationListener {
-            return object: Animation.AnimationListener {
+            return object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
                     onStart()
                 }

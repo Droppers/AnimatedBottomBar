@@ -52,7 +52,7 @@ internal class TabIndicator(
 
         var currentWidth = newViewWidth
 
-        when(bottomBar.indicatorAnimation) {
+        when (bottomBar.indicatorAnimation) {
             AnimatedBottomBar.IndicatorAnimation.SLIDE -> {
                 if (isAnimating && lastView != null) {
                     val lastViewWidth = lastView.width.toFloat()
@@ -97,14 +97,14 @@ internal class TabIndicator(
 
         val indicatorLeft = viewLeft + indicatorMargin
         val indicatorRight = viewLeft + viewWidth - indicatorMargin
-        val indicatorHeight =  bottomBar.indicatorStyle.indicatorHeight.toFloat()
+        val indicatorHeight = bottomBar.indicatorStyle.indicatorHeight.toFloat()
 
-        when(bottomBar.indicatorStyle.indicatorAppearance) {
+        when (bottomBar.indicatorStyle.indicatorAppearance) {
             AnimatedBottomBar.IndicatorAppearance.SQUARE -> {
                 val top: Float
                 val bottom: Float
 
-                when(bottomBar.indicatorStyle.indicatorLocation) {
+                when (bottomBar.indicatorStyle.indicatorLocation) {
                     AnimatedBottomBar.IndicatorLocation.TOP -> {
                         top = 0f
                         bottom = indicatorHeight
@@ -128,7 +128,7 @@ internal class TabIndicator(
                 val top: Float
                 val bottom: Float
 
-                when(bottomBar.indicatorStyle.indicatorLocation) {
+                when (bottomBar.indicatorStyle.indicatorLocation) {
                     AnimatedBottomBar.IndicatorLocation.TOP -> {
                         top = -indicatorHeight
                         bottom = indicatorHeight
@@ -186,8 +186,8 @@ internal class TabIndicator(
     }
 
     companion object {
-        private val CURRENT_LEFT_PROPERTY = if(Build.VERSION.SDK_INT >= 24) {
-            object: FloatProperty<TabIndicator>("currentLeft") {
+        private val CURRENT_LEFT_PROPERTY = if (Build.VERSION.SDK_INT >= 24) {
+            object : FloatProperty<TabIndicator>("currentLeft") {
                 override fun get(o: TabIndicator): Float = o.currentLeft
                 override fun setValue(o: TabIndicator, value: Float) {
                     o.currentLeft = value
@@ -195,7 +195,7 @@ internal class TabIndicator(
                 }
             }
         } else {
-            object: Property<TabIndicator, Float>(Float::class.java, "currentLeft") {
+            object : Property<TabIndicator, Float>(Float::class.java, "currentLeft") {
                 override fun get(o: TabIndicator): Float = o.currentLeft
                 override fun set(o: TabIndicator, value: Float) {
                     o.currentLeft = value

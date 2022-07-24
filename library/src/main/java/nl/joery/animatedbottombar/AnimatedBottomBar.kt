@@ -24,7 +24,10 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import nl.joery.animatedbottombar.utils.*
-
+import nl.joery.animatedbottombar.utils.MenuParser
+import nl.joery.animatedbottombar.utils.Utils
+import nl.joery.animatedbottombar.utils.getColorResCompat
+import nl.joery.animatedbottombar.utils.getTextColor
 
 class AnimatedBottomBar @JvmOverloads constructor(
     context: Context,
@@ -104,10 +107,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 tabStyle.animationDuration
             )
             animationInterpolator = Utils.loadInterpolator(
-                context, attr.getResourceId(
+                context,
+                attr.getResourceId(
                     R.styleable.AnimatedBottomBar_abb_animationInterpolator,
                     -1
-                ), tabStyle.animationInterpolator
+                ),
+                tabStyle.animationInterpolator
             )
 
             // Ripple
@@ -289,7 +294,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
         if (initialTabId != -1) {
             val tabIndex = indexOfTabWithId(initialTabId)
-            if(tabIndex < 0) {
+            if (tabIndex < 0) {
                 throw IllegalArgumentException("Attribute 'selectedTabId', tab with this id does not exist.")
             }
 
@@ -319,12 +324,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
-        if(state is SavedState) {
+        if (state is SavedState) {
             super.onRestoreInstanceState(state.superState)
 
             val index = state.selectedIndex
 
-            if(index >= 0 && index < adapter.tabs.size) {
+            if (index >= 0 && index < adapter.tabs.size) {
                 selectTabAt(index, false)
             }
         } else {
@@ -363,10 +368,9 @@ class AnimatedBottomBar @JvmOverloads constructor(
             throw IllegalArgumentException("Icon drawable cannot be null.")
         }
 
-        if(iconSize < -1 || iconSize == 0) {
+        if (iconSize < -1 || iconSize == 0) {
             throw IllegalArgumentException("iconSize should be either -1 or positive value")
         }
-
 
         return Tab(icon, iconSize, title, id)
     }
@@ -380,7 +384,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * Unlike [AnimatedBottomBar.iconSize], sets size of icon only for this tab.
      * Should be either -1 to use [AnimatedBottomBar.iconSize] or positive value
      */
-    fun createTab(@DrawableRes iconRes: Int, title: String, @IdRes id: Int = -1, iconSize: Int = -1): Tab {
+    fun createTab(
+        @DrawableRes iconRes: Int,
+        title: String,
+        @IdRes id: Int = -1,
+        iconSize: Int = -1
+    ): Tab {
         val icon = ContextCompat.getDrawable(context, iconRes)
         return createTab(icon, title, id, iconSize)
     }
@@ -395,7 +404,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * Unlike [AnimatedBottomBar.iconSize], sets size of icon only for this tab.
      * Should be either -1 to use [AnimatedBottomBar.iconSize] or positive value
      */
-    fun createTab(@DrawableRes iconRes: Int, @StringRes titleRes: Int, @IdRes id: Int = -1, iconSize: Int = -1): Tab {
+    fun createTab(
+        @DrawableRes iconRes: Int,
+        @StringRes titleRes: Int,
+        @IdRes id: Int = -1,
+        iconSize: Int = -1
+    ): Tab {
         val title = context.getString(titleRes)
         return createTab(iconRes, title, id, iconSize)
     }
@@ -457,7 +471,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun removeTabById(@IdRes id: Int) {
         val tabIndex = indexOfTabWithId(id)
-        if(tabIndex < 0) {
+        if (tabIndex < 0) {
             throw IllegalArgumentException("Tab with id $id does not exist.")
         }
 
@@ -493,7 +507,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun selectTabById(@IdRes id: Int, animate: Boolean = true) {
         val tabIndex = indexOfTabWithId(id)
-        if(tabIndex < 0) {
+        if (tabIndex < 0) {
             throw IllegalArgumentException("Tab with id $id does not exist.")
         }
         adapter.selectTabAt(tabIndex, animate)
@@ -537,7 +551,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun setTabEnabledById(@IdRes id: Int, enabled: Boolean) {
         val index = indexOfTabWithId(id)
-        if(index < 0) {
+        if (index < 0) {
             throw IllegalArgumentException("Tab with id $id does not exist.")
         }
 
@@ -579,7 +593,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun setBadgeAtTabId(@IdRes id: Int, badge: Badge? = null) {
         val index = indexOfTabWithId(id)
-        if(index >= 0) {
+        if (index >= 0) {
             throw IllegalArgumentException("Tab with id $id does not exist.")
         }
         setBadgeAtTabIndex(index, badge)
@@ -618,7 +632,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun clearBadgeAtTabId(@IdRes id: Int) {
         val index = indexOfTabWithId(id)
-        if(index < 0) {
+        if (index < 0) {
             throw IllegalArgumentException("Tab with id $id does not exist.")
         }
         clearBadgeAtTabIndex(index)
@@ -641,7 +655,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param iconSize Should be either -1 (to use [AnimatedBottomBar.iconSize] value) or positive value.
      */
     fun setIconSizeAtTab(tab: Tab, iconSize: Int) {
-        if(iconSize < -1 || iconSize == 0) {
+        if (iconSize < -1 || iconSize == 0) {
             throw IllegalArgumentException("iconSize should be either -1 or positive value.")
         }
 
@@ -656,11 +670,11 @@ class AnimatedBottomBar @JvmOverloads constructor(
      * @param iconSize Should be either -1 (to use [AnimatedBottomBar.iconSize] value) or positive value.
      */
     fun setIconSizeAtTabIndex(tabIndex: Int, iconSize: Int) {
-        if(tabIndex < 0 || tabIndex >= adapter.tabs.size) {
+        if (tabIndex < 0 || tabIndex >= adapter.tabs.size) {
             throw IllegalArgumentException("Tab index is out of bounds.")
         }
 
-        if(iconSize < -1 || iconSize == 0) {
+        if (iconSize < -1 || iconSize == 0) {
             throw IllegalArgumentException("iconSize should be either -1 or positive value.")
         }
 
@@ -676,7 +690,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     fun setIconSizeAtTabId(@IdRes id: Int, iconSize: Int) {
         val index = indexOfTabWithId(id)
-        if(index < 0) {
+        if (index < 0) {
             throw IllegalArgumentException("Tab with id $id does not exist.")
         }
 
@@ -707,12 +721,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
 
                 override fun onPageScrollStateChanged(state: Int) {
                     // Use Scroll state to detect whether the user is sliding
-                    if (previousState == ViewPager.SCROLL_STATE_DRAGGING
-                        && state == ViewPager.SCROLL_STATE_SETTLING
+                    if (previousState == ViewPager.SCROLL_STATE_DRAGGING &&
+                        state == ViewPager.SCROLL_STATE_SETTLING
                     ) {
                         userScrollChange = true
-                    } else if (previousState == ViewPager.SCROLL_STATE_SETTLING
-                        && state == ViewPager.SCROLL_STATE_IDLE
+                    } else if (previousState == ViewPager.SCROLL_STATE_SETTLING &&
+                        state == ViewPager.SCROLL_STATE_IDLE
                     ) {
                         userScrollChange = false
                     }
@@ -753,12 +767,12 @@ class AnimatedBottomBar @JvmOverloads constructor(
                 override fun onPageScrollStateChanged(state: Int) {
                     super.onPageScrollStateChanged(state)
                     // Use Scroll state to detect whether the user is sliding
-                    if (previousState == ViewPager2.SCROLL_STATE_DRAGGING
-                        && state == ViewPager2.SCROLL_STATE_SETTLING
+                    if (previousState == ViewPager2.SCROLL_STATE_DRAGGING &&
+                        state == ViewPager2.SCROLL_STATE_SETTLING
                     ) {
                         userScrollChange = true
-                    } else if (previousState == ViewPager2.SCROLL_STATE_SETTLING
-                        && state == ViewPager2.SCROLL_STATE_IDLE
+                    } else if (previousState == ViewPager2.SCROLL_STATE_SETTLING &&
+                        state == ViewPager2.SCROLL_STATE_IDLE
                     ) {
                         userScrollChange = false
                     }
@@ -788,8 +802,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     private fun indexOfTabWithId(@IdRes id: Int): Int {
         val tabs = adapter.tabs
 
-        for(i in tabs.indices) {
-            if(tabs[i].id == id) {
+        for (i in tabs.indices) {
+            if (tabs[i].id == id) {
                 return i
             }
         }
@@ -866,7 +880,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
             animationInterpolator = AnimationUtils.loadInterpolator(context, value)
         }
 
-
     var rippleEnabled
         @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
         get() = tabStyle.rippleEnabled
@@ -893,7 +906,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
         set(@ColorRes value) {
             rippleColor = ContextCompat.getColor(context, value)
         }
-
 
     var tabColorSelected
         @ColorInt
