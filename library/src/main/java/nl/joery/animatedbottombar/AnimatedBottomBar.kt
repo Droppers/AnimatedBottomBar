@@ -249,6 +249,7 @@ class AnimatedBottomBar @JvmOverloads constructor(
         recycler.itemAnimator = null
         recycler.layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
         recycler.overScrollMode = View.OVER_SCROLL_NEVER
+        recycler.contentDescription = contentDescription
 
         val flexLayoutManager = FlexboxLayoutManager(context, FlexDirection.ROW, FlexWrap.NOWRAP)
         recycler.layoutManager = flexLayoutManager
@@ -696,6 +697,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
         setIconSizeAtTabIndex(index, iconSize)
     }
 
+    override fun isNestedScrollingEnabled(): Boolean {
+        return recycler.isNestedScrollingEnabled
+    }
+
+    override fun setNestedScrollingEnabled(enabled: Boolean) {
+        recycler.isNestedScrollingEnabled = enabled
+    }
 
     /**
      * This method will link the given ViewPager and this AnimatedBottomBar together so that changes in one are automatically reflected in the other. This includes scroll state changes and clicks.
@@ -792,6 +800,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
     }
 
     private fun indexOfTabWithId(@IdRes id: Int): Int {
+        val tabs = adapter.tabs
+
         for(i in tabs.indices) {
             if(tabs[i].id == id) {
                 return i
@@ -799,6 +809,13 @@ class AnimatedBottomBar @JvmOverloads constructor(
         }
         return -1
     }
+
+    var selectedTabType
+        get() = tabStyle.selectedTabType
+        set(value) {
+            tabStyle.selectedTabType = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TAB_TYPE)
+        }
 
     /**
      * Retrieve a list of all tabs.
@@ -827,15 +844,6 @@ class AnimatedBottomBar @JvmOverloads constructor(
      */
     val selectedIndex
         get() = adapter.selectedIndex
-
-
-    var selectedTabType
-        get() = tabStyle.selectedTabType
-        set(value) {
-            tabStyle.selectedTabType = value
-            applyTabStyle(BottomBarStyle.StyleUpdateType.TAB_TYPE)
-        }
-
 
     var tabAnimationSelected
         get() = tabStyle.tabAnimationSelected
@@ -1122,7 +1130,8 @@ class AnimatedBottomBar @JvmOverloads constructor(
         val title: String,
         @IdRes val id: Int = -1,
         var badge: Badge? = null,
-        var enabled: Boolean = true
+        var enabled: Boolean = true,
+        var contentDescription: String? = null
     )
 
     class Badge(
