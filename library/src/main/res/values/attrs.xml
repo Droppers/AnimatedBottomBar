@@ -56,6 +56,26 @@
             <flag name="normal" value="0" />
         </attr>
         <attr name="abb_textSize" format="dimension" />
+
+        <attr name="abb_textMaxLines" format="integer" min="0"/>
+        <attr name="abb_textGravity" format="enum">
+            <enum name="start" value="0x00800003" />
+            <enum name="end" value="0x00800005" />
+            <enum name="center" value="0x01" />
+        </attr>
+
+        <attr name="abb_textBreakStrategy">
+            <enum name="simple" value="0" />
+            <enum name="high_quality" value="1" />
+            <enum name="balanced" value="2" />
+        </attr>
+
+        <attr name="abb_textHyphenationFrequency">
+            <enum name="none" value="0" />
+            <enum name="normal" value="1" />
+            <enum name="full" value="2" />
+        </attr>
+
         <attr name="abb_iconSize" format="dimension" />
 
         <!-- Badge -->

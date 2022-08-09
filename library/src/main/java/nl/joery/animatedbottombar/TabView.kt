@@ -136,7 +136,6 @@ internal class TabView @JvmOverloads constructor(
 
                 textView = this
                 ellipsize = TextUtils.TruncateAt.END
-                isSingleLine = true
             })
 
             addView(BadgeView(context).apply {
@@ -287,6 +286,15 @@ internal class TabView @JvmOverloads constructor(
     private fun updateText() {
         textView.run {
             typeface = style.typeface
+            maxLines = style.textMaxLines
+
+            if(Build.VERSION.SDK_INT >= 23) {
+                hyphenationFrequency = style.textHyphenationFrequency
+                breakStrategy = style.textBreakStrategy
+            }
+
+            gravity = style.textGravity
+
             setTextSize(TypedValue.COMPLEX_UNIT_PX, style.textSize.toFloat())
         }
 

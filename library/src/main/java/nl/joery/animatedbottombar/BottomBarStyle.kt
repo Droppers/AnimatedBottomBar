@@ -1,7 +1,11 @@
 package nl.joery.animatedbottombar
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.text.LineBreaker
+import android.text.Layout
+import android.view.Gravity
 import android.view.animation.Interpolator
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
@@ -11,6 +15,9 @@ import nl.joery.animatedbottombar.utils.dpPx
 import nl.joery.animatedbottombar.utils.spPx
 
 object BottomBarStyle {
+    // Suppresses the warning on textBreakStrategy and textHyphenationFrequency.
+    // The values won't be used if API level < 23
+    @SuppressLint("NewApi")
     data class Tab(
         // Type
         var selectedTabType: AnimatedBottomBar.TabType = AnimatedBottomBar.TabType.ICON,
@@ -34,6 +41,10 @@ object BottomBarStyle {
         @StyleRes var textAppearance: Int = -1,
         var typeface: Typeface = Typeface.DEFAULT,
         var textSize: Int = 14.spPx,
+        var textMaxLines: Int = 1,
+        var textGravity: Int = Gravity.CENTER_HORIZONTAL,
+        var textBreakStrategy: Int = LineBreaker.BREAK_STRATEGY_SIMPLE,
+        var textHyphenationFrequency: Int = Layout.HYPHENATION_FREQUENCY_NONE,
 
         // Icon
         var iconSize: Int = 24.dpPx,

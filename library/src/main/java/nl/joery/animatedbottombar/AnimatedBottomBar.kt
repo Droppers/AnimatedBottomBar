@@ -150,6 +150,20 @@ class AnimatedBottomBar @JvmOverloads constructor(
                     tabStyle.textSize
                 )
 
+            textMaxLines = attr.getInt(R.styleable.AnimatedBottomBar_abb_textMaxLines, tabStyle.textMaxLines)
+            textGravity = attr.getInt(R.styleable.AnimatedBottomBar_abb_textGravity, tabStyle.textGravity)
+
+            if(Build.VERSION.SDK_INT >= 23) {
+                textBreakStrategy = attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_textBreakStrategy,
+                    tabStyle.textBreakStrategy
+                )
+                textHyphenationFrequency = attr.getInt(
+                    R.styleable.AnimatedBottomBar_abb_textHyphenationFrequency,
+                    tabStyle.textHyphenationFrequency
+                )
+            }
+
             // Icon
             iconSize =
                 attr.getDimension(
@@ -959,6 +973,40 @@ class AnimatedBottomBar @JvmOverloads constructor(
         get() = tabStyle.textSize
         set(@Dimension value) {
             tabStyle.textSize = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
+        }
+
+    var textMaxLines: Int
+        get() = tabStyle.textMaxLines
+        set(value) {
+            tabStyle.textMaxLines = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
+        }
+
+    var textGravity: Int
+        get() = tabStyle.textGravity
+        set(value) {
+            tabStyle.textGravity = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
+        }
+
+    var textHyphenationFrequency: Int
+        @RequiresApi(23)
+        get() = tabStyle.textHyphenationFrequency
+
+        @RequiresApi(23)
+        set(value) {
+            tabStyle.textHyphenationFrequency = value
+            applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
+        }
+
+    var textBreakStrategy: Int
+        @RequiresApi(23)
+        get() = tabStyle.textBreakStrategy
+
+        @RequiresApi(23)
+        set(value) {
+            tabStyle.textBreakStrategy = value
             applyTabStyle(BottomBarStyle.StyleUpdateType.TEXT)
         }
 
