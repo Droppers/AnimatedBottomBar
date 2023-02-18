@@ -216,6 +216,11 @@ class PlaygroundActivity : AppCompatActivity() {
                 TypedValue.COMPLEX_UNIT_SP
             )
         )
+        properties.add(
+            TypefaceProperty(
+                "badgeTypeface"
+            )
+        )
     }
 
     private fun initRecyclerView() {

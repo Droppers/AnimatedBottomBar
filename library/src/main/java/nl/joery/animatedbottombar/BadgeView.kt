@@ -124,6 +124,17 @@ class BadgeView @JvmOverloads constructor(
             invalidate()
         }
 
+    private var _typeface: Typeface = Typeface.DEFAULT
+    var typeface: Typeface
+        get() = _typeface
+        set(value) {
+            _typeface = value
+
+            textPaint.typeface = value
+            updateTextBounds()
+            invalidate()
+        }
+
     init {
         isEnabled = false
     }
