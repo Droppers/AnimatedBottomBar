@@ -1,6 +1,7 @@
 package nl.joery.animatedbottombar.utils
 
 import android.content.Context
+import android.os.Build
 import android.view.MenuInflater
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
@@ -28,11 +29,15 @@ internal object MenuParser {
                 }
             }
 
+            val contentDescription = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                item.contentDescription?.toString() else item.title.toString()
+
             AnimatedBottomBar.Tab(
                 title = item.title.toString(),
                 icon = item.icon,
                 id = item.itemId,
-                enabled = item.isEnabled
+                enabled = item.isEnabled,
+                contentDescription = contentDescription
             )
         }
     }
